@@ -1,12 +1,21 @@
 /* SCATTERPLOT STYLING */
-#scatter .axis path,
-#scatter .axis line {
+#scatter.chart-container:nth-child(even) .axis path,
+#scatter.chart-container:nth-child(even) .axis line {
     fill: none;
     stroke: rgb(39, 41, 43);
     shape-rendering: crispEdges;
 }
-#scatter .label, #scatter text {
+#scatter.chart-container:nth-child(odd) .axis path,
+#scatter.chart-container:nth-child(odd) .axis line {
+    fill: none;
+    stroke: white;
+    shape-rendering: crispEdges;
+}
+#scatter.chart-container:nth-child(even) .label, #scatter.chart-container:nth-child(even) text {
     fill: rgb(39, 41, 43);
+}
+#scatter.chart-container:nth-child(odd) .label, #scatter.chart-container:nth-child(odd) text {
+    fill: white;
 }
 #scatter .tooltip {
     position: absolute;
