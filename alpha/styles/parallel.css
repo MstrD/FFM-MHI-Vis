@@ -1,0 +1,7 @@
+/* PARALLEL COORDINATES CHART STYLING */
+#parallel #chart .tick text {
+    fill: white;
+}
+#parallel #chart .domain, #parallel #chart .tick line {
+    stroke: white;
+}

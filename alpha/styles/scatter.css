@@ -1,0 +1,20 @@
+/* SCATTERPLOT STYLING */
+#scatter .axis path,
+#scatter .axis line {
+    fill: none;
+    stroke: rgb(39, 41, 43);
+    shape-rendering: crispEdges;
+}
+#scatter .label, #scatter text {
+    fill: rgb(39, 41, 43);
+}
+#scatter .tooltip {
+    position: absolute;
+    width: 82px;
+    height: 48px;
+    pointer-events: none;
+    font-size: 10pt;
+    background-color: antiquewhite;
+    border-radius: 2px;
+    padding-left: 2px;
+}

@@ -1,0 +1,5 @@
+/* HEATMAP STYLING */
+#heatmap svg .title {
+    fill: white;
+    font-size: 16px;
+}
