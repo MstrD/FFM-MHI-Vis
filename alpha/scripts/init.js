@@ -2,7 +2,14 @@ var els = [];
 var filters = {
     gender: [],
     age: [],
-    traits: [],
+    traits: {
+        neuroticism: [],
+        extraversion: [],
+        openness: [],
+        agreeableness: [],
+        conscientiousness: []
+    },
+    toApplyGenderAndAge: els,
     toApply: els
 };
 

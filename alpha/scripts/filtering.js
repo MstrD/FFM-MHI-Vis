@@ -9,6 +9,7 @@ function filterDataByGender(gender) {
             filters.gender = els.filter((d) => d.Q1_Sexo === 2);
             break;
     }
+    filters.toApplyGenderAndAge = filters.gender;
     filters.toApply = filters.gender;
     renewCharts(filterDataByGender.name);
 }
@@ -19,50 +20,80 @@ function filterDataByAge(age1, age2) {
     var myFilter = filters.gender.length ? filters.gender : els;
     if (currentAge1 < currentAge2) {
         filters.age = myFilter.filter((d) => d.Q2_Idade >= age1 && d.Q2_Idade <= age2);
+        filters.toApplyGenderAndAge = filters.age;
         filters.toApply = filters.age;
         renewCharts(filterDataByAge.name);
     }
 }
 
 function filterDataByTraits(trait, value1, value2) { // FIXME: a different array for each trait, perhaps?
-    var myFilter = filters.toApply;
-    if (value1 < value2) {
+    var myFilter = filters.toApplyGenderAndAge;
+    if (value1 < value2 && (value1 !== 0 || value2 !== 48)) {
         switch (trait) {
             case 0:
-                filters.traits.push(myFilter.filter((d) => d.Neuroticismo_NEOFFI >= value1 && d.Neuroticismo_NEOFFI <= value2));
-                currentNeuroticism1 = parseInt(value1);
-                currentNeuroticism2 = parseInt(value2);
+                filters.traits.neuroticism = myFilter.filter((d) => d.Neuroticismo_NEOFFI >= value1 && d.Neuroticismo_NEOFFI <= value2);
+                currentNeuroticism1 = value1;
+                currentNeuroticism2 = value2;
+                filters.toApply = filters.traits.neuroticism;
                 break;
             case 1:
-                filters.traits.push(myFilter.filter((d) => d.Extroversão_NEOFFI >= value1 && d.Extroversão_NEOFFI <= value2));
-                currentExtraversion1 = parseInt(value1);
-                currentExtraversion2 = parseInt(value2);
+                filters.traits.extraversion = myFilter.filter((d) => d.Extroversão_NEOFFI >= value1 && d.Extroversão_NEOFFI <= value2);
+                currentExtraversion1 = value1;
+                currentExtraversion2 = value2;
+                filters.toApply = filters.traits.extraversion;
                 break;
             case 2:
-                filters.traits.push(myFilter.filter((d) => d.AberturaExperiência_NEOFFI >= value1 && d.AberturaExperiência_NEOFFI <= value2));
-                currentOpenness1 = parseInt(value1);
-                currentOpenness2 = parseInt(value2);
+                filters.traits.openness = myFilter.filter((d) => d.AberturaExperiência_NEOFFI >= value1 && d.AberturaExperiência_NEOFFI <= value2);
+                currentOpenness1 = value1;
+                currentOpenness2 = value2;
+                filters.toApply = filters.traits.openness;
                 break;
             case 3:
-                filters.traits.push(myFilter.filter((d) => d.AmabIilidade_NEOFFI >= value1 && d.AmabIilidade_NEOFFI <= value2));
-                currentAgreeableness1 = parseInt(value1);
-                currentAgreeableness2 = parseInt(value2);
+                filters.traits.agreeableness = myFilter.filter((d) => d.AmabIilidade_NEOFFI >= value1 && d.AmabIilidade_NEOFFI <= value2);
+                currentAgreeableness1 = value1;
+                currentAgreeableness2 = value2;
+                filters.toApply = filters.traits.agreeableness;
                 break;
             case 4:
-                filters.traits.push(myFilter.filter((d) => d.Conscienciosidade_NEOFFI >= value1 && d.Conscienciosidade_NEOFFI <= value2));
-                currentConscientiousness1 = parseInt(value1);
-                currentConscientiousness2 = parseInt(value2);
+                filters.traits.conscientiousness = myFilter.filter((d) => d.Conscienciosidade_NEOFFI >= value1 && d.Conscienciosidade_NEOFFI <= value2);
+                currentConscientiousness1 = value1;
+                currentConscientiousness2 = value2;
+                filters.toApply = filters.traits.conscientiousness;
                 break;
         }
-        filters.toApply = filters.traits[filters.traits.length - 1];
         console.log(filters.toApply);
         renewCharts(filterDataByTraits.name);
+    }
+    else {
+        switch (trait) {
+            case 0:
+                filters.traits.neuroticism = [];
+                break;
+            case 1:
+                filters.traits.extraversion = [];
+                break;
+            case 2:
+                filters.traits.openness = [];
+                break;
+            case 3:
+                filters.traits.agreeableness = [];
+                break;
+            case 4:
+                filters.traits.conscientiousness = [];
+                break;
+        }
     }
 }
 
 function renewCharts(funcName) {
-    if (funcName === filterDataByGender.name)
-            filterDataByAge(currentAge1, currentAge2);
+    if (funcName === filterDataByGender.name) {
+        filterDataByAge(currentAge1, currentAge2);
+        filterAllTraits();
+    }
+    if (funcName === filterDataByAge.name) {
+        filterAllTraits();
+    }
+    // TODO: merge these charts instead of removing them
     d3.select("#scatter").select("svg").remove();
     d3.select("#parallel").select("#chart").select("svg").remove();
     d3.select("#boxplot").select("svg").remove();
@@ -70,4 +101,12 @@ function renewCharts(funcName) {
     drawScatter(filters.toApply);
     drawBoxplot(filters.toApply);
     drawHistogram(filters.toApply, histogramIndex);
+}
+
+function filterAllTraits() {
+    filterDataByTraits(0, currentNeuroticism1, currentNeuroticism2);
+    filterDataByTraits(1, currentExtraversion1, currentExtraversion2);
+    filterDataByTraits(2, currentOpenness1, currentOpenness2);
+    filterDataByTraits(3, currentAgreeableness1, currentAgreeableness2);
+    filterDataByTraits(4, currentConscientiousness1, currentConscientiousness2);
 }
