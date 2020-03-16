@@ -19,7 +19,7 @@ function drawScatter(data) {
     color = d3.scaleOrdinal(d3.schemeCategory10);
   
     // add the graph canvas to the body of the webpage
-        var svg = d3.select("#scatter").append("svg")
+    var svg = d3.select("#scatter").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -119,7 +119,7 @@ function drawScatter(data) {
         .attr("y", 9)
         .attr("dy", ".35em")
         .style("text-anchor", "end")
-        .text(function(d) { if (d == 1) return 'Female'; else return 'Male';});
+        .text(function(d) { if (d == 1) return 'Male'; else return 'Female';});
 
     if (d3.select("#scatter").select("svg")) {
         scatterExists = true;
