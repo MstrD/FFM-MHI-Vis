@@ -45,9 +45,9 @@
                 <input type="checkbox" id="filter2" name="filter2" value="Age">
                 <label for="filter2"><b>Age:</b></label>
                     <label for="age1">From:</label>
-                    <input type="number" class="number" id="age1" name="age1" oninput="filterDataByAge(this.value, currentAge2)">
+                    <input type="number" class="number" min="15" max="80" id="age1" name="age1" oninput="filterDataByAge(parseInt(this.value), currentAge2, true)">
                     <label for="age2">to:</label>
-                    <input type="number" class="number" id="age2" name="age2" oninput="filterDataByAge(currentAge1, this.value)">
+                    <input type="number" class="number" min="15" max="80" id="age2" name="age2" oninput="filterDataByAge(currentAge1, parseInt(this.value), true)">
                     <label>years old</label><br>
                 <input type="checkbox" id="filter3" name="filter3" value="Traits">
                 <label for="filter3"><b>Traits:</b></label><br><span class="paddington"></span>
@@ -89,6 +89,18 @@
         </div>
         <div id="scatter" class="chart-container">
             <h1>Scatter Plot</h1>
+            <input type="radio" id="mhi" name="trait_scatter" value="MHI" checked onclick="drawScatter(filters.toApply, this.value)">
+            <label for="mhi">MHI</label>
+            <input type="radio" id="neuroticism" name="trait_scatter" value="Neuroticism" onclick="drawScatter(filters.toApply, this.value)">
+            <label for="neuroticism">Neuroticism</label>
+            <input type="radio" id="extraversion" name="trait_scatter" value="Extraversion" onclick="drawScatter(filters.toApply, this.value)">
+            <label for="extraversion">Extraversion</label>
+            <input type="radio" id="openness" name="trait_scatter" value="Openness" onclick="drawScatter(filters.toApply, this.value)">
+            <label for="openness">Openness</label>
+            <input type="radio" id="agreeableness" name="trait_scatter" value="Agreeableness" onclick="drawScatter(filters.toApply, this.value)">
+            <label for="agreeableness">Agreeableness</label>
+            <input type="radio" id="conscientiousness" name="trait_scatter" value="Conscientiousness" onclick="drawScatter(filters.toApply, this.value)">
+            <label for="conscientiousness">Conscientiousness</label>
         </div>
         <div id="heatmap" class="chart-container">
             <h1>Heatmap</h1>

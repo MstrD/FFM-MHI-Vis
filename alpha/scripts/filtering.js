@@ -14,15 +14,16 @@ function filterDataByGender(gender) {
     renewCharts(filterDataByGender.name);
 }
 
-function filterDataByAge(age1, age2) {
-    currentAge1 = parseInt(age1);
-    currentAge2 = parseInt(age2);
+function filterDataByAge(age1, age2, toRenew) {
     var myFilter = filters.gender.length ? filters.gender : els;
-    if (currentAge1 < currentAge2) {
+    if (age1 < age2) {
+        currentAge1 = age1;
+        currentAge2 = age2;
         filters.age = myFilter.filter((d) => d.Q2_Idade >= age1 && d.Q2_Idade <= age2);
         filters.toApplyGenderAndAge = filters.age;
         filters.toApply = filters.age;
-        renewCharts(filterDataByAge.name);
+        if (toRenew)
+            renewCharts(filterDataByAge.name);
     }
 }
 
@@ -61,7 +62,6 @@ function filterDataByTraits(trait, value1, value2) { // FIXME: a different array
                 filters.toApply = filters.traits.conscientiousness;
                 break;
         }
-        console.log(filters.toApply);
         renewCharts(filterDataByTraits.name);
     }
     else {
@@ -87,18 +87,17 @@ function filterDataByTraits(trait, value1, value2) { // FIXME: a different array
 
 function renewCharts(funcName) {
     if (funcName === filterDataByGender.name) {
-        filterDataByAge(currentAge1, currentAge2);
+        filterDataByAge(currentAge1, currentAge2, false);
         filterAllTraits();
     }
     if (funcName === filterDataByAge.name) {
         filterAllTraits();
     }
     // TODO: merge these charts instead of removing them
-    d3.select("#scatter").select("svg").remove();
     d3.select("#parallel").select("#chart").select("svg").remove();
     d3.select("#boxplot").select("svg").remove();
     drawParallel(filters.toApply);
-    drawScatter(filters.toApply);
+    drawScatter(filters.toApply, scatterIndex);
     drawBoxplot(filters.toApply);
     drawHistogram(filters.toApply, histogramIndex);
 }

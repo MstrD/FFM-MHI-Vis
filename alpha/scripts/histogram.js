@@ -6,7 +6,7 @@ function drawHistogram(d, index) {
 
     // set the X ranges
     var x = d3.scaleLinear()
-      .domain([0, 48])
+      .domain([0, 48]).nice()
       .rangeRound([0, width]);
 
     var limits = (k) => {
@@ -38,7 +38,7 @@ function drawHistogram(d, index) {
 
     // set the Y ranges
     var y = d3.scaleLinear()
-      .domain([0, d3.max(histogram(d)).length])
+      .domain([0, d3.max(histogram(d)).length]).nice()
       .range([height, 50]);
 
     // restricts all ticks in y axis to be integers

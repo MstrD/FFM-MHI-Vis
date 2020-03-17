@@ -33,6 +33,7 @@ var currentConscientiousness2 = 48;
 
 var scatterExists = false;
 var scatterData = null;
+var scatterIndex = 'MHI';
 
 var histogramExists = false;
 var histogramData = null;
@@ -77,7 +78,7 @@ d3.json('data/db_fpul.json', function(err, data) {
       }
   ];
   drawParallel(els);
-  drawScatter(els);
+  drawScatter(els, 'MHI');
   drawBoxplot(els);
   drawHistogram(els, 0);
 });

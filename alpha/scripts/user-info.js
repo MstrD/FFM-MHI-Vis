@@ -7,7 +7,7 @@ function getAge(d) {
 }
 
 function getGender(d) {
-    return d.Q1_Sexo === 1 ? "Female" : "Male";
+    return d.Q1_Sexo === 1 ? "Male" : "Female";
 }
 
 function getResidence(d) {
@@ -179,4 +179,38 @@ function getTraitAnswers(d) {
         }
     }
     return traits;
+}
+
+function getTraitName(trait) {
+    switch (trait) {
+        case 0:
+            return 'Neuroticism';
+        case 1:
+            return 'Extraversion';
+        case 2:
+            return 'Openness';
+        case 3:
+            return 'Agreeableness';
+        case 4:
+            return 'Conscientiousness';
+        case 5:
+            return 'MHI';
+    }
+}
+
+function getCorrectTrait(d, trait) {
+    switch (trait) {
+        case 0:
+            return d.Neuroticismo_NEOFFI;
+        case 1:
+            return d.Extroversão_NEOFFI;
+        case 2:
+            return d.AberturaExperiência_NEOFFI;
+        case 3:
+            return d.AmabIilidade_NEOFFI;
+        case 4:
+            return d.Conscienciosidade_NEOFFI;
+        case 5:
+            return d.MH5_total;
+    }
 }
