@@ -124,6 +124,11 @@ function drawScatter(data, trait) {
             .select(".label")
             .text(trait);
 
+        svg.selectAll(".legend")
+            .transition()
+            .duration(1000)
+            .style("fill", color);
+
         var dataFiltered = els.filter((d) => data.includes(d));
         console.log(dataFiltered);
         if (dataFiltered.length > scatterData.length) {

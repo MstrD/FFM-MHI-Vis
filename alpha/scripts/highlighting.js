@@ -14,6 +14,13 @@ function highlightSubject(subj) {
       .style("stroke", "white") 
       .style("stroke-width", 3);
       // TODO: it would be pretty cool if the only values shown in the axes were the ones from the subject
+
+    d3.select("#histogram").select("#chart").select("svg")
+      .selectAll(".bar")
+      .filter((d) => !d.includes(subj))
+      .transition()
+      .duration(1000)
+      .style("opacity", 0.5);
   
     showUserInfo(subj);
 }
@@ -27,6 +34,14 @@ function dehighlightSubject(subj) {
       .style("opacity", 0.5)
       .style("stroke-width", 1)
       .style("stroke", "#69b3a2");
+
+    d3.select("#histogram").select("#chart").select("svg")
+      .selectAll(".bar")
+      .filter((d) => !d.includes(subj))
+      .transition()
+      .duration(1000)
+      .style("opacity", 1);
+
     hideUserInfo(subj);
     removeHeatmap();
 }

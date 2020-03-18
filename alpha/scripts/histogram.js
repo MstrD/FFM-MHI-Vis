@@ -99,6 +99,20 @@ function drawHistogram(d, index) {
       .attr("transform", (d) => "translate(" + x(d.x0) + "," + y(d.length) + ")")
       .attr("height", (d) => height - y(d.length))
       .style("fill", "#69b3a2");
+
+    // FIXME: this piece of code is commented, in case it is better to show dots instead of changing the opacity
+    /* svg.selectAll(".element")
+      .data(histogramExists ? histogramData : histogram(d))
+      .enter().append("circle")
+      .attr("class", "element")
+      .attr("r", 7)
+      .attr("cx", (d) => x(d.x1) - (x(d.x1)-x(d.x0))/2)
+      .attr("cy", (d) => height - (height - y(d.length))/2)
+      .style("fill", "blue")
+      .style("opacity", 0)
+      .merge(svg.selectAll("circle").data(histogram(d)))
+        .transition()
+        .duration(1000); */
   
     // append the label of each bar
     svg.selectAll(".label")
