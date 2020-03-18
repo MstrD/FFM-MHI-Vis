@@ -59,15 +59,18 @@ function drawBoxplot(d) {
       .call(d3.axisLeft(y));
   
     // a few features for the box
-    var center = (width - margin.left - margin.right) / data.length;
-    var width = 50;
+    if (!boxplotExists) {
+      bp_center = (width - margin.left - margin.right) / data.length;
+      bp_width = 50;
+      bp_y = y;
+    }
   
     for (let i = 0; i < data.length; i++) {
       // Show the main vertical line
       svg
         .append("line")
-        .attr("x1", center * (i+1))
-        .attr("x2", center * (i+1))
+        .attr("x1", bp_center * (i+1))
+        .attr("x2", bp_center * (i+1))
         .attr("y1", y(min[i]))
         .attr("y2", y(max[i]))
         .attr("stroke", "black");
@@ -75,10 +78,10 @@ function drawBoxplot(d) {
       // Show the box
       svg
         .append("rect")
-        .attr("x", center * (i+1) - width/2)
+        .attr("x", bp_center * (i+1) - bp_width/2)
         .attr("y", y(q3[i]))
         .attr("height", (y(q1[i]) - y(q3[i])))
-        .attr("width", width)
+        .attr("width", bp_width)
         .attr("stroke", "black")
         .style("fill", "#69b3a2");
   
@@ -88,10 +91,12 @@ function drawBoxplot(d) {
         .data([min[i], median[i], max[i]])
         .enter()
         .append("line")
-        .attr("x1", center * (i+1) - width/2)
-        .attr("x2", center * (i+1) + width/2)
+        .attr("x1", bp_center * (i+1) - bp_width/2)
+        .attr("x2", bp_center * (i+1) + bp_width/2)
         .attr("y1", function(d){ return(y(d))})
         .attr("y2", function(d){ return(y(d))})
         .attr("stroke", "black");
     }
+    if (!boxplotExists)
+      boxplotExists = true;
 }

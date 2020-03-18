@@ -35,6 +35,16 @@ var scatterExists = false;
 var scatterData = null;
 var scatterIndex = 'MHI';
 
+var boxplotExists = false;
+var bp_y, bp_center, bp_width;
+var bp_data = (d) => [
+    d.Neuroticismo_NEOFFI,
+    d.Extroversão_NEOFFI,
+    d.AberturaExperiência_NEOFFI,
+    d.AmabIilidade_NEOFFI,
+    d.Conscienciosidade_NEOFFI
+];
+
 var histogramExists = false;
 var histogramData = null;
 var histogramIndex = 0;

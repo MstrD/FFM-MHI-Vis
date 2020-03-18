@@ -21,6 +21,17 @@ function highlightSubject(subj) {
       .transition()
       .duration(1000)
       .style("opacity", 0.5);
+
+    d3.select("#boxplot").select("svg").select("g")
+      .selectAll(".myInd")
+      .data(bp_data(subj)).enter()
+      .append("line")
+      .attr("class", "myInd")
+      .attr("x1", (_, i) => bp_center * (i+1) - bp_width/2)
+      .attr("x2", (_, i) => bp_center * (i+1) + bp_width/2)
+      .attr("y1", (d) => bp_y(d))
+      .attr("y2", (d) => bp_y(d))
+      .style("stroke", "blue");
   
     showUserInfo(subj);
 }
@@ -41,6 +52,13 @@ function dehighlightSubject(subj) {
       .transition()
       .duration(1000)
       .style("opacity", 1);
+
+    d3.select("#boxplot").select("svg").select("g")
+      .selectAll(".myInd")
+      .transition()
+      .duration(1000)
+      .style("opacity", 0)
+      .remove();
 
     hideUserInfo(subj);
     removeHeatmap();
