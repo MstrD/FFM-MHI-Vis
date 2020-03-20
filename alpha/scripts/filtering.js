@@ -1,3 +1,9 @@
+function filterDataById(id) {
+    filters.toApply = els.filter((d) => d.Nº === id);
+    renewCharts(filterDataById.name);
+    filters.toApply = els;
+}
+
 function filterDataByGender(gender) {
     if (filters.gender.length)
         filters.gender = [];

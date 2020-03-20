@@ -36,6 +36,9 @@
                 <span>Add Filter...</span>
             </div> -->
             <form id="filter">
+                <input type="checkbox" id="filterid" name="filterid" value="id">
+                    <label for="id"><b>#ID:</b></label>
+                    <input type="number" class="number" id="n1" name="n1" min="0" max="199" oninput="filterDataById(parseInt(this.value))"></br>
                 <input type="checkbox" id="filter1" name="filter1" value="Gender">
                 <label for="filter1"><b>Gender:</b></label>
                     <input type="radio" id="gender1" name="gender" value="male" onchange="filterDataByGender(this.value)">
