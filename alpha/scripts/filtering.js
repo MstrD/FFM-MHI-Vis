@@ -101,10 +101,12 @@ function renewCharts(funcName) {
     }
     // TODO: merge these charts instead of removing them
     d3.select("#parallel").select("#chart").select("svg").remove();
-    d3.select("#boxplot").select("svg").remove();
+    if (funcName !== filterDataById.name) {
+        d3.select("#boxplot").select("svg").remove();
+        drawBoxplot(filters.toApply);
+    }
     drawParallel(filters.toApply);
     drawScatter(filters.toApply, scatterIndex);
-    drawBoxplot(filters.toApply);
     drawHistogram(filters.toApply, histogramIndex);
 }
 

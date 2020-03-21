@@ -25,7 +25,7 @@ function drawParallel(data) {
     for (i in dimensions) {
       name = dimensions[i];
       y[name] = d3.scaleLinear()
-        .domain( d3.extent(data, function(d) { return +d[name]; }) )
+        .domain( [0, 48] )
         .range([height, 0])
     }
   

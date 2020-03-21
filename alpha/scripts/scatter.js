@@ -34,8 +34,11 @@ function drawScatter(data, trait) {
     color = d3.scaleOrdinal(d3.schemeCategory10);
 
     // don't want dots overlapping axis, so add in buffer to data domain
-    xScale.domain([d3.min(data, xValue), d3.max(data, xValue)]).nice();
-    yScale.domain([d3.min(data, yValue), d3.max(data, yValue)]).nice();
+    if (data.length > 1)
+        xScale.domain([d3.min(data, xValue), d3.max(data, xValue)]).nice();
+    else
+        xScale.domain([18, 76]).nice();
+    yScale.domain([0, trait === "MHI" ? 30 : 48]).nice();
     
     if (!scatterExists) {
         var svg = d3.select("#scatter").append("svg")
