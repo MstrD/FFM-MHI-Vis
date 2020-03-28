@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { median } from 'd3v4';
 export default {
     name: 'Boxplot',
     data() {
@@ -77,7 +78,7 @@ export default {
             // Show the Y scale
             var y = this.$d3.scaleLinear()
                 .domain([0,48])
-                .range([height, 0]);
+                .range([height, 0]).nice();
             
             svg
                 .append("g")
@@ -89,10 +90,9 @@ export default {
                 this.bp_width = 50;
                 this.bp_y = y;
             }
-        
             for (let i = 0; i < data.length; i++) {
                 // Show the main vertical line
-                svg
+                svg.data(data[i])
                     .append("line")
                     .attr("x1", this.bp_center * (i+1))
                     .attr("x2", this.bp_center * (i+1))
@@ -101,7 +101,7 @@ export default {
                     .attr("stroke", "black");
             
                 // Show the box
-                svg
+                svg.data(data[i])
                     .append("rect")
                     .attr("x", this.bp_center * (i+1) - this.bp_width/2)
                     .attr("y", y(q3[i]))
@@ -111,15 +111,14 @@ export default {
                     .style("fill", "#69b3a2");
             
                 // show median, min and max horizontal lines
-                svg
-                    .selectAll("toto")
+                svg.selectAll("toto")
                     .data([min[i], median[i], max[i]])
                     .enter()
                     .append("line")
                     .attr("x1", this.bp_center * (i+1) - this.bp_width/2)
                     .attr("x2", this.bp_center * (i+1) + this.bp_width/2)
-                    .attr("y1", function(d){ return(y(d))})
-                    .attr("y2", function(d){ return(y(d))})
+                    .attr("y1", (d) => y(d))
+                    .attr("y2", (d) => y(d))
                     .attr("stroke", "black");
             }
             if (!this.boxplotExists)

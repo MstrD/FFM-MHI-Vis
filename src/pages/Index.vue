@@ -1,9 +1,6 @@
 <template>
   <q-page class="column column-center">
     <Parallel ref="parallel"/>
-    <div id="user_info" class="chart-container">
-        <h6>User Profile</h6>
-    </div>
     <Scatter ref="scatter" />
     <Heatmap ref="heatmap" />
     <Boxplot ref="boxplot" />
