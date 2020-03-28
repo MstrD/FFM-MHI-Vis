@@ -314,7 +314,6 @@ export default {
         filterDataById(id) {
             this.filters.toApply = this.els.filter((d) => d.Nº === id);
             this.renewCharts(this.filterDataById.name);
-            this.filters.toApply = this.els;
         },
         filterDataByGender(gender) {
             if (this.filters.gender.length)
