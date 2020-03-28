@@ -58,7 +58,7 @@
           :rules="[val => val >= 0 && val <= 199 || 'Please insert an ID between 0 and 199']"
         >
           <template v-slot:append>
-            <q-icon name="search" />
+            <q-icon v-if="!model" name="search" />
           </template>
         </q-input>
         <UserProfile
@@ -97,3 +97,14 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  input[type="number"] {
+      -moz-appearance: textfield;
+  }
+</style>
