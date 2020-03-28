@@ -64,9 +64,6 @@ Vue.prototype.bp_data = (d) => [
     d.Conscienciosidade_NEOFFI
 ];
 
-Vue.prototype.histogramExists = false;
-Vue.prototype.histogramData = null;
-
 Vue.prototype.currentAge1 = 0;
 Vue.prototype.currentAge2 = 100;
 

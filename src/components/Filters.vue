@@ -51,7 +51,7 @@
 
         <q-item-section>
           <q-item-label lines="1">by Gender</q-item-label>
-          <q-item-label caption>Males or Females</q-item-label>
+          <q-item-label caption>Male or Female</q-item-label>
         </q-item-section>
 
         <q-item-section side>

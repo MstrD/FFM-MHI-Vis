@@ -20,7 +20,9 @@ export default {
     data() {
         return {
             histogramTrait: 'Neuroticism',
-            histogramIndex: 0
+            histogramIndex: 0,
+            histogramExists: false,
+            histogramData: null
         }
     },
     methods: {
