@@ -142,6 +142,7 @@ export default {
             else {
                 var svg = d3.select("#scatter").select("g");
                 var tooltip = d3.select("#scatter").select(".tooltip");
+                
                 svg.selectAll(".xAxis")
                     .transition()
                     .duration(1000)
@@ -159,17 +160,27 @@ export default {
                     .duration(1000)
                     .style("fill", color);
 
-                var dataFiltered = this.els.filter((d) => data.includes(d));
                 var dots = svg.selectAll(".dot")
                     .data(data);
-
                 dots.exit().remove();
-                dots.enter().merge(dots)
-                    .transition()
-                    .duration(1000)
-                    .attr("cx", xMap)
-                    .attr("cy", yMap)
-                    .style("fill", (d) => color(cValue(d)));
+                if (data.length > this.scatterData.length)
+                    dots.enter()
+                        .append("circle")
+                        .attr("class", "dot")
+                        .attr("r", 3.5)
+                        .merge(dots)
+                        .transition()
+                        .duration(1000)
+                        .attr("cx", xMap)
+                        .attr("cy", yMap)
+                        .style("fill", (d) => color(cValue(d)));
+                else
+                    dots.enter().merge(dots)
+                        .transition()
+                        .duration(1000)
+                        .attr("cx", xMap)
+                        .attr("cy", yMap)
+                        .style("fill", (d) => color(cValue(d)));
             }
             var self = this; // scope changes in mouse events; this line is necessary
             dots.on("mouseover", function (d) {
@@ -260,7 +271,6 @@ export default {
     },
     watch: {
         scatterIndex: function() {
-            console.log(this.scatterIndex);
             this.drawScatter(this.scatterData, this.scatterIndex);
         }
     }
