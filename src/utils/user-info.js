@@ -140,6 +140,7 @@ function getTraitAnswers(d) {
                 traits.push({
                     id: d.Nº,
                     trait: 'Neuroticism',
+                    traitReduced: 'N',
                     question: Math.round(i / 5),
                     value: d[`NEOFF${i}`]
                 });
@@ -148,6 +149,7 @@ function getTraitAnswers(d) {
                 traits.push({
                     id: d.Nº,
                     trait: 'Extraversion',
+                    traitReduced: 'E',
                     question: Math.round(i / 5),
                     value: d[`NEOFF${i}`]
                 });
@@ -156,6 +158,7 @@ function getTraitAnswers(d) {
                 traits.push({
                     id: d.Nº,
                     trait: 'Openness',
+                    traitReduced: 'O',
                     question: Math.round(i / 5),
                     value: d[`NEOFF${i}`]
                 });
@@ -164,6 +167,7 @@ function getTraitAnswers(d) {
                 traits.push({
                     id: d.Nº,
                     trait: 'Agreeableness',
+                    traitReduced: 'A',
                     question: Math.round(i / 5),
                     value: d[`NEOFF${i}`]
                 });
@@ -172,6 +176,7 @@ function getTraitAnswers(d) {
                 traits.push({
                     id: d.Nº,
                     trait: 'Conscientiousness',
+                    traitReduced: 'C',
                     question: Math.round(i / 5),
                     value: d[`NEOFF${i}`]
                 });
