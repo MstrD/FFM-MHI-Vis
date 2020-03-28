@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import * as d3 from 'd3v4';
 export default {
     name: 'Heatmap',
     props: {},
@@ -16,7 +15,7 @@ export default {
             width = 450 - margin.left - margin.right,
             height = 450 - margin.top - margin.bottom;
         
-            var bgColor = d3.select("#heatmap").style("background-color");
+            var bgColor = this.$d3.select("#heatmap").style("background-color");
         
             var questions = this.$getTraitQuestions();
             var myGroups = ["Neuroticism", "Extraversion", "Openness", "Agreeableness", "Conscientiousness"]
@@ -27,31 +26,31 @@ export default {
             }
             var answers = this.$getTraitAnswers(d);
         
-            var svg = d3.select("#heatmap").append("svg")
+            var svg = this.$d3.select("#heatmap").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         
             // Build X scales and axis:
-            var x = d3.scaleBand()
+            var x = this.$d3.scaleBand()
             .range([ 0, width ])
             .domain(myVars)
             .padding(0.01);
             svg.append("g")
             .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x));
+            .call(this.$d3.axisBottom(x));
         
             // Build Y scales and axis:
-            var y = d3.scaleBand()
+            var y = this.$d3.scaleBand()
             .range([ 0, height ])
             .domain(myGroups)
             .padding(0.01);
             svg.append("g")
-            .call(d3.axisLeft(y));
+            .call(this.$d3.axisLeft(y));
         
             // Color scale to use
-            const colorScale = d3.scaleLinear()
+            const colorScale = this.$d3.scaleLinear()
             .domain([0, 4])
             .range(["lightgreen", "green", "darkgreen"]);
             
@@ -82,8 +81,8 @@ export default {
             // TODO: linha de heatmap para o MHI
         },
         removeHeatmap() {
-            if (d3.select("#heatmap").select("svg"))
-                d3.select("#heatmap").select("svg").remove();
+            if (this.$d3.select("#heatmap").select("svg"))
+                this.$d3.select("#heatmap").select("svg").remove();
         }
     },
     mounted() {

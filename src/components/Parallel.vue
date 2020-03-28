@@ -7,8 +7,6 @@
 </template>
 
 <script>
-import * as d3 from 'd3v4';
-
 export default {
     name: 'Parallel',
     props: {},
@@ -20,7 +18,7 @@ export default {
             height = 400 - margin.top - margin.bottom;
         
             // append the svg object to the body of the page
-            var svg = d3.select("#parallel").select("#chart")
+            var svg = this.$d3.select("#parallel").select("#chart")
             .append("svg")
                 .attr("class", "chart-container")
                 .attr("width", width + margin.left + margin.right)
@@ -39,20 +37,20 @@ export default {
             var y = {}
                 for (let i in dimensions) {
                 name = dimensions[i];
-                y[name] = d3.scaleLinear()
+                y[name] = this.$d3.scaleLinear()
                     .domain( [0, 48] )
                     .range([height, 0])
             }
         
             // Build the X scale -> it find the best position for each Y axis
-            var x = d3.scalePoint()
+            var x = this.$d3.scalePoint()
                 .range([0, width])
                 .padding(1)
                 .domain(dimensions);
-        
+            var self = this;
             // The path function take a row of the csv as input, and return x and y coordinates of the line to draw for this raw.
             function path(d) {
-                return d3.line()(dimensions.map(function(p) { return [x(p), y[p](d[p])]; }));
+                return self.$d3.line()(dimensions.map(function(p) { return [x(p), y[p](d[p])]; }));
             }
         
             // Draw the lines
@@ -75,7 +73,7 @@ export default {
             // I translate this element to its right position on the x axis
             .attr("transform", function(d) { return "translate(" + x(d) + ")"; })
             // And I build the axis with the call function
-            .each(function(d) { d3.select(this).call(d3.axisLeft().scale(y[d])); })
+            .each(function(d) { self.$d3.select(this).call(self.$d3.axisLeft().scale(y[d])); })
             // Add axis title
             .append("text")
                 .style("text-anchor", "middle")
@@ -85,13 +83,13 @@ export default {
                 .style("font-weight", "bold");
         },
         highlightParallel(subj) {
-            d3.select("#parallel").select("svg").selectAll(".target:not(.highlighted)")
+            this.$d3.select("#parallel").select("svg").selectAll(".target:not(.highlighted)")
             .filter((d) => this.$getNumber(subj) !== this.$getNumber(d))
             .transition()
             .duration(500)
             .style("opacity", 0.1);
         
-            d3.select("#parallel").select("svg").selectAll(".target")
+            this.$d3.select("#parallel").select("svg").selectAll(".target")
             .filter((d) => this.$getNumber(subj) === this.$getNumber(d))
             .classed("highlighted", true)
             .transition()
@@ -101,7 +99,7 @@ export default {
             // TODO: it would be pretty cool if the only values shown in the axes were the ones from the subject
         },
         dehighlightParallel(subj) {
-            d3.select("#parallel").select("svg").selectAll(".target.highlighted")
+            this.$d3.select("#parallel").select("svg").selectAll(".target.highlighted")
             .filter((d) => this.$getNumber(subj) === this.$getNumber(d))
             .classed("highlighted", false)
             .transition()
@@ -112,7 +110,7 @@ export default {
             //this.dehighlightAllParallel();
         },
         dehighlightAllParallel() {
-            d3.select("#parallel").select("svg").selectAll(".target")
+            this.$d3.select("#parallel").select("svg").selectAll(".target")
             .transition()
             .duration(500)
             .style("opacity", 0.5)

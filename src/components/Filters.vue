@@ -252,7 +252,6 @@
 </template>
 
 <script>
-import * as d3 from 'd3v4';
 export default {
     name: 'Filters',
     data () {
@@ -389,9 +388,9 @@ export default {
                 this.filterAllTraits();
             }
             // TODO: merge these charts instead of removing them
-            d3.select("#parallel").select("#chart").select("svg").remove();
+            this.$d3.select("#parallel").select("#chart").select("svg").remove();
             if (funcName !== this.filterDataById.name) {
-                d3.select("#boxplot").select("svg").remove();
+                this.$d3.select("#boxplot").select("svg").remove();
                 this.$root.$emit('drawBoxplot', this.filters.toApply);
             }
             this.$root.$emit('drawParallel', this.filters.toApply);
@@ -429,8 +428,8 @@ export default {
                 this.currentConscientiousness2 = 48;
                 this.filters.toApply = this.els;
 
-                d3.select("#parallel").select("svg").remove();
-                d3.select("#boxplot").select("svg").remove();
+                this.$d3.select("#parallel").select("svg").remove();
+                this.$d3.select("#boxplot").select("svg").remove();
                 this.$root.$emit('drawParallel', this.els);
                 this.$root.$emit('drawBoxplot', this.els);
                 this.$root.$emit('drawScatter', this.els);

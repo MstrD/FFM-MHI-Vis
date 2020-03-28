@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import * as d3 from 'd3v4';
 export default {
     name: 'Boxplot',
     data() {
@@ -31,7 +30,7 @@ export default {
             height = 400 - margin.top - margin.bottom;
         
             // append the svg object to the body of the page
-            var svg = d3.select("#boxplot")
+            var svg = this.$d3.select("#boxplot")
             .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -54,10 +53,10 @@ export default {
             var data_sorted = data;
             var q1 = [], median = [], q3 = [], interQuantileRange = [], min = [], max = [];
             data_sorted.forEach((el) => {
-            el.sort(d3.ascending);
-            q1.push(d3.quantile(el, .25));
-            median.push(d3.quantile(el, .5));
-            q3.push(d3.quantile(el, .75));
+            el.sort(this.$d3.ascending);
+            q1.push(this.$d3.quantile(el, .25));
+            median.push(this.$d3.quantile(el, .5));
+            q3.push(this.$d3.quantile(el, .75));
             });
             for (let i = 0; i < q1.length; i++) {
             interQuantileRange.push(q3[i] - q1[i]);
@@ -66,23 +65,23 @@ export default {
             }
         
             // Show the X scale
-            var x = d3.scalePoint()
+            var x = this.$d3.scalePoint()
             .domain(['', 'Neuroticism', 'Extraversion', 'Openness', 'Agreeableness', 'Conscientiousness'])
             .range([0, width - margin.left - margin.right]); // valor de right range = denominador da definicao de var center (mais abaixo)
         
             svg
             .append("g")
             .attr("transform", "translate(0, " + height + ")")
-            .call(d3.axisBottom(x));
+            .call(this.$d3.axisBottom(x));
         
             // Show the Y scale
-            var y = d3.scaleLinear()
+            var y = this.$d3.scaleLinear()
             .domain([0,48])
             .range([height, 0]);
             
             svg
             .append("g")
-            .call(d3.axisLeft(y));
+            .call(this.$d3.axisLeft(y));
         
             // a few features for the box
             if (!this.boxplotExists) {
@@ -127,7 +126,7 @@ export default {
                 this.boxplotExists = true;
         },
         highlightBoxplot(subj) {
-            d3.select("#boxplot").select("svg").select("g")
+            this.$d3.select("#boxplot").select("svg").select("g")
             .selectAll(".myInd")
             .data(this.bp_data(subj)).enter()
             .append("line")
@@ -139,7 +138,7 @@ export default {
             .style("stroke", "blue");
         },
         dehighlightBoxplot() {
-            d3.select("#boxplot").select("svg").select("g")
+            this.$d3.select("#boxplot").select("svg").select("g")
             .selectAll(".myInd")
             .transition()
             .duration(1000)

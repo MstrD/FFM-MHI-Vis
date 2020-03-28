@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import * as d3 from 'd3v4';
 import PageIndex from 'pages/Index';
 export default {
     name: 'Scatter',
@@ -32,9 +31,9 @@ export default {
             height = 500 - margin.top - margin.bottom;
             // setup x 
             var xValue = (d) => d.Q2_Idade, // data -> value
-            xScale = d3.scaleLinear().range([0, width]), // value -> display
+            xScale = this.$d3.scaleLinear().range([0, width]), // value -> display
             xMap = (d) => xScale(xValue(d)), // data -> display
-            xAxis = d3.axisBottom(xScale);
+            xAxis = this.$d3.axisBottom(xScale);
         
             // setup y
             var yValue = (d) => { // data -> value
@@ -53,29 +52,29 @@ export default {
                         return d.MH5_total;
                 }
             }, 
-            yScale = d3.scaleLinear().range([height, 0]), // value -> display
+            yScale = this.$d3.scaleLinear().range([height, 0]), // value -> display
             yMap = (d) => yScale(yValue(d)), // data -> display
-            yAxis = d3.axisLeft(yScale);
+            yAxis = this.$d3.axisLeft(yScale);
             
             // setup fill color
             var cValue = (d) => d.Q1_Sexo,
-            color = d3.scaleOrdinal(d3.schemeCategory10);
+            color = this.$d3.scaleOrdinal(this.$d3.schemeCategory10);
 
             // don't want dots overlapping axis, so add in buffer to data domain
             if (data.length > 1)
-                xScale.domain([d3.min(data, xValue), d3.max(data, xValue)]).nice();
+                xScale.domain([this.$d3.min(data, xValue), this.$d3.max(data, xValue)]).nice();
             else
                 xScale.domain([18, 76]).nice();
             yScale.domain([0, trait === "MHI" ? 30 : 48]).nice();
             
             if (!this.scatterExists) {
-                var svg = d3.select("#scatter").append("svg")
+                var svg = this.$d3.select("#scatter").append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom)
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-                var tooltip = d3.select("#scatter").append("div")
+                var tooltip = this.$d3.select("#scatter").append("div")
                     .attr("class", "tooltip")
                     .style("opacity", 0);
 
@@ -140,8 +139,8 @@ export default {
                     .text((d) => d == 1 ? 'Male' : 'Female');
             }
             else {
-                var svg = d3.select("#scatter").select("g");
-                var tooltip = d3.select("#scatter").select(".tooltip");
+                var svg = this.$d3.select("#scatter").select("g");
+                var tooltip = this.$d3.select("#scatter").select(".tooltip");
                 
                 svg.selectAll(".xAxis")
                     .transition()
@@ -184,7 +183,7 @@ export default {
             }
             var self = this; // scope changes in mouse events; this line is necessary
             dots.on("mouseover", function (d) {
-                d3.select(this)
+                self.$d3.select(this)
                 .transition()
                 .duration(500)
                 .attr("r", 7);
@@ -193,25 +192,25 @@ export default {
                 .style("opacity", 0.9)
                 .style("padding", "2px");
                 tooltip.html("<b>Subject #" + d.Nº + "</b><br/> Age: " + xValue(d) + "<br>" + trait + ": " + yValue(d))
-                .style("left", (d3.mouse(this)[0] + 80) + "px")
-                .style("top", (d3.mouse(this)[1] + 130) + "px");
+                .style("left", (self.$d3.mouse(this)[0] + 80) + "px")
+                .style("top", (self.$d3.mouse(this)[1] + 130) + "px");
             })
             .on("mouseout", function() {
                 tooltip.transition()
                 .duration(500)
                 .style("opacity", 0);
-                d3.select(this)
+                self.$d3.select(this)
                 .transition()
                 .duration(500)
                 .attr("r", 3.5);
             })
             .on("click", function(d) {
-                if (d3.select(this).style("stroke") === "none") {
-                    d3.select(this).style("stroke", "black");
+                if (self.$d3.select(this).style("stroke") === "none") {
+                    self.$d3.select(this).style("stroke", "black");
                     self.highlightSubject(d);
                 }
                 else {
-                    d3.select(this).style("stroke", "none");
+                    self.$d3.select(this).style("stroke", "none");
                     self.dehighlightSubject(d);
                 }
             });
@@ -242,7 +241,7 @@ export default {
             this.hideUserInfo();
         },
         showUserInfo(d) {
-            d3.select("#user_info").style("display", "inherit").append("div").attr("id", "list" + this.$getNumber(d)).html( 
+            this.$d3.select("#user_info").style("display", "inherit").append("div").attr("id", "list" + this.$getNumber(d)).html( 
             "<b>Subject:</b> #" + this.$getNumber(d) + ";</br>" + 
             "<b>Age:</b> " + this.$getAge(d) + ";</br>" +
             "<b>Gender:</b> " + this.$getGender(d) + ";</br>" +
@@ -257,11 +256,11 @@ export default {
         },
         hideUserInfo(d) {
             if (!d) {
-                d3.select("#parallel").select("#user_info").select("#list").remove();
-                d3.select("#parallel").select("#user_info").style("display", "none");
+                this.$d3.select("#parallel").select("#user_info").select("#list").remove();
+                this.$d3.select("#parallel").select("#user_info").style("display", "none");
             }
             else {
-                d3.select("#parallel").select("#user_info").select("#list" + this.$getNumber(d)).remove();
+                this.$d3.select("#parallel").select("#user_info").select("#list" + this.$getNumber(d)).remove();
                 // TODO: remove #user_info when there are no more subjects selected
             }
         }

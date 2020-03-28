@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import * as d3 from 'd3v4';
 export default {
     name: 'Histogram',
     data() {
@@ -33,7 +32,7 @@ export default {
 
             var limitX = index === 5 ? 30 : 48;
             // set the X ranges
-            var x = d3.scaleLinear()
+            var x = this.$d3.scaleLinear()
             .domain([0, limitX])
             .rangeRound([0, width]);
 
@@ -46,7 +45,7 @@ export default {
             }
 
             // set the parameters for the histogram
-            var histogram = d3.histogram()
+            var histogram = this.$d3.histogram()
             .value((d) => { 
                 switch (index) {
                     case 0:
@@ -67,8 +66,8 @@ export default {
             .thresholds(limits(6));
 
             // set the Y ranges
-            var y = d3.scaleLinear()
-            .domain([0, d3.max(histogram(d)).length]).nice()
+            var y = this.$d3.scaleLinear()
+            .domain([0, this.$d3.max(histogram(d)).length]).nice()
             .range([height, 50]);
 
             // restricts all ticks in y axis to be integers
@@ -78,40 +77,40 @@ export default {
             // append a 'group' element to 'svg'
             // moves the 'group' element to the top left margin
             if (!this.histogramExists)
-                var svg = d3.select("#histogram").select("#chart").append("svg")
+                var svg = this.$d3.select("#histogram").select("#chart").append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
                 .attr("transform", 
                         "translate(" + margin.left + "," + margin.top + ")");
             else
-                var svg = d3.select("#histogram").select("#chart").select("svg").select("g");
+                var svg = this.$d3.select("#histogram").select("#chart").select("svg").select("g");
 
             if (!this.histogramExists) {
                 // add the x Axis
                 svg.append("g")
                     .attr("class", "xAxis")
                     .attr("transform", "translate(0," + height + ")")
-                    .call(d3.axisBottom(x)
+                    .call(this.$d3.axisBottom(x)
                         .tickValues(limits(6)));
                 
                 // add the y Axis
                 svg.append("g")
                     .attr("class", "yAxis")
-                    .call(d3.axisLeft(y)
+                    .call(this.$d3.axisLeft(y)
                         .tickFormat(ticking));
                 }
             else {
                 // merge the x Axis
                 svg.selectAll(".xAxis")
                     .transition().duration(1000)
-                    .call(d3.axisBottom(x)
+                    .call(this.$d3.axisBottom(x)
                         .tickValues(limits(6)));
 
                 // merge the y Axis
                 svg.selectAll(".yAxis")
                     .transition().duration(1000)
-                    .call(d3.axisLeft(y)
+                    .call(this.$d3.axisLeft(y)
                         .tickFormat(ticking));
             }
         
@@ -121,12 +120,12 @@ export default {
             .enter().append("rect")
             .attr("class", "bar")
             .attr("x", 1)
-            .attr("width", (d) => d3.max([x(d.x1) - x(d.x0) - 1, 0]))
+            .attr("width", (d) => this.$d3.max([x(d.x1) - x(d.x0) - 1, 0]))
             .attr("transform", (d) => "translate(" + x(d.x0) + "," + y(d.length) + ")")
             .merge(svg.selectAll("rect").data(histogram(d)))
                 .transition()
                 .duration(1000)
-            .attr("width", (d) => d3.max([x(d.x1) - x(d.x0) - 1, 0]))
+            .attr("width", (d) => this.$d3.max([x(d.x1) - x(d.x0) - 1, 0]))
             .attr("transform", (d) => "translate(" + x(d.x0) + "," + y(d.length) + ")")
             .attr("height", (d) => height - y(d.length))
             .style("fill", "#69b3a2");
@@ -167,14 +166,14 @@ export default {
                     .exit().remove();
             }
 
-            if (d3.select("#histogram").select("#chart").select("svg")) {
+            if (this.$d3.select("#histogram").select("#chart").select("svg")) {
                 this.histogramExists = true;
                 this.histogramData = histogram(d);
                 this.histogramIndex = index;
             }
         },
         highlightHistogram(subj) {
-            d3.select("#histogram").select("#chart").select("svg")
+            this.$d3.select("#histogram").select("#chart").select("svg")
             .selectAll(".bar")
             .filter((d) => !d.includes(subj))
             .transition()
@@ -182,7 +181,7 @@ export default {
             .style("opacity", 0.5);
         },
         dehighlightHistogram(subj) {
-            d3.select("#histogram").select("#chart").select("svg")
+            this.$d3.select("#histogram").select("#chart").select("svg")
             .selectAll(".bar")
             .filter((d) => !d.includes(subj))
             .transition()
