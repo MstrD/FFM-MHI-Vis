@@ -8,7 +8,7 @@
       >
         <template v-slot:header>
           <q-item-section avatar>
-            <q-avatar color="primary" text-color="white">
+            <q-avatar square color="primary" text-color="white">
               {{ Nº }}
             </q-avatar>
           </q-item-section>

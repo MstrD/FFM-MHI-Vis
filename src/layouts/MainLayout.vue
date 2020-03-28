@@ -9,7 +9,9 @@
             icon="menu"
             class="q-mr-sm"
             aria-label="Menu"
-            @click="leftDrawerOpen = !leftDrawerOpen"/>
+            @click="leftDrawerOpen = !leftDrawerOpen">
+            <q-tooltip content-class="bg-dark">Individuals</q-tooltip>
+          </q-btn>
           
         <q-toolbar-title>
           <strong>FFM-MHI</strong> Vis
@@ -42,8 +44,23 @@
           header
           class="text-grey-8"
         >
-          Database Subjects
+          Database Individuals
         </q-item-label>
+        <q-input class="q-mb-md q-pl-md q-pr-md"
+          clearable
+          dense
+          clear-icon="close"
+          filled
+          type="number"
+          color="primary"
+          v-model="model"
+          hint="Filter by ID..."
+          :rules="[val => val >= 0 && val <= 199 || 'Please insert an ID between 0 and 199']"
+        >
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
         <UserProfile
           v-for="link in elements"
           :key="link.Nº"
@@ -73,7 +90,9 @@ export default {
   data () {
     return {
       leftDrawerOpen: false,
-      elements: this.filters.toApply
+      elements: this.filters.toApply,
+
+      model: ''
     }
   }
 }
