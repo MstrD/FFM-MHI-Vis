@@ -62,11 +62,10 @@
             <q-icon v-if="!model" name="search" />
           </template>
         </q-input>
-        <UserProfile
+        <UserProfile 
           v-for="link in elements"
           :key="link.Nº"
-          v-bind="link"
-        />
+          v-bind="link"/>
       </q-list>
     </q-drawer>
 
@@ -110,7 +109,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.elements);
     this.$root.$on('updateFilter', (filter) => this.elements = filter);
   }
 }

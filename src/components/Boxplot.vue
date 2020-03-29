@@ -30,17 +30,7 @@ export default {
                 width = 600 - margin.left - margin.right,
                 height = 400 - margin.top - margin.bottom;
         
-            // append the svg object to the body of the page
-            var svg = this.$d3.select("#boxplot")
-                .append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform",
-                    "translate(" + margin.left + "," + margin.top + ")");
-        
             // create dummy data
-            //var data = [12,19,11,13,12,22,13,4,15,16,18,19,20,12,11,9]
             var data = [[], [], [], [], []];
             d.forEach((el) => {
                 data[0].push(el.Neuroticismo_NEOFFI);
@@ -69,57 +59,99 @@ export default {
             var x = this.$d3.scalePoint()
                 .domain(['', 'Neuroticism', 'Extraversion', 'Openness', 'Agreeableness', 'Conscientiousness'])
                 .range([0, width - margin.left - margin.right]); // valor de right range = denominador da definicao de var center (mais abaixo)
-        
-            svg
-                .append("g")
-                .attr("transform", "translate(0, " + height + ")")
-                .call(this.$d3.axisBottom(x));
-        
+
             // Show the Y scale
             var y = this.$d3.scaleLinear()
                 .domain([0,48])
                 .range([height, 0]).nice();
-            
-            svg
-                .append("g")
-                .call(this.$d3.axisLeft(y));
         
             // a few features for the box
             if (!this.boxplotExists) {
+                var svg = this.$d3.select("#boxplot")
+                    .append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform",
+                        "translate(" + margin.left + "," + margin.top + ")");
+                svg
+                    .append("g")
+                    .attr("transform", "translate(0, " + height + ")")
+                    .call(this.$d3.axisBottom(x));
+                svg
+                    .append("g")
+                    .call(this.$d3.axisLeft(y));
                 this.bp_center = (width - margin.left - margin.right) / data.length;
                 this.bp_width = 50;
                 this.bp_y = y;
             }
+            else
+                var svg = this.$d3.select("#boxplot").select("svg").select("g");
+
             for (let i = 0; i < data.length; i++) {
-                // Show the main vertical line
-                svg.data(data[i])
-                    .append("line")
-                    .attr("x1", this.bp_center * (i+1))
-                    .attr("x2", this.bp_center * (i+1))
-                    .attr("y1", y(min[i]))
-                    .attr("y2", y(max[i]))
-                    .attr("stroke", "black");
-            
-                // Show the box
-                svg.data(data[i])
-                    .append("rect")
-                    .attr("x", this.bp_center * (i+1) - this.bp_width/2)
-                    .attr("y", y(q3[i]))
-                    .attr("height", (y(q1[i]) - y(q3[i])))
-                    .attr("width", this.bp_width)
-                    .attr("stroke", "black")
-                    .style("fill", "#69b3a2");
-            
-                // show median, min and max horizontal lines
-                svg.selectAll("toto")
-                    .data([min[i], median[i], max[i]])
-                    .enter()
-                    .append("line")
-                    .attr("x1", this.bp_center * (i+1) - this.bp_width/2)
-                    .attr("x2", this.bp_center * (i+1) + this.bp_width/2)
-                    .attr("y1", (d) => y(d))
-                    .attr("y2", (d) => y(d))
-                    .attr("stroke", "black");
+                if (!this.boxplotExists) {
+                    // Show the main vertical line
+                    svg.data(data[i])
+                        .append("line")
+                        .attr("class", "vertical")
+                        .attr("x1", this.bp_center * (i+1))
+                        .attr("x2", this.bp_center * (i+1))
+                        .attr("y1", y(min[i]))
+                        .attr("y2", y(max[i]))
+                        .attr("stroke", "black");
+
+                    // Show the box
+                    svg.data(data[i])
+                        .append("rect")
+                        .attr("x", this.bp_center * (i+1) - this.bp_width/2)
+                        .attr("y", y(q3[i]))
+                        .attr("height", (y(q1[i]) - y(q3[i])))
+                        .attr("width", this.bp_width)
+                        .attr("stroke", "black")
+                        .style("fill", "#69b3a2");
+
+                    // show median, min and max horizontal lines
+                    svg.selectAll("toto")
+                        .data([min[i], median[i], max[i]])
+                        .enter()
+                        .append("line")
+                        .attr("class", "toto")
+                        .attr("x1", this.bp_center * (i+1) - this.bp_width/2)
+                        .attr("x2", this.bp_center * (i+1) + this.bp_width/2)
+                        .attr("y1", (d) => y(d))
+                        .attr("y2", (d) => y(d))
+                        .attr("stroke", "black");
+                }
+                else {
+                    // update vertical axis
+                    var vertLine = svg.selectAll(".vertical").filter((_, index) => index === i);
+                    vertLine.enter().merge(vertLine)
+                        .transition()
+                        .duration(1000)
+                        .delay((d, i) => i * 20)
+                        .attr("y1", y(min[i]))
+                        .attr("y2", y(max[i]));
+
+                    // update boxes
+                    var rects = svg.selectAll("rect").filter((_, index) => index === i);
+                    rects.enter().merge(rects)
+                        .transition()
+                        .duration(1000)
+                        .delay((d, i) => i * 20)
+                        .attr("y", y(q3[i]))
+                        .attr("height", (y(q1[i]) - y(q3[i])))
+                        .attr("width", this.bp_width);
+                    
+                    // update min, med, max (a.k.a. whiskers)
+                    var totos = svg.selectAll(".toto").filter((_, index) => index >= i * 3 && index < (i+1) * 3);
+                    totos.data([min[i], median[i], max[i]])
+                        .enter().merge(totos)
+                        .transition()
+                        .duration(1000)
+                        .delay((d, i) => i * 20)
+                        .attr("y1", (d) => y(d))
+                        .attr("y2", (d) => y(d));
+                }
             }
             if (!this.boxplotExists)
                 this.boxplotExists = true;

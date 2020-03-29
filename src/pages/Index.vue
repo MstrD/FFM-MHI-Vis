@@ -1,5 +1,5 @@
 <template>
-  <q-page class="column column-center">
+  <q-page class="grid">
     <Parallel ref="parallel"/>
     <Scatter ref="scatter" />
     <Heatmap ref="heatmap" />

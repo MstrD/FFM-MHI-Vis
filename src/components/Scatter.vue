@@ -188,7 +188,8 @@ export default {
                 self.$d3.select(this)
                 .transition()
                 .duration(500)
-                .attr("r", 7);
+                .attr("r", 7)
+                .style("cursor", "pointer");
                 tooltip.transition()
                 .duration(200)
                 .style("opacity", 0.9)
