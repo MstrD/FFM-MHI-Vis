@@ -312,68 +312,68 @@ export default {
     },
     methods: {
         filterDataById(id) {
-            this.filters.toApply = this.els.filter((d) => d.Nº === id);
+            this.$filters.toApply = this.$els.filter((d) => d.Nº === id);
             this.renewCharts(this.filterDataById.name);
         },
         filterDataByGender(gender) {
-            if (this.filters.gender.length)
-                this.filters.gender = [];
+            if (this.$filters.gender.length)
+                this.$filters.gender = [];
             switch (gender) {
                 case 'male':
-                    this.filters.gender = this.els.filter((d) => d.Q1_Sexo === 1);
+                    this.$filters.gender = this.$els.filter((d) => d.Q1_Sexo === 1);
                     break;
                 case 'female':
-                    this.filters.gender = this.els.filter((d) => d.Q1_Sexo === 2);
+                    this.$filters.gender = this.$els.filter((d) => d.Q1_Sexo === 2);
                     break;
             }
-            this.filters.toApplyGenderAndAge = this.filters.gender;
-            this.filters.toApply = this.filters.gender;
+            this.$filters.toApplyGenderAndAge = this.$filters.gender;
+            this.$filters.toApply = this.$filters.gender;
             this.renewCharts(this.filterDataByGender.name);
         },
         filterDataByAge(age1, age2, toRenew) {
-            var myFilter = this.filters.gender.length ? this.filters.gender : this.els;
+            var myFilter = this.$filters.gender.length ? this.$filters.gender : this.$els;
             if (age1 < age2) {
                 this.currentAge1 = age1;
                 this.currentAge2 = age2;
-                this.filters.age = myFilter.filter((d) => d.Q2_Idade >= age1 && d.Q2_Idade <= age2);
-                this.filters.toApplyGenderAndAge = this.filters.age;
-                this.filters.toApply = this.filters.age;
+                this.$filters.age = myFilter.filter((d) => d.Q2_Idade >= age1 && d.Q2_Idade <= age2);
+                this.$filters.toApplyGenderAndAge = this.$filters.age;
+                this.$filters.toApply = this.$filters.age;
                 if (toRenew)
                     this.renewCharts(this.filterDataByAge.name);
             }
         },
         filterDataByTraits(trait, value1, value2) { // FIXME: a different array for each trait, perhaps?
-            var myFilter = this.filters.toApplyGenderAndAge === this.filters.toApply ? this.filters.toApplyGenderAndAge : this.filters.toApply;
+            var myFilter = this.$filters.toApplyGenderAndAge === this.$filters.toApply ? this.$filters.toApplyGenderAndAge : this.$filters.toApply;
             switch (trait) {
                 case 0:
-                    this.filters.traits.neuroticism = myFilter.filter((d) => d.Neuroticismo_NEOFFI >= value1 && d.Neuroticismo_NEOFFI <= value2);
+                    this.$filters.traits.neuroticism = myFilter.filter((d) => d.Neuroticismo_NEOFFI >= value1 && d.Neuroticismo_NEOFFI <= value2);
                     this.currentNeuroticism1 = value1;
                     this.currentNeuroticism2 = value2;
-                    this.filters.toApply = this.filters.traits.neuroticism;
+                    this.$filters.toApply = this.$filters.traits.neuroticism;
                     break;
                 case 1:
-                    this.filters.traits.extraversion = myFilter.filter((d) => d.Extroversão_NEOFFI >= value1 && d.Extroversão_NEOFFI <= value2);
+                    this.$filters.traits.extraversion = myFilter.filter((d) => d.Extroversão_NEOFFI >= value1 && d.Extroversão_NEOFFI <= value2);
                     this.currentExtraversion1 = value1;
                     this.currentExtraversion2 = value2;
-                    this.filters.toApply = this.filters.traits.extraversion;
+                    this.$filters.toApply = this.$filters.traits.extraversion;
                     break;
                 case 2:
-                    this.filters.traits.openness = myFilter.filter((d) => d.AberturaExperiência_NEOFFI >= value1 && d.AberturaExperiência_NEOFFI <= value2);
+                    this.$filters.traits.openness = myFilter.filter((d) => d.AberturaExperiência_NEOFFI >= value1 && d.AberturaExperiência_NEOFFI <= value2);
                     this.currentOpenness1 = value1;
                     this.currentOpenness2 = value2;
-                    this.filters.toApply = this.filters.traits.openness;
+                    this.$filters.toApply = this.$filters.traits.openness;
                     break;
                 case 3:
-                    this.filters.traits.agreeableness = myFilter.filter((d) => d.AmabIilidade_NEOFFI >= value1 && d.AmabIilidade_NEOFFI <= value2);
+                    this.$filters.traits.agreeableness = myFilter.filter((d) => d.AmabIilidade_NEOFFI >= value1 && d.AmabIilidade_NEOFFI <= value2);
                     this.currentAgreeableness1 = value1;
                     this.currentAgreeableness2 = value2;
-                    this.filters.toApply = this.filters.traits.agreeableness;
+                    this.$filters.toApply = this.$filters.traits.agreeableness;
                     break;
                 case 4:
-                    this.filters.traits.conscientiousness = myFilter.filter((d) => d.Conscienciosidade_NEOFFI >= value1 && d.Conscienciosidade_NEOFFI <= value2);
+                    this.$filters.traits.conscientiousness = myFilter.filter((d) => d.Conscienciosidade_NEOFFI >= value1 && d.Conscienciosidade_NEOFFI <= value2);
                     this.currentConscientiousness1 = value1;
                     this.currentConscientiousness2 = value2;
-                    this.filters.toApply = this.filters.traits.conscientiousness;
+                    this.$filters.toApply = this.$filters.traits.conscientiousness;
                     break;
             }
             this.renewCharts(this.filterDataByTraits.name);
@@ -390,11 +390,12 @@ export default {
             this.$d3.select("#parallel").select("#chart").select("svg").remove();
             if (funcName !== this.filterDataById.name) {
                 this.$d3.select("#boxplot").select("svg").remove();
-                this.$root.$emit('drawBoxplot', this.filters.toApply);
+                this.$root.$emit('drawBoxplot', this.$filters.toApply);
             }
-            this.$root.$emit('drawParallel', this.filters.toApply);
-            this.$root.$emit('drawScatter', this.filters.toApply);
-            this.$root.$emit('drawHistogram', this.filters.toApply);
+            this.$root.$emit('drawParallel', this.$filters.toApply);
+            this.$root.$emit('drawScatter', this.$filters.toApply);
+            this.$root.$emit('drawHistogram', this.$filters.toApply);
+            this.$root.$emit('updateFilter', this.$filters.toApply);
         },
         filterAllTraits() {
             this.filterDataByTraits(0, this.currentNeuroticism1, this.currentNeuroticism2);
@@ -425,14 +426,15 @@ export default {
                 this.currentNeuroticism2 = this.currentExtraversion2 = 
                 this.currentOpenness2 = this.currentAgreeableness2 =
                 this.currentConscientiousness2 = 48;
-                this.filters.toApply = this.els;
+                this.$filters.toApply = this.$els;
 
                 this.$d3.select("#parallel").select("svg").remove();
                 this.$d3.select("#boxplot").select("svg").remove();
-                this.$root.$emit('drawParallel', this.els);
-                this.$root.$emit('drawBoxplot', this.els);
-                this.$root.$emit('drawScatter', this.els);
-                this.$root.$emit('drawHistogram', this.els);
+                this.$root.$emit('drawParallel', this.$els);
+                this.$root.$emit('drawBoxplot', this.$els);
+                this.$root.$emit('drawScatter', this.$els);
+                this.$root.$emit('drawHistogram', this.$els);
+                this.$root.$emit('updateFilter', this.$els);
             }
         }
     }

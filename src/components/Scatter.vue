@@ -21,7 +21,9 @@ export default {
     },
     data() {
         return {
-            scatterIndex: 'MHI'
+            scatterIndex: 'MHI',
+            scatterExists: false,
+            scatterData: null
         }
     },
     methods: {

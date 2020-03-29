@@ -18,15 +18,15 @@
         </template>
         <q-card>
           <q-card-section>
-            <strong>Age:</strong> {{ Q2_Idade }} <br>
-            <strong>Gender:</strong> {{ this.$getGender(Q1_Sexo) }} <br>
-            <strong>Residence:</strong> {{ this.$getResidence(Q4_Residência) }} <br>
-            <strong>Schooling:</strong> {{ this.$getSchooling(Q5_Ensino) }} <br>
-            <strong>Work Status:</strong> {{ this.$getWorkStatus(Q6_Profissão) }} <br>
-            <strong>Economical Status:</strong> {{ this.$getEconomicalStatus(Q8_Situação_Económica) }} <br>
-            <strong>Marital Status:</strong> {{ this.$getMaritalStatus(Q9_Estado_Civil) }} <br>
-            <strong>Household:</strong> {{ this.$getHousehold(Q10_Agregado_Familiar) }} <br>
-            <strong>Religion:</strong> {{ this.$getReligion(Q13_Religião, Descrição_Outra_Religião) }} <br>
+            <strong>Age:</strong> {{ Q2_Idade }}; <br>
+            <strong>Gender:</strong> {{ this.$getGender(Q1_Sexo) }}; <br>
+            <strong>Residence:</strong> {{ this.$getResidence(Q4_Residência) }}; <br>
+            <strong>Schooling:</strong> {{ this.$getSchooling(Q5_Ensino) }}; <br>
+            <strong>Work Status:</strong> {{ this.$getWorkStatus(Q6_Profissão) }}; <br>
+            <strong>Economical Status:</strong> {{ this.$getEconomicalStatus(Q8_Situação_Económica) }}; <br>
+            <strong>Marital Status:</strong> {{ this.$getMaritalStatus(Q9_Estado_Civil) }}; <br>
+            <strong>Household:</strong> {{ this.$getHousehold(Q10_Agregado_Familiar) }}; <br>
+            <strong>Religion:</strong> {{ this.$getReligion(Q13_Religião, Descrição_Outra_Religião) }}; <br>
           </q-card-section>
         </q-card>
       </q-expansion-item>

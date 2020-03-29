@@ -34,8 +34,8 @@ Vue.prototype.$dehighlightAllSubjects = dehighlightAllSubjects;
 Vue.prototype.$showUserInfo = showUserInfo;
 Vue.prototype.$hideUserInfo = hideUserInfo;
 
-Vue.prototype.els = [];
-Vue.prototype.filters = {
+Vue.prototype.$els = [];
+Vue.prototype.$filters = {
   gender: [],
   age: [],
   traits: {
@@ -45,24 +45,9 @@ Vue.prototype.filters = {
       agreeableness: [],
       conscientiousness: []
   },
-  toApplyGenderAndAge: Vue.prototype.els,
-  toApply: Vue.prototype.els
+  toApplyGenderAndAge: Vue.prototype.$els,
+  toApply: Vue.prototype.$els
 };
-
-Vue.prototype.scatterExists = false;
-Vue.prototype.scatterData =  null;
-
-Vue.prototype.boxplotExists = false;
-Vue.prototype.bp_y = null;
-Vue.prototype.bp_center = null;
-Vue.prototype.bp_width = null;
-Vue.prototype.bp_data = (d) => [
-    d.Neuroticismo_NEOFFI,
-    d.Extroversão_NEOFFI,
-    d.AberturaExperiência_NEOFFI,
-    d.AmabIilidade_NEOFFI,
-    d.Conscienciosidade_NEOFFI
-];
 
 Vue.prototype.currentAge1 = 0;
 Vue.prototype.currentAge2 = 100;

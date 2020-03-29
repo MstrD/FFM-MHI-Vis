@@ -218,7 +218,7 @@ export default {
                     this.histogramIndex = 5;
                     break;
             }
-            this.drawHistogram(this.filters.toApply, this.histogramIndex);
+            this.drawHistogram(this.$filters.toApply, this.histogramIndex);
         }
     }
 }

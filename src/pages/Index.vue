@@ -32,7 +32,7 @@ export default {
         if (err) throw err;
         
         data.forEach(element => {
-            self.els.push(element);
+            self.$els.push(element);
         });
 
         /* var traits = {
@@ -43,7 +43,7 @@ export default {
             conscientiousness: 0,
             mhi: 0
         };
-        self.els.forEach(el => {
+        self.$els.forEach(el => {
             traits.neuroticism += el.Neuroticismo_NEOFFI;
             traits.extraversion += el.Extroversão_NEOFFI;
             traits.openness += el.AberturaExperiência_NEOFFI;
@@ -52,10 +52,10 @@ export default {
             traits.mhi += el.MH5_total;
         }); */
 
-        self.$root.$emit('drawParallel', self.els);
-        self.$root.$emit('drawScatter', self.els);
-        self.$root.$emit('drawBoxplot', self.els);
-        self.$root.$emit('drawHistogram', self.els, 0);
+        self.$root.$emit('drawParallel', self.$els);
+        self.$root.$emit('drawScatter', self.$els);
+        self.$root.$emit('drawBoxplot', self.$els);
+        self.$root.$emit('drawHistogram', self.$els, 0);
       });
     }
   },

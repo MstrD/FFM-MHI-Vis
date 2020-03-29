@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-        <q-toolbar>
+        <q-toolbar class="glossy">
           <q-btn
             flat
             round
@@ -56,6 +56,7 @@
           v-model="model"
           hint="Filter by ID..."
           :rules="[val => val >= 0 && val <= 199 || 'Please insert an ID between 0 and 199']"
+          @input="selectUser()"
         >
           <template v-slot:append>
             <q-icon v-if="!model" name="search" />
@@ -90,10 +91,27 @@ export default {
   data () {
     return {
       leftDrawerOpen: false,
-      elements: this.filters.toApply,
+      elements: this.$filters.toApply,
 
       model: ''
     }
+  },
+  methods: {
+    selectUser() {
+      if (!this.model)
+        this.resetElements();
+      else if (this.model >= 0 && this.model <= 199)
+        this.elements = [this.$els.find((d) => d.Nº === parseInt(this.model))]
+      else
+        return;
+    },
+    resetElements() {
+      this.elements = this.$filters.toApply;
+    }
+  },
+  mounted() {
+    console.log(this.elements);
+    this.$root.$on('updateFilter', (filter) => this.elements = filter);
   }
 }
 </script>
