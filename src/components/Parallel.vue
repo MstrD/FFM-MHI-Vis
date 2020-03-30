@@ -9,23 +9,18 @@
 <script>
 export default {
     name: 'Parallel',
-    props: {},
+    data() {
+        return {
+            parallelExists: false,
+            parallelData: null
+        }
+    },
     methods: {
         drawParallel(data) {
             // set the dimensions and margins of the graph
             var margin = {top: 30, right: 10, bottom: 10, left: 0},
             width = 600 - margin.left - margin.right,
             height = 400 - margin.top - margin.bottom;
-        
-            // append the svg object to the body of the page
-            var svg = this.$d3.select("#parallel").select("#chart")
-            .append("svg")
-                .attr("class", "chart-container")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-                .attr("transform",
-                    "translate(" + margin.left + "," + margin.top + ")");
         
             // Extract the list of dimensions we want to keep in the plot. Here I keep all except the column called Species
             var dimensions = ["Neuroticismo_NEOFFI", "Extroversão_NEOFFI", "AberturaExperiência_NEOFFI",
@@ -52,35 +47,75 @@ export default {
             function path(d) {
                 return self.$d3.line()(dimensions.map(function(p) { return [x(p), y[p](d[p])]; }));
             }
-        
-            // Draw the lines
-            svg
-            .selectAll("myPath")
-            .data(data)
-            .enter().append("path")
-            .attr("d", path)
-            .attr("class", "target")
-            .style("fill", "none")
-            .style("stroke", "#69b3a2")
-            .style("opacity", 0.5); // TODO: highlight subject when hovering line
-        
-            // Draw the axis:
-            svg.selectAll("myAxis")
-            // For each dimension of the dataset I add a 'g' element:
-            .data(dimensions).enter()
-            .append("g")
-            .attr("class", "axis")
-            // I translate this element to its right position on the x axis
-            .attr("transform", function(d) { return "translate(" + x(d) + ")"; })
-            // And I build the axis with the call function
-            .each(function(d) { self.$d3.select(this).call(self.$d3.axisLeft().scale(y[d])); })
-            // Add axis title
-            .append("text")
-                .style("text-anchor", "middle")
-                .attr("y", -9)
-                .text(function(_, i) { return dimensions_name[i]; })
-                .style("fill", "black")
-                .style("font-weight", "bold");
+
+            if (!this.parallelExists) {
+                // append the svg object to the body of the page
+                var svg = this.$d3.select("#parallel").select("#chart")
+                    .append("svg")
+                        .attr("class", "chart-container")
+                        .attr("width", width + margin.left + margin.right)
+                        .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                        .attr("transform",
+                            "translate(" + margin.left + "," + margin.top + ")");
+
+                // Draw the lines
+                svg
+                    .selectAll("myPath")
+                    .data(data)
+                    .enter().append("path")
+                    .attr("d", path)
+                    .attr("class", "target")
+                    .style("fill", "none")
+                    .style("opacity", 0)
+                    .transition()
+                    .duration(1000)
+                    .style("stroke", "#69b3a2")
+                    .style("opacity", 0.5); // TODO: highlight subject when hovering line
+            
+                // Draw the axis:
+                svg.selectAll("myAxis")
+                    // For each dimension of the dataset I add a 'g' element:
+                    .data(dimensions).enter()
+                    .append("g")
+                    .attr("class", "myAxis")
+                    // I translate this element to its right position on the x axis
+                    .attr("transform", (d) => "translate(" + x(d) + ")")
+                    // And I build the axis with the call function
+                    .each(function(d) { return self.$d3.select(this).call(self.$d3.axisLeft().scale(y[d]));})
+                    // Add axis title
+                    .append("text")
+                        .style("text-anchor", "middle")
+                        .attr("y", -9)
+                        .text((_, i) => dimensions_name[i])
+                        .style("fill", "black")
+                        .style("font-weight", "bold");
+            }
+            else {
+                var svg = this.$d3.select("#parallel").select("#chart").select("svg").select("g");
+                var myPath = svg.selectAll(".target").data(data);
+                myPath.exit().remove();
+                if (data.length > this.parallelData.length)
+                    myPath.enter()
+                        .append("path")
+                        .attr("d", path)
+                        .attr("class", "target")
+                        .style("fill", "none")
+                        .style("opacity", 0)
+                        .merge(myPath)
+                        .transition()
+                        .duration(1000)
+                        .style("stroke", "#69b3a2")
+                        .style("opacity", 0.5);
+                else
+                    myPath.enter().merge(myPath)
+                        .transition()
+                        .duration(1000)
+                        .attr("d", path);
+            }
+            if (!this.parallelExists)
+                this.parallelExists = true;
+            this.parallelData = data;
         },
         highlightParallel(subj) {
             this.$d3.select("#parallel").select("svg").selectAll(".target:not(.highlighted)")

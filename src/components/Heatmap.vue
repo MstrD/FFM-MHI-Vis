@@ -7,7 +7,6 @@
 <script>
 export default {
     name: 'Heatmap',
-    props: {},
     methods: {
         drawHeatmap(d) {
             // set the dimensions and margins of the graph

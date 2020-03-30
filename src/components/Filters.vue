@@ -386,8 +386,6 @@ export default {
             if (funcName === this.filterDataByAge.name) {
                 this.filterAllTraits();
             }
-            // TODO: merge these charts instead of removing them
-            this.$d3.select("#parallel").select("#chart").select("svg").remove();
             if (funcName !== this.filterDataById.name) {
                 this.$root.$emit('drawBoxplot', this.$filters.toApply);
             }
@@ -427,7 +425,6 @@ export default {
                 this.currentConscientiousness2 = 48;
                 this.$filters.toApply = this.$els;
 
-                this.$d3.select("#parallel").select("svg").remove();
                 this.$root.$emit('drawParallel', this.$els);
                 this.$root.$emit('drawBoxplot', this.$els);
                 this.$root.$emit('drawScatter', this.$els);
