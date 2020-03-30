@@ -223,9 +223,91 @@ function getCorrectTrait(d, trait) {
     }
 }
 
+function getQuestionsVerbose() {
+    return {
+        Neuroticism: [
+            'No worrier',
+            'At times felt bitter, resentful',
+            'When under great stress, sometimes feel I’m going to pieces',
+            'Rarely feel lonely or downhearted',
+            'Often tense, jittery',
+            'Sometimes feel completely worthless',
+            'Rarely fearful or anxious',
+            'Often angry with treatment by others',
+            'Too often feel discouraged when things go wrong',
+            'Seldom sad or depressed',
+            'Often feel helpless, wanting others to solve my problems',
+            'Have been so uncomfortable I wanted to hide'
+        ],
+        Extraversion: [
+            'Like to have lots of people around me',
+            'Laugh easily',
+            'Prefer jobs that let me work alone, unbothered',
+            'Really enjoy talking to people',
+            'Like to be where action is',
+            'Try to avoid crowds',
+            'Often bursting with energy',
+            'Cheerful, high-spirited person',
+            'Don’t get much pleasure chatting with people',
+            'Have fast-paced life',
+            'Very active person',
+            'Not interested in leading others'
+        ],
+        Openness: [
+            'Enjoy concentrating on daydream, letting it grow, develop',
+            'Spend time learning and developing new hobbies',
+            'Intrigued by patterns I find in art and nature',
+            'If young people hear controversial views it will confuse them',
+            'Poetry has little or no effect on me',
+            'Find hard to let mind wander without control, guidance',
+            'Seldom notice moods, feelings from different environments',
+            'Experience wide range of emotions or feelings',
+            'Sometimes from poetry or art, feel chill or excitement',
+            'Little interest in speculating on universe, human condition',
+            'Have a lot of intellectual curiosity',
+            'Often enjoy playing with theories, abstract ideas'
+        ],
+        Agreeableness: [
+            'Try to give help to anyone in need',
+            'At times I flatter so people do what I want',
+            'Some people think I’m selfish, self-centred',
+            'If someone starts fight, ready to fight back',
+            'Am better and I know it',
+            'When insulted, I just try to forgive and forget',
+            'Tend to assume best about people',
+            'Some people think me cold, calculating',
+            'No sympathy for beggars',
+            'Generally try to be thoughtful, considerate',
+            'If don’t like people, I let them know',
+            'If necessary, willing to manipulate people to get what I want'
+        ],
+        Conscientiousness: [
+            'Keep my belongings neat, clean',
+            'Pretty good at pacing self to get things done on time',
+            'Often come to situations less well prepared than others',
+            'Perform all tasks given to me conscientously',
+            'Have clear set of goals that are important to achieve',
+            'Waste a lot of time before settling down to work',
+            'Work hard to accomplish my goals',
+            'When I make a commitment, I can be counted on',
+            'At times less dependable, reliable than I should be',
+            'Productive person, always get job done',
+            'Never seem able to get organised',
+            'Strive for excellence in everything I do'
+        ],
+        MHI: [
+            'Felt nervous',
+            'Felt in peace',
+            'Felt sad, blue',
+            'Felt nothing could cheer you up',
+            'Felt happy'
+        ]
+    }
+}
+
 export { 
     getNumber, getAge, getGender, getResidence, getSchooling, 
     getWorkStatus, getEconomicalStatus, getMaritalStatus, 
     getHousehold, getReligion, getTraitQuestions, 
-    getTraitAnswers, getTraitName, getCorrectTrait
+    getTraitAnswers, getTraitName, getCorrectTrait, getQuestionsVerbose
 };

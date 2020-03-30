@@ -6,7 +6,7 @@ import routes from './routes'
 import { getNumber, getAge, getGender, getResidence, getSchooling, 
          getWorkStatus, getEconomicalStatus, getMaritalStatus, 
          getHousehold, getReligion, getTraitQuestions, 
-         getTraitAnswers, getTraitName, getCorrectTrait } from '../utils/user-info.js';
+         getTraitAnswers, getTraitName, getCorrectTrait, getQuestionsVerbose } from '../utils/user-info.js';
 
 import { highlightSubject, dehighlightSubject, dehighlightAllSubjects,
          showUserInfo, hideUserInfo } from '../utils/highlighting.js';
@@ -27,6 +27,7 @@ Vue.prototype.$getTraitQuestions = getTraitQuestions;
 Vue.prototype.$getTraitAnswers = getTraitAnswers;
 Vue.prototype.$getTraitName = getTraitName;
 Vue.prototype.$getCorrectTrait = getCorrectTrait;
+Vue.prototype.$getQuestionsVerbose = getQuestionsVerbose;
 
 Vue.prototype.$highlightSubject = highlightSubject;
 Vue.prototype.$dehighlightSubject = dehighlightSubject;

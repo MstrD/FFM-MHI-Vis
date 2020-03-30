@@ -24,6 +24,7 @@ export default {
                 myVars.push("#" + String(i+1));
             }
             var answers = this.$getTraitAnswers(d);
+            var labels = ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'];
         
             var svg = this.$d3.select("#heatmap").append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -56,24 +57,25 @@ export default {
             // Append title
             svg.append("text")
                 .attr("class", "title")
-                .attr("x", (width / 2))             
+                .attr("x", (width / 2))
                 .attr("y", 0 - (margin.top / 2))
                 .attr("text-anchor", "middle")
                 .text("Heatmap for subject #" + d.Nº);
 
             // draw legend
             const legend = svg.selectAll(".legend")
-                .data([0, 1, 2, 3, 4])
+                .data(labels)
                 .enter().append("g")
                 .attr("class", "legend")
                 .attr("transform", (d, i) => "translate(50," + i * 20 + ")");
 
             // draw legend colored rectangles
-            legend.append("rect")
+            legend
+                .append("rect")
                 .attr("x", width - 18)
                 .attr("width", 18)
                 .attr("height", 18)
-                .style("fill", colorScale);
+                .style("fill", (_, i) => colorScale(i));
 
             // draw legend text
             legend.append("text")
