@@ -1,15 +1,14 @@
 <template>
-    <q-page class="q-pl-lg q-ma-xs" id="scatter">
-        <h5 class="q-mt-xl q-ma-xs"><strong>Scatter Plot</strong></h5>
-        <div class="q-gutter-sm">
-            <q-radio v-model="scatterIndex" val="Neuroticism" label="Neuroticism" />
-            <q-radio v-model="scatterIndex" val="Extraversion" label="Extraversion" />
-            <q-radio v-model="scatterIndex" val="Openness" label="Openness" />
-            <q-radio v-model="scatterIndex" val="Agreeableness" label="Agreeableness" />
-            <q-radio v-model="scatterIndex" val="Conscientiousness" label="Conscientiousness" />
-            <q-radio v-model="scatterIndex" val="MHI" label="MHI" />
+    <div id="scatter" class="col-12 col-md-6" style="height: 325px">
+        <div class="q-mt-md q-pl-lg q-gutter-sm">
+            <q-radio dense v-model="scatterIndex" val="Neuroticism" label="Neuroticism" />
+            <q-radio dense v-model="scatterIndex" val="Extraversion" label="Extraversion" />
+            <q-radio dense v-model="scatterIndex" val="Openness" label="Openness" />
+            <q-radio dense v-model="scatterIndex" val="Agreeableness" label="Agreeableness" />
+            <q-radio dense v-model="scatterIndex" val="Conscientiousness" label="Conscientiousness" />
+            <q-radio dense v-model="scatterIndex" val="MHI" label="MHI" />
         </div>
-    </q-page>
+    </div>
 </template>
 
 <script>
@@ -29,8 +28,8 @@ export default {
     methods: {
         drawScatter(data, trait) {
             var margin = {top: 20, right: 20, bottom: 30, left: 40},
-            width = 960 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
+            width = 800 - margin.left - margin.right,
+            height = 300 - margin.top - margin.bottom;
             // setup x 
             var xValue = (d) => d.Q2_Idade, // data -> value
             xScale = this.$d3.scaleLinear().range([0, width]), // value -> display
@@ -196,7 +195,7 @@ export default {
                 .style("opacity", 0.9)
                 .style("padding", "2px");
                 tooltip.html("<b>Subject #" + d.Nº + "</b><br/> Age: " + xValue(d) + "<br>" + trait + ": " + yValue(d))
-                .style("left", (self.$d3.mouse(this)[0] + 80) + "px")
+                .style("left", (self.$d3.mouse(this)[0] + 925) + "px")
                 .style("top", (self.$d3.mouse(this)[1] + 130) + "px");
             })
             .on("mouseout", function() {

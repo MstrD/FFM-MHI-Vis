@@ -1,9 +1,8 @@
 <template>
-    <q-page class="q-pl-lg" id="parallel">
-        <h5><strong>NEO-FFI Traits</strong></h5>
-        <q-page id="chart">
-        </q-page>
-    </q-page>
+    <div class="q-mt-md col-12 col-md-5" id="parallel" style="height: 325px">
+        <div id="chart">
+        </div>
+    </div>
 </template>
 
 <script>
@@ -20,7 +19,7 @@ export default {
             // set the dimensions and margins of the graph
             var margin = {top: 30, right: 10, bottom: 10, left: 0},
             width = 600 - margin.left - margin.right,
-            height = 400 - margin.top - margin.bottom;
+            height = 325 - margin.top - margin.bottom;
         
             // Extract the list of dimensions we want to keep in the plot. Here I keep all except the column called Species
             var dimensions = ["Neuroticismo_NEOFFI", "Extroversão_NEOFFI", "AberturaExperiência_NEOFFI",

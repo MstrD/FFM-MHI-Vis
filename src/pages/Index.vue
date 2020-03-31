@@ -1,11 +1,11 @@
 <template>
-  <q-page class="grid">
-    <Parallel ref="parallel"/>
-    <Scatter ref="scatter" />
-    <Heatmap ref="heatmap" />
-    <Boxplot ref="boxplot" />
-    <Histogram ref="histogram" />
-  </q-page>
+  <div class="row">
+    <Parallel />
+    <Scatter />
+    <Heatmap />
+    <Boxplot />
+    <Histogram />
+  </div>
 </template>
 
 <script>

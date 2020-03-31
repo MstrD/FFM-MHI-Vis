@@ -1,17 +1,16 @@
 <template>
-    <q-page class="q-pl-lg" id="histogram">
-        <h5 class="q-ma-xs q-mt-xl"><strong>Histogram</strong></h5>
-        <div class="q-gutter-sm">
-            <q-radio name="histogramTrait" v-model="histogramTrait" val="Neuroticism" label="Neuroticism" />
-            <q-radio name="histogramTrait" v-model="histogramTrait" val="Extraversion" label="Extraversion" />
-            <q-radio name="histogramTrait" v-model="histogramTrait" val="Openness" label="Openness" />
-            <q-radio name="histogramTrait" v-model="histogramTrait" val="Agreeableness" label="Agreeableness" />
-            <q-radio name="histogramTrait" v-model="histogramTrait" val="Conscientiousness" label="Conscientiousness" />
-            <q-radio name="histogramTrait" v-model="histogramTrait" val="MHI" label="MHI" />
+    <div class="q-mt-xs col-12 col-md-6" id="histogram" style="height: 450px">
+        <div class="q-gutter-sm q-pl-lg" style="z-index: 1">
+            <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Neuroticism" label="Neuroticism" />
+            <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Extraversion" label="Extraversion" />
+            <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Openness" label="Openness" />
+            <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Agreeableness" label="Agreeableness" />
+            <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Conscientiousness" label="Conscientiousness" />
+            <q-radio name="histogramTrait" dense v-model="histogramTrait" val="MHI" label="MHI" />
         </div>
-        <q-page id="chart">
-        </q-page>
-    </q-page>
+        <div id="chart" style="margin-left: -10px">
+        </div>
+    </div>
 </template>
 
 <script>
@@ -29,8 +28,8 @@ export default {
         drawHistogram(d, index) {
             // set the dimensions and margins of the graph
             var margin = {top: 10, right: 30, bottom: 30, left: 40},
-            width = 600 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
+            width = 800 - margin.left - margin.right,
+            height = 450 - margin.top - margin.bottom;
 
             var limitX = index === 5 ? 30 : 48;
             // set the X ranges

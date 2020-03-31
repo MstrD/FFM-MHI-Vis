@@ -1,7 +1,6 @@
 <template>
-    <q-page class="q-pl-lg" id="heatmap">
-        <h5><strong>Heatmap</strong></h5>
-    </q-page>
+    <div class="q-pl-lg" id="heatmap" style="height: 350px">
+    </div>
 </template>
 
 <script>
