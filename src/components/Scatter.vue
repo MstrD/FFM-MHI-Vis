@@ -186,6 +186,7 @@ export default {
             var self = this; // scope changes in mouse events; this line is necessary
             dots.on("mouseover", function (d) {
                 self.$d3.select(this)
+                .classed("hovered", true)
                 .transition()
                 .duration(500)
                 .attr("r", 7)
@@ -202,18 +203,26 @@ export default {
                 tooltip.transition()
                 .duration(500)
                 .style("opacity", 0);
+                if (!self.$d3.select(this).classed("clicked"))
                 self.$d3.select(this)
                 .transition()
                 .duration(500)
                 .attr("r", 3.5);
             })
             .on("click", function(d) {
-                if (self.$d3.select(this).style("stroke") === "none") {
-                    self.$d3.select(this).style("stroke", "black");
+                if (!self.$d3.select(this).classed("clicked")) {
+                    self.$d3.select(this).classed("clicked", true);
+                    self.$d3.select(this)
+                    .style("stroke", "black");
                     self.$highlightSubject(d);
                 }
                 else {
-                    self.$d3.select(this).style("stroke", "none");
+                    self.$d3.select(this).classed("clicked", false);
+                    self.$d3.select(this)
+                        .transition()
+                        .duration(1000)
+                        .attr("r", 3.5)
+                        .style("stroke", "none");
                     self.$dehighlightSubject(d);
                 }
             });
