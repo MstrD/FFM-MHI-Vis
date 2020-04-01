@@ -77,7 +77,11 @@ export default {
 
                 var tooltip = this.$d3.select("#scatter").append("div")
                     .attr("class", "tooltip")
-                    .style("opacity", 0);
+                    .style("opacity", 0)
+                tooltip.append("div")
+                    .attr("id", "text");
+                tooltip.append("div")
+                    .attr("id", "chart");
 
                 // x-axis
                 svg.append("g")
@@ -185,34 +189,35 @@ export default {
             var self = this; // scope changes in mouse events; this line is necessary
             dots.on("mouseover", function (d) {
                 self.$d3.select(this)
-                .classed("hovered", true)
-                .transition()
-                .duration(500)
-                .attr("r", 6)
-                .style("cursor", "pointer");
+                    .classed("hovered", true)
+                    .transition()
+                    .duration(500)
+                    .attr("r", 6)
+                    .style("cursor", "pointer");
                 tooltip.transition()
-                .duration(200)
-                .style("opacity", 0.9)
-                .style("padding", "2px");
-                tooltip.html("<b>Subject #" + d.Nº + "</b><br/> Age: " + xValue(d) + "<br>" + trait + ": " + yValue(d))
-                .style("left", (self.$d3.mouse(this)[0] + 925) + "px")
-                .style("top", (self.$d3.mouse(this)[1] + 130) + "px");
+                    .duration(200)
+                    .style("opacity", 0.9)
+                    .style("padding", "2px")
+                    .style("left", (self.$d3.mouse(this)[0] + 925) + "px")
+                    .style("top", (self.$d3.mouse(this)[1] + 130) + "px");
+                tooltip.select("#text")
+                    .html("<b>Subject #" + d.Nº + "</b><br/> Age: " + xValue(d) + "<br>" + trait + ": " + yValue(d));
             })
             .on("mouseout", function() {
                 tooltip.transition()
-                .duration(500)
-                .style("opacity", 0);
+                    .duration(500)
+                    .style("opacity", 0);
                 if (!self.$d3.select(this).classed("clicked"))
-                self.$d3.select(this)
-                .transition()
-                .duration(500)
-                .attr("r", 3);
+                    self.$d3.select(this)
+                    .transition()
+                    .duration(500)
+                    .attr("r", 3);
             })
             .on("click", function(d) {
                 if (!self.$d3.select(this).classed("clicked")) {
                     self.$d3.select(this).classed("clicked", true);
                     self.$d3.select(this)
-                    .style("stroke", "black");
+                        .style("stroke", "black");
                     self.$highlightSubject(d);
                 }
                 else {
@@ -248,11 +253,12 @@ export default {
         position: absolute;
         opacity: 0;
         width: auto;
-        height: 65px;
+        height: auto;
         pointer-events: none;
         font-size: 10pt;
-        background-color: $secondary;
+        background-color: cornsilk;
         border-radius: 4px;
         padding-left: 2px;
+        z-index: 1;
     }
 </style>

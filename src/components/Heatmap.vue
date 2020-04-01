@@ -1,5 +1,5 @@
 <template>
-    <div class="q-pl-lg" id="heatmap" style="height: 350px">
+    <div class="q-pl-lg" id="heatmap">
     </div>
 </template>
 
@@ -9,11 +9,11 @@ export default {
     methods: {
         drawHeatmap(d) {
             // set the dimensions and margins of the graph
-            var margin = {top: 30, right: 50, bottom: 30, left: 50},
-                width = 450 - margin.left - margin.right,
-                height = 450 - margin.top - margin.bottom;
+            var margin = {top: 10, right: 20, bottom: 30, left: 20},
+                width = 300 - margin.left - margin.right,
+                height = 300 - margin.top - margin.bottom;
         
-            var bgColor = this.$d3.select("#heatmap").style("background-color");
+            var bgColor = this.$d3.select("#scatter").style("background-color");
         
             var questions = this.$getTraitQuestions();
             var myGroups = ["Neuroticism", "Extraversion", "Openness", "Agreeableness", "Conscientiousness"];
@@ -25,7 +25,7 @@ export default {
             var answers = this.$getTraitAnswers(d);
             var labels = ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'];
         
-            var svg = this.$d3.select("#heatmap").append("svg")
+            var svg = this.$d3.select("#scatter").select(".tooltip").select("#chart").append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
@@ -51,17 +51,17 @@ export default {
             // Color scale to use
             const colorScale = this.$d3.scaleLinear()
                 .domain([0, 4])
-                .range(["lightgreen", "green", "darkgreen"]);
+                .range([this.$getColor("info"), this.$getColor("primary")]);
             
-            // Append title
+            /* // Append title
             svg.append("text")
                 .attr("class", "title")
                 .attr("x", (width / 2))
                 .attr("y", 0 - (margin.top / 2))
                 .attr("text-anchor", "middle")
-                .text("Heatmap for subject #" + d.Nº);
+                .text("Heatmap for subject #" + d.Nº); */
 
-            // draw legend
+            /* // draw legend
             const legend = svg.selectAll(".legend")
                 .data(labels)
                 .enter().append("g")
@@ -82,7 +82,7 @@ export default {
                 .attr("y", 9)
                 .attr("dy", ".35em")
                 .style("text-anchor", "end")
-                .text((d) => d);
+                .text((d) => d); */
         
             const cards = svg.selectAll()
                 .data(answers);
@@ -103,8 +103,8 @@ export default {
                 // TODO: linha de heatmap para o MHI
         },
         removeHeatmap() {
-            if (this.$d3.select("#heatmap").select("svg"))
-                this.$d3.select("#heatmap").select("svg").remove();
+            if (this.$d3.select("#scatter").select(".tooltip").select("svg"))
+                this.$d3.select("#scatter").select(".tooltip").select("svg").remove();
         }
     },
     mounted() {
