@@ -8,8 +8,7 @@ import { getNumber, getAge, getGender, getResidence, getSchooling,
          getHousehold, getReligion, getTraitQuestions, 
          getTraitAnswers, getTraitName, getCorrectTrait, getQuestionsVerbose } from '../utils/user-info.js';
 
-import { highlightSubject, dehighlightSubject, dehighlightAllSubjects,
-         showUserInfo, hideUserInfo } from '../utils/highlighting.js';
+import { highlightSubject, dehighlightSubject, dehighlightAllSubjects } from '../utils/highlighting.js';
 
 import * as d3 from 'd3v4';
 
@@ -32,8 +31,6 @@ Vue.prototype.$getQuestionsVerbose = getQuestionsVerbose;
 Vue.prototype.$highlightSubject = highlightSubject;
 Vue.prototype.$dehighlightSubject = dehighlightSubject;
 Vue.prototype.$dehighlightAllSubjects = dehighlightAllSubjects;
-Vue.prototype.$showUserInfo = showUserInfo;
-Vue.prototype.$hideUserInfo = hideUserInfo;
 
 Vue.prototype.$els = [];
 Vue.prototype.$filters = {
