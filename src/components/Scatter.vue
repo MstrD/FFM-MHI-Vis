@@ -1,5 +1,5 @@
 <template>
-    <div id="scatter" class="col-12 col-md-6" style="height: 325px">
+    <div id="scatter" class="col-12 col-md-6" style="height: 365px">
         <div class="q-mt-md q-pl-lg q-gutter-sm">
             <q-radio dense v-model="scatterIndex" val="Neuroticism" label="Neuroticism" />
             <q-radio dense v-model="scatterIndex" val="Extraversion" label="Extraversion" />
@@ -29,7 +29,7 @@ export default {
         drawScatter(data, trait) {
             var margin = {top: 20, right: 20, bottom: 30, left: 40},
             width = 800 - margin.left - margin.right,
-            height = 300 - margin.top - margin.bottom;
+            height = 350 - margin.top - margin.bottom;
             // setup x 
             var xValue = (d) => d.Q2_Idade, // data -> value
             xScale = this.$d3.scaleLinear().range([0, width]), // value -> display
@@ -65,7 +65,7 @@ export default {
             if (data.length > 1)
                 xScale.domain([this.$d3.min(data, xValue), this.$d3.max(data, xValue)]).nice();
             else
-                xScale.domain([18, 76]).nice();
+                xScale.domain([18, 66]).nice();
             yScale.domain([0, trait === "MHI" ? 30 : 48]).nice();
             
             if (!this.scatterExists) {
@@ -100,7 +100,7 @@ export default {
                     .attr("class", "label")
                     .attr("transform", "rotate(-90)")
                     .attr("y", 6)
-                    .attr("dy", ".71em")
+                    .attr("dy", ".61em")
                     .style("text-anchor", "end")
                     .style("fill", "black")
                     .text(trait);
@@ -112,7 +112,7 @@ export default {
                 dots = dots.enter()
                     .append("circle")
                     .attr("class", "dot")
-                    .attr("r", 3.5)
+                    .attr("r", 3)
                     .attr("cx", xMap)
                     .attr("cy", yMap)
                     .style("fill", (d) => color(cValue(d)));
@@ -167,7 +167,7 @@ export default {
                     dots.enter()
                         .append("circle")
                         .attr("class", "dot")
-                        .attr("r", 3.5)
+                        .attr("r", 3)
                         .merge(dots)
                         .transition()
                         .duration(1000)
@@ -188,7 +188,7 @@ export default {
                 .classed("hovered", true)
                 .transition()
                 .duration(500)
-                .attr("r", 7)
+                .attr("r", 6)
                 .style("cursor", "pointer");
                 tooltip.transition()
                 .duration(200)
@@ -206,7 +206,7 @@ export default {
                 self.$d3.select(this)
                 .transition()
                 .duration(500)
-                .attr("r", 3.5);
+                .attr("r", 3);
             })
             .on("click", function(d) {
                 if (!self.$d3.select(this).classed("clicked")) {
@@ -218,10 +218,10 @@ export default {
                 else {
                     self.$d3.select(this).classed("clicked", false);
                     self.$d3.select(this)
+                        .style("stroke", "none")
                         .transition()
                         .duration(1000)
-                        .attr("r", 3.5)
-                        .style("stroke", "none");
+                        .attr("r", 3);
                     self.$dehighlightSubject(d);
                 }
             });

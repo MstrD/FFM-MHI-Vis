@@ -75,9 +75,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  .q-avatar {
-    stroke: white;
-  }
-</style>

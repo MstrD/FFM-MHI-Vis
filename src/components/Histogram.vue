@@ -1,5 +1,5 @@
 <template>
-    <div class="q-mt-xs col-12 col-md-6" id="histogram" style="height: 450px">
+    <div class="q-mt-xs col-12 col-md-6" id="histogram" style="height: 400px">
         <div class="q-gutter-sm q-pl-lg" style="z-index: 1">
             <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Neuroticism" label="Neuroticism" />
             <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Extraversion" label="Extraversion" />
@@ -29,7 +29,7 @@ export default {
             // set the dimensions and margins of the graph
             var margin = {top: 10, right: 30, bottom: 30, left: 40},
             width = 800 - margin.left - margin.right,
-            height = 450 - margin.top - margin.bottom;
+            height = 400 - margin.top - margin.bottom;
 
             var limitX = index === 5 ? 30 : 48;
             // set the X ranges

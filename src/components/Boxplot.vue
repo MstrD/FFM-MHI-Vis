@@ -1,5 +1,5 @@
 <template>
-    <div class="q-mt-md col-12 col-md-5" id="boxplot" style="height: 450px">
+    <div class="q-mt-md col-12 col-md-5" id="boxplot" style="height: 400px">
     </div>
 </template>
 
@@ -27,7 +27,7 @@ export default {
             // set the dimensions and margins of the graph
             var margin = {top: 10, right: 30, bottom: 30, left: 40},
                 width = 600 - margin.left - margin.right,
-                height = 450 - margin.top - margin.bottom;
+                height = 400 - margin.top - margin.bottom;
         
             // create dummy data
             var data = [[], [], [], [], []];
