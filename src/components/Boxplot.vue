@@ -107,7 +107,7 @@ export default {
                         .attr("height", (y(q1[i]) - y(q3[i])))
                         .attr("width", this.bp_width)
                         .attr("stroke", "black")
-                        .style("fill", "#69b3a2");
+                        .style("fill", this.$getColor("primary"));
 
                     // show median, min and max horizontal lines
                     svg.selectAll("toto")

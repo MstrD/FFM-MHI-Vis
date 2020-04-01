@@ -69,7 +69,7 @@ export default {
                     .style("opacity", 0)
                     .transition()
                     .duration(1000)
-                    .style("stroke", "#69b3a2")
+                    .style("stroke", this.$getColor("primary"))
                     .style("opacity", 0.5); // TODO: highlight subject when hovering line
             
                 // Draw the axis:
@@ -104,7 +104,7 @@ export default {
                         .merge(myPath)
                         .transition()
                         .duration(1000)
-                        .style("stroke", "#69b3a2")
+                        .style("stroke", this.$getColor("primary"))
                         .style("opacity", 0.5);
                 else
                     myPath.enter().merge(myPath)
@@ -140,7 +140,7 @@ export default {
                 .duration(500)
                 .style("opacity", this.$d3.select("#parallel").select("svg").selectAll(".target.highlighted").data().length ? 0.1 : 0.5)
                 .style("stroke-width", "1px")
-                .style("stroke", "#69b3a2");
+                .style("stroke", this.$getColor("primary"));
             if (!this.$d3.select("#parallel").select("svg").selectAll(".target.highlighted").data().length)
                 this.dehighlightAllParallel();
         },
@@ -150,7 +150,7 @@ export default {
                 .duration(500)
                 .style("opacity", 0.5)
                 .style("stroke-width", "1px")
-                .style("stroke", "#69b3a2");
+                .style("stroke", this.$getColor("primary"));
         }
     },
     mounted() {

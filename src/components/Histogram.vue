@@ -129,7 +129,7 @@ export default {
             .attr("width", (d) => this.$d3.max([x(d.x1) - x(d.x0) - 1, 0]))
             .attr("transform", (d) => "translate(" + x(d.x0) + "," + y(d.length) + ")")
             .attr("height", (d) => height - y(d.length))
-            .style("fill", "#69b3a2");
+            .style("fill", this.$getColor("primary"));
 
             // FIXME: this piece of code is commented, in case it is better to show dots instead of changing the opacity
             /* svg.selectAll(".element")

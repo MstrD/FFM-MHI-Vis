@@ -11,6 +11,7 @@ import { getNumber, getAge, getGender, getResidence, getSchooling,
 import { highlightSubject, dehighlightSubject, dehighlightAllSubjects } from '../utils/highlighting.js';
 
 import * as d3 from 'd3v4';
+import { colors } from 'quasar';
 
 Vue.prototype.$getNumber = getNumber;
 Vue.prototype.$getAge = getAge;
@@ -31,6 +32,8 @@ Vue.prototype.$getQuestionsVerbose = getQuestionsVerbose;
 Vue.prototype.$highlightSubject = highlightSubject;
 Vue.prototype.$dehighlightSubject = dehighlightSubject;
 Vue.prototype.$dehighlightAllSubjects = dehighlightAllSubjects;
+
+Vue.prototype.$getColor = colors.getBrand;
 
 Vue.prototype.$els = [];
 Vue.prototype.$filters = {
