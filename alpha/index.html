@@ -13,6 +13,7 @@
         <script text="text/javascript" src="scripts/scatter.js" charset="utf-8"></script>
         <script text="text/javascript" src="scripts/heatmap.js" charset="utf-8"></script>
         <script text="text/javascript" src="scripts/boxplot.js" charset="utf-8"></script>
+        <script text="text/javascript" src="scripts/violin.js" charset="utf-8"></script>
         <script text="text/javascript" src="scripts/histogram.js" charset="utf-8"></script>
         <script text="text/javascript" src="scripts/highlighting.js" charset="utf-8"></script>
         <script text="text/javascript" src="scripts/filtering.js" charset="utf-8"></script>
@@ -123,6 +124,9 @@
             <input type="radio" id="conscientiousness" name="trait" value="conscientiousness" onclick="drawHistogram(filters.toApply, 4)">
             <label for="conscientiousness">Conscientiousness</label>
             <div id="chart"></div>
+        </div>
+        <div id="violin" class="chart-container">
+            <h1>Violin Chart</h1>
         </div>
     </body>
 </html>
