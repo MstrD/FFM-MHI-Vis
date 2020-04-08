@@ -141,7 +141,7 @@ export default {
                 .duration(500)
                 .style("opacity", this.$d3.select("#parallel").select("svg").selectAll(".target.highlighted").data().length ? 0.1 : 0.5)
                 .style("stroke-width", "1px")
-                .style("stroke", this.$getColor("primary"));
+                .style("stroke", (d) => d.Q1_Sexo !== 1 ? this.$getColor("primary") : "orange");
             if (!this.$d3.select("#parallel").select("svg").selectAll(".target.highlighted").data().length)
                 this.dehighlightAllParallel();
         },
