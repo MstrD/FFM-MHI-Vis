@@ -69,7 +69,7 @@ export default {
                     .style("opacity", 0)
                     .transition()
                     .duration(1000)
-                    .style("stroke", this.$getColor("primary"))
+                    .style("stroke", (d) => d.Q1_Sexo !== 1 ? this.$getColor("primary") : "orange")
                     .style("opacity", 0.5); // TODO: highlight subject when hovering line
             
                 // Draw the axis:
@@ -104,13 +104,14 @@ export default {
                         .merge(myPath)
                         .transition()
                         .duration(1000)
-                        .style("stroke", this.$getColor("primary"))
+                        .style("stroke", (d) => d.Q1_Sexo !== 1 ? this.$getColor("primary") : "orange")
                         .style("opacity", 0.5);
                 else
                     myPath.enter().merge(myPath)
                         .transition()
                         .duration(1000)
-                        .attr("d", path);
+                        .attr("d", path)
+                        .style("stroke", (d) => d.Q1_Sexo !== 1 ? this.$getColor("primary") : "orange");
             }
             if (!this.parallelExists)
                 this.parallelExists = true;
@@ -150,7 +151,7 @@ export default {
                 .duration(500)
                 .style("opacity", 0.5)
                 .style("stroke-width", "1px")
-                .style("stroke", this.$getColor("primary"));
+                .style("stroke", (d) => d.Q1_Sexo !== 1 ? this.$getColor("primary") : "orange");
         }
     },
     mounted() {

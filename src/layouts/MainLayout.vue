@@ -62,6 +62,10 @@
             <q-icon v-if="!model" name="search" />
           </template>
         </q-input>
+        <div class="q-pl-md q-mb-xs" style="font-size: 9pt">
+          <q-icon name="lens" color="primary" /> Female
+          <q-icon name="lens" color="orange" class="q-pl-md q-pr-sm" /> Male
+        </div>
         <UserProfile 
           v-for="link in elements"
           :key="link.Nº"
