@@ -8,7 +8,10 @@
       >
         <template v-slot:header>
           <q-item-section avatar>
-            <q-avatar square color="primary" text-color="white">
+            <q-avatar square v-if="Q1_Sexo === 2" color="primary" text-color="white">
+              {{ Nº }}
+            </q-avatar>
+            <q-avatar square v-else color="orange" text-color="white">
               {{ Nº }}
             </q-avatar>
           </q-item-section>
@@ -42,10 +45,10 @@ export default {
     Nº: {
       type: Number
     },
-    Q2_Idade: {
+    Q1_Sexo: {
       type: Number
     },
-    Q1_Sexo: {
+    Q2_Idade: {
       type: Number
     },
     Q4_Residência: {
@@ -71,6 +74,11 @@ export default {
     },
     Descrição_Outra_Religião: {
       type: String
+    }
+  },
+  methods: {
+    getColor() {
+      console.log("ora ca estamos");
     }
   }
 }

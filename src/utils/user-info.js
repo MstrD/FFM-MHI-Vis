@@ -7,7 +7,7 @@ function getAge(d) {
 }
 
 function getGender(d) {
-    return (typeof(d) === Object ? d.Q1_Sexo : d) ? "Male" : "Female";
+    return (typeof(d) === Object ? d.Q1_Sexo : d) === 1 ? "Male" : "Female";
 }
 
 function getResidence(d) {
