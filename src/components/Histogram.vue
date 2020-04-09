@@ -21,7 +21,9 @@ export default {
             histogramTrait: 'Neuroticism',
             histogramIndex: 0,
             histogramExists: false,
-            histogramData: null
+            histogramData: null,
+            histogramHighlighted: false,
+            histogramHighlightedSubject: null
         }
     },
     methods: {
@@ -73,7 +75,7 @@ export default {
 
             // restricts all ticks in y axis to be integers
             var ticking = (e) => Math.floor(e) !== e ? null : e;
-        
+            var self = this;
             // append the svg object to the body of the page
             // append a 'group' element to 'svg'
             // moves the 'group' element to the top left margin
@@ -129,7 +131,11 @@ export default {
             .attr("width", (d) => this.$d3.max([x(d.x1) - x(d.x0) - 1, 0]))
             .attr("transform", (d) => "translate(" + x(d.x0) + "," + y(d.length) + ")")
             .attr("height", (d) => height - y(d.length))
-            .style("fill", this.$getColor("primary"));
+            .style("fill", this.$getColor("primary"))
+            .on("end", function() {
+                if (self.histogramHighlighted)
+                    self.highlightHistogram(self.histogramHighlightedSubject);
+            });
 
             // FIXME: this piece of code is commented, in case it is better to show dots instead of changing the opacity
             /* svg.selectAll(".element")
@@ -174,12 +180,21 @@ export default {
             }
         },
         highlightHistogram(subj) {
-            this.$d3.select("#histogram").select("#chart").select("svg")
-            .selectAll(".bar")
-            .filter((d) => !d.includes(subj))
-            .transition()
-            .duration(1000)
-            .style("opacity", 0.5);
+            let bars = this.$d3.select("#histogram").select("#chart").select("svg")
+                .selectAll(".bar");
+            // all bars get more transparent
+            bars.transition()
+                .duration(1000)
+                .style("opacity", 0.5);
+            // only then can the bar in question be highlighted
+            bars.filter((d) => d.includes(subj))
+                .transition()
+                .duration(1000)
+                .style("opacity", 1);
+            if (!this.histogramHighlighted) {
+                this.histogramHighlighted = true;
+                this.histogramHighlightedSubject = subj;
+            }
         },
         dehighlightHistogram(subj) {
             this.$d3.select("#histogram").select("#chart").select("svg")
@@ -188,6 +203,7 @@ export default {
             .transition()
             .duration(1000)
             .style("opacity", 1);
+            this.histogramHighligted = false;
         }
     },
     mounted() {
@@ -222,9 +238,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-    /* .bar {
-        fill: $secondary !important;
-    } */
-</style>
