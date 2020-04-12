@@ -23,17 +23,22 @@ export default {
         
             // Extract the list of dimensions we want to keep in the plot. Here I keep all except the column called Species
             var dimensions = ["Neuroticismo_NEOFFI", "Extroversão_NEOFFI", "AberturaExperiência_NEOFFI",
-                        "AmabIilidade_NEOFFI", "Conscienciosidade_NEOFFI"];
+                        "AmabIilidade_NEOFFI", "Conscienciosidade_NEOFFI", "MH5_total"];
         
-            var dimensions_name = ["Neuroticism", "Extraversion", "Openness", "Agreeableness", "Conscientiousness"];
+            var dimensions_name = ["Neuroticism", "Extraversion", "Openness", "Agreeableness", "Conscientiousness", "MHI"];
         
             // For each dimension, I build a linear scale. I store all in a y object
             var y = {}
                 for (let i in dimensions) {
                 name = dimensions[i];
-                y[name] = this.$d3.scaleLinear()
-                    .domain( [0, 48] )
-                    .range([height, 0])
+                if (name !== "MH5_total")
+                    y[name] = this.$d3.scaleLinear()
+                        .domain( [0, 48] )
+                        .range([height, 0]);
+                else
+                    y[name] = this.$d3.scaleLinear()
+                        .domain( [0, 30] )
+                        .range([height, 0]);
             }
         
             // Build the X scale -> it find the best position for each Y axis
