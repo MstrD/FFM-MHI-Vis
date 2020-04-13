@@ -50,6 +50,8 @@ Vue.prototype.$filters = {
   toApply: Vue.prototype.$els
 };
 
+Vue.prototype.$elsSankey = {};
+
 Vue.prototype.currentAge1 = 0;
 Vue.prototype.currentAge2 = 100;
 

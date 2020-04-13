@@ -5,6 +5,7 @@
     <Heatmap />
     <Boxplot />
     <Histogram />
+    <Sankey />
   </div>
 </template>
 
@@ -15,6 +16,7 @@ import Scatter from 'components/Scatter';
 import Heatmap from 'components/Heatmap';
 import Boxplot from 'components/Boxplot';
 import Histogram from 'components/Histogram';
+import Sankey from 'components/Sankey';
 
 export default {
   name: 'PageIndex',
@@ -23,7 +25,8 @@ export default {
     Scatter,
     Heatmap,
     Boxplot,
-    Histogram
+    Histogram,
+    Sankey
   },
   methods: {
     initialLoad() { 
@@ -56,6 +59,14 @@ export default {
         self.$root.$emit('drawScatter', self.$els);
         self.$root.$emit('drawBoxplot', self.$els);
         self.$root.$emit('drawHistogram', self.$els, 0);
+      });
+
+      d3.json('statics/db_sankey.json', function(err, data) {
+        if (err) throw err;
+        
+        self.$elsSankey = data;
+        
+        self.$root.$emit('drawSankey', self.$elsSankey);
       });
     }
   },

@@ -1,5 +1,5 @@
 <template>
-    <div class="q-mt-md col-12 col-md-5" id="boxplot" style="height: 400px">
+    <div class="q-mt-md col-12 col-md-3" id="boxplot" style="height: 400px">
     </div>
 </template>
 
@@ -26,7 +26,7 @@ export default {
         drawBoxplot(d) {
             // set the dimensions and margins of the graph
             var margin = {top: 10, right: 30, bottom: 30, left: 40},
-                width = 600 - margin.left - margin.right,
+                width = 400 - margin.left - margin.right,
                 height = 400 - margin.top - margin.bottom;
         
             // create dummy data
@@ -56,7 +56,7 @@ export default {
         
             // Show the X scale
             var x = this.$d3.scalePoint()
-                .domain(['', 'Neuroticism', 'Extraversion', 'Openness', 'Agreeableness', 'Conscientiousness'])
+                .domain(['', 'N', 'E', 'O', 'A', 'C'])
                 .range([0, width - margin.left - margin.right]); // valor de right range = denominador da definicao de var center (mais abaixo)
 
             // Show the Y scale
@@ -81,7 +81,7 @@ export default {
                     .append("g")
                     .call(this.$d3.axisLeft(y));
                 this.bp_center = (width - margin.left - margin.right) / data.length;
-                this.bp_width = 50;
+                this.bp_width = 35;
                 this.bp_y = y;
             }
             else

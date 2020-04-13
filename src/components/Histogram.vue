@@ -1,11 +1,11 @@
 <template>
-    <div class="q-mt-xs col-12 col-md-6" id="histogram" style="height: 400px">
+    <div class="q-mt-xs col-12 col-md-3" id="histogram" style="height: 400px">
         <div class="q-gutter-sm q-pl-lg" style="z-index: 1">
-            <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Neuroticism" label="Neuroticism" />
-            <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Extraversion" label="Extraversion" />
-            <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Openness" label="Openness" />
-            <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Agreeableness" label="Agreeableness" />
-            <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Conscientiousness" label="Conscientiousness" />
+            <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Neuroticism" label="N" />
+            <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Extraversion" label="E" />
+            <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Openness" label="O" />
+            <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Agreeableness" label="A" />
+            <q-radio name="histogramTrait" dense v-model="histogramTrait" val="Conscientiousness" label="C" />
             <q-radio name="histogramTrait" dense v-model="histogramTrait" val="MHI" label="MHI" />
         </div>
         <div id="chart" style="margin-left: -10px">
@@ -30,7 +30,7 @@ export default {
         drawHistogram(d, index) {
             // set the dimensions and margins of the graph
             var margin = {top: 10, right: 30, bottom: 30, left: 40},
-            width = 800 - margin.left - margin.right,
+            width = 400 - margin.left - margin.right,
             height = 400 - margin.top - margin.bottom;
 
             var limitX = index === 5 ? 30 : 48;
