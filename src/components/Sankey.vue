@@ -19,7 +19,6 @@ export default {
     },
     methods: {
         drawSankey(data) {
-            console.log(data);
             var margin = {top: 20, right: 20, bottom: 30, left: 40},
                 width = 700 - margin.left - margin.right,
                 height = 450 - margin.top - margin.bottom;
@@ -30,7 +29,7 @@ export default {
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
             var svg = this.$d3.select("#sankey").select("svg").select("g");
-            var color = this.$d3.scaleOrdinal(this.$d3.schemeCategory10);
+            var color = this.$d3.scaleOrdinal(this.$d3.schemeCategory20);
 
             var sankey = d3sankey.sankey()
                 .nodeId(d => d.name)

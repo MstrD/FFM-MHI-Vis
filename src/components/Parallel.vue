@@ -47,9 +47,46 @@ export default {
                 .padding(1)
                 .domain(dimensions);
             var self = this;
+
+            // draggable behavior
+            var start_x;
+            var dragging = {};
+            var drag_handler = this.$d3.drag()
+                .subject(function(d) { return {x: x(d)}; })
+                .on("start", drag_start)
+                .on("drag", drag_drag)
+                .on("end", drag_end);
+            function drag_start(d) {
+                dragging[d] = x(d);
+            }
+            function drag_drag(d) {
+                dragging[d] = Math.min(width, Math.max(0, self.$d3.event.x));
+                svg.selectAll(".target")
+                    .attr("d", path);
+                dimensions.sort((a, b) => position(a) - position(b));
+                x.domain(dimensions);
+                self.$d3.selectAll(".myAxis")
+                    .attr("transform", (d) => "translate(" + position(d) + ")");
+            }
+            function drag_end(d) {
+                delete dragging[d];
+                self.$d3.select(this)
+                    .transition()
+                    .duration(1000)
+                    .attr("transform", "translate(" + x(d) + ")");
+                svg.selectAll(".target")
+                    .transition()
+                    .duration(1000)
+                    .attr("d", path);
+            }
+
+            function position(d) {
+                return dragging[d] == null ? x(d) : dragging[d];
+            }
+
             // The path function take a row of the csv as input, and return x and y coordinates of the line to draw for this raw.
             function path(d) {
-                return self.$d3.line()(dimensions.map(function(p) { return [x(p), y[p](d[p])]; }));
+                return self.$d3.line()(dimensions.map(function(p) { return [position(p), y[p](d[p])]; }));
             }
 
             if (!this.parallelExists) {
@@ -87,6 +124,10 @@ export default {
                     .attr("transform", (d) => "translate(" + x(d) + ")")
                     // And I build the axis with the call function
                     .each(function(d) { return self.$d3.select(this).call(self.$d3.axisLeft().scale(y[d]));})
+                    .on("mouseenter", function() {
+                        self.$d3.select(this).style("cursor", "move");
+                    })
+                    .call(drag_handler)
                     // Add axis title
                     .append("text")
                         .style("text-anchor", "middle")
@@ -118,6 +159,7 @@ export default {
                         .attr("d", path)
                         .style("stroke", (d) => d.Q1_Sexo !== 1 ? this.$getColor("primary") : "orange");
             }
+
             if (!this.parallelExists)
                 this.parallelExists = true;
             this.parallelData = data;
