@@ -19,9 +19,9 @@ export default {
     },
     methods: {
         drawSankey(data) {
-            var margin = {top: 20, right: 20, bottom: 30, left: 40},
-                width = 700 - margin.left - margin.right,
-                height = 450 - margin.top - margin.bottom;
+            var margin = {top: 30, right: 20, bottom: 10, left: 40},
+                width = this.$d3.select("#sankey").property("clientWidth") - margin.left - margin.right,
+                height = this.$d3.select("#sankey").property("clientHeight") - margin.top - margin.bottom;
 
             this.$d3.select("#sankey").append("svg")
                 .attr("width", width + margin.left + margin.right)

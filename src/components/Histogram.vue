@@ -29,9 +29,9 @@ export default {
     methods: {
         drawHistogram(d, index) {
             // set the dimensions and margins of the graph
-            var margin = {top: 10, right: 30, bottom: 30, left: 40},
-            width = 400 - margin.left - margin.right,
-            height = 400 - margin.top - margin.bottom;
+            var margin = {top: 0, right: 30, bottom: 30, left: 40},
+            width = this.$d3.select("#histogram").property("clientWidth") - margin.left - margin.right,
+            height = this.$d3.select("#histogram").property("clientHeight") - margin.top - margin.bottom;
 
             var limitX = index === 5 ? 30 : 48;
             // set the X ranges

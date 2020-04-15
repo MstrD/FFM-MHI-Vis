@@ -28,8 +28,8 @@ export default {
     methods: {
         drawScatter(data, trait) {
             var margin = {top: 20, right: 20, bottom: 30, left: 40},
-            width = 800 - margin.left - margin.right,
-            height = 350 - margin.top - margin.bottom;
+            width = this.$d3.select("#scatter").property("clientWidth") - margin.left - margin.right,
+            height = this.$d3.select("#parallel").property("clientHeight") - 20 - margin.top - margin.bottom;
             // setup x 
             var xValue = (d) => d.Q2_Idade, // data -> value
             xScale = this.$d3.scaleLinear().range([0, width]), // value -> display

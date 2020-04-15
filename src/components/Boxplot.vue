@@ -26,8 +26,8 @@ export default {
         drawBoxplot(d) {
             // set the dimensions and margins of the graph
             var margin = {top: 10, right: 30, bottom: 30, left: 40},
-                width = 400 - margin.left - margin.right,
-                height = 400 - margin.top - margin.bottom;
+                width = this.$d3.select("#boxplot").property("clientWidth") - margin.left - margin.right,
+                height = this.$d3.select("#boxplot").property("clientHeight") - margin.top - margin.bottom;
         
             // create dummy data
             var data = [[], [], [], [], []];
