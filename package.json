@@ -14,7 +14,8 @@
     "@quasar/extras": "^1.0.0",
     "d3-sankey": "^0.12.3",
     "d3v4": "^4.2.2",
-    "quasar": "^1.0.0"
+    "quasar": "^1.0.0",
+    "vue-draggable": "^2.0.6"
   },
   "devDependencies": {
     "@quasar/app": "^1.0.0"

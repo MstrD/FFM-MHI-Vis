@@ -1,29 +1,63 @@
 <template>
     <div id="sankey" class="col-12 col-md-5" style="height: 400px">
+        <svg></svg>
+        <div class="btn-holder">
+            <q-btn round color="primary" icon="list">
+                <q-tooltip content-class="bg-dark">Socioeconomical Factors</q-tooltip>
+                <q-menu transition-show="scale" transition-hide="scale">
+                    <Categories :allNodes="allCategories" :currentNodes="defaultNodes" />
+                </q-menu>
+            </q-btn>
+        </div>
     </div>
 </template>
 
 <script>
 import PageIndex from 'pages/Index';
+import Categories from 'components/Categories';
 import * as d3sankey from 'd3-sankey';
 export default {
     name: 'Sankey',
     components: {
-        PageIndex
+        PageIndex,
+        Categories
     },
     data() {
         return {
-            allNodes: [],
-            currentNodes: []
+            allCategories: null,
+            defaultNodes: [
+                'Gender',
+                'Residence',
+                'Work Status',
+                'Religion'
+            ],
+            fullSankeyData: null
         }
     },
     methods: {
+        filterSankeyData(data) {
+            this.fullSankeyData = data;
+            this.allCategories = data.categories;
+            var filteredLinks = this.filterElements(data.links, this.defaultNodes);
+            data.links = filteredLinks;
+            this.drawSankey(data);
+        },
+        filterElements(links, myNodes) {
+            var result = [];
+            for (let i = 0; i < myNodes.length - 1; i++) {
+                links.forEach(element => {
+                    if (element.sourceCat === myNodes[i] && element.targetCat === myNodes[i+1])
+                        result.push(element);
+                });
+            }
+            return result;
+        },
         drawSankey(data) {
             var margin = {top: 30, right: 20, bottom: 10, left: 40},
                 width = this.$d3.select("#sankey").property("clientWidth") - margin.left - margin.right,
                 height = this.$d3.select("#sankey").property("clientHeight") - margin.top - margin.bottom;
 
-            this.$d3.select("#sankey").append("svg")
+            this.$d3.select("#sankey").select("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
@@ -75,13 +109,26 @@ export default {
                 .attr("dy", "0.35em")
                 .attr("text-anchor", "end")
                 .style("overflow", "ellipsis")
-                .text((d) => d.name);
+                .text((d) => this.defaultNodes.includes(d.category) ? d.name : null);
             node.append("title")
                 .text((d) => d.name + "\n" + d.value);
         }
     },
     mounted() {
-        this.$root.$on('drawSankey', (data) => this.drawSankey(data));
+        this.$root.$on('drawSankey', (data) => this.filterSankeyData(data));
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    #sankey {
+        justify-content: space-between;
+        flex-direction: column;
+        height: 100vh;
+        display: flex;
+    }
+    #sankey .btn-holder {
+        justify-content: flex-end;
+        display: flex;
+    }
+</style>

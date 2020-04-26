@@ -11,6 +11,7 @@ import { getNumber, getAge, getGender, getResidence, getSchooling,
 import { highlightSubject, dehighlightSubject, dehighlightAllSubjects } from '../utils/highlighting.js';
 
 import * as d3 from 'd3v4';
+import VueDraggable from 'vue-draggable';
 import { colors } from 'quasar';
 
 Vue.prototype.$getNumber = getNumber;
@@ -73,6 +74,7 @@ Vue.prototype.currentConscientiousness2 = 48;
 Vue.prototype.$d3 = d3;
 
 Vue.use(VueRouter)
+Vue.use(VueDraggable)
 
 /*
  * If not building with SSR mode, you can
