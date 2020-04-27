@@ -5,7 +5,12 @@
             <q-btn round color="primary" icon="list">
                 <q-tooltip content-class="bg-dark">Socioeconomical Factors</q-tooltip>
                 <q-menu transition-show="scale" transition-hide="scale">
-                    <Categories :allNodes="allCategories" :currentNodes="defaultNodes" />
+                    <Categories
+                        :allNodes="allCategories"
+                        :currentNodes="defaultNodes"
+                        @update-order="updateOrder"
+                        @update-current="updateCurrent"
+                    />
                 </q-menu>
             </q-btn>
         </div>
@@ -31,15 +36,23 @@ export default {
                 'Work Status',
                 'Religion'
             ],
-            fullSankeyData: null
+            firstLoad: false,
+            allData: null,
+            counter: 0
         }
     },
     methods: {
         filterSankeyData(data) {
-            this.fullSankeyData = data;
-            this.allCategories = data.categories;
+            console.log(this.allData);
+            
+            if (!this.firstLoad) {
+                this.allCategories = data.categories;
+                this.allData = JSON.parse(JSON.stringify(data));
+                this.firstLoad = true;
+            }
             var filteredLinks = this.filterElements(data.links, this.defaultNodes);
             data.links = filteredLinks;
+            this.counter++;
             this.drawSankey(data);
         },
         filterElements(links, myNodes) {
@@ -53,6 +66,7 @@ export default {
             return result;
         },
         drawSankey(data) {
+            console.log(data.links);
             var margin = {top: 30, right: 20, bottom: 10, left: 40},
                 width = this.$d3.select("#sankey").property("clientWidth") - margin.left - margin.right,
                 height = this.$d3.select("#sankey").property("clientHeight") - margin.top - margin.bottom;
@@ -112,6 +126,25 @@ export default {
                 .text((d) => this.defaultNodes.includes(d.category) ? d.name : null);
             node.append("title")
                 .text((d) => d.name + "\n" + d.value);
+        },
+        updateOrder(nodes) {
+            this.allCategories = nodes;
+        },
+        updateCurrent(current) {
+            this.defaultNodes = current;
+        }
+    },
+    watch: {
+        defaultNodes: function() {
+            this.$d3.select("#sankey").select("svg").select("g").remove();
+            console.log(this.defaultNodes);
+            this.filterSankeyData(this.allData);
+        },
+        allCategories: function() {
+            if (this.counter === 0) {
+                this.$d3.select("#sankey").select("svg").select("g").remove();
+                this.filterSankeyData(this.allData);
+            }
         }
     },
     mounted() {

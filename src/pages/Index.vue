@@ -65,7 +65,6 @@ export default {
         if (err) throw err;
         
         self.$elsSankey = data;
-        
         self.$root.$emit('drawSankey', self.$elsSankey);
       });
     }
