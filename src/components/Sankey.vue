@@ -43,17 +43,17 @@ export default {
     },
     methods: {
         filterSankeyData(data) {
-            console.log(this.allData);
+            let tmp = JSON.parse(JSON.stringify(data)); // a temporary variable is used to avoid data loss
             
-            if (!this.firstLoad) {
-                this.allCategories = data.categories;
+            if (!this.firstLoad) { // this is only processed on mounting
+                this.allCategories = JSON.parse(JSON.stringify(data.categories));
                 this.allData = JSON.parse(JSON.stringify(data));
                 this.firstLoad = true;
             }
-            var filteredLinks = this.filterElements(data.links, this.defaultNodes);
-            data.links = filteredLinks;
+            var filteredLinks = this.filterElements(tmp.links, this.defaultNodes);
+            tmp.links = filteredLinks;
             this.counter++;
-            this.drawSankey(data);
+            this.drawSankey(tmp);
         },
         filterElements(links, myNodes) {
             var result = [];
@@ -66,7 +66,6 @@ export default {
             return result;
         },
         drawSankey(data) {
-            console.log(data.links);
             var margin = {top: 30, right: 20, bottom: 10, left: 40},
                 width = this.$d3.select("#sankey").property("clientWidth") - margin.left - margin.right,
                 height = this.$d3.select("#sankey").property("clientHeight") - margin.top - margin.bottom;
@@ -137,14 +136,7 @@ export default {
     watch: {
         defaultNodes: function() {
             this.$d3.select("#sankey").select("svg").select("g").remove();
-            console.log(this.defaultNodes);
             this.filterSankeyData(this.allData);
-        },
-        allCategories: function() {
-            if (this.counter === 0) {
-                this.$d3.select("#sankey").select("svg").select("g").remove();
-                this.filterSankeyData(this.allData);
-            }
         }
     },
     mounted() {
