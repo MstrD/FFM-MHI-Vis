@@ -1,5 +1,5 @@
 <template>
-    <div id="sankey" class="col-12 col-md-5" style="height: 400px">
+    <div id="sankey" class="col-12 col-md-5" style="height: 500px">
         <svg></svg>
         <div class="btn-holder">
             <q-btn round color="primary" icon="list">
@@ -68,7 +68,7 @@ export default {
         drawSankey(data) {
             var margin = {top: 30, right: 20, bottom: 10, left: 40},
                 width = this.$d3.select("#sankey").property("clientWidth") - margin.left - margin.right,
-                height = this.$d3.select("#sankey").property("clientHeight") - margin.top - margin.bottom;
+                height = 500 - margin.top - margin.bottom;
 
             this.$d3.select("#sankey").select("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -155,5 +155,6 @@ export default {
     #sankey .btn-holder {
         justify-content: flex-end;
         display: flex;
+        margin-right: -40px;
     }
 </style>

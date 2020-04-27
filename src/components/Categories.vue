@@ -8,6 +8,8 @@
       @reordered="reordered($event)"
     >
       <q-item-label header>Socioeconomical Factors</q-item-label>
+      <q-item-label class="q-ml-md q-mb-sm" caption>Select and reorder elements</q-item-label>
+      <q-separator></q-separator>
       <q-item clickable v-ripple v-for="(cat, index) in allNodes" :key="cat" :data-id="index">
         <q-item-section>
           {{ cat }}
@@ -89,6 +91,9 @@ export default {
 </script>
 
 <style lang="scss">
+  .q-item:hover {
+    cursor: grab !important;
+  }
   .q-item[aria-grabbed="true"] {
     background-color: $secondary;
     color: white;
