@@ -388,6 +388,7 @@ export default {
             }
             if (funcName !== this.filterDataById.name) {
                 this.$root.$emit('drawBoxplot', this.$filters.toApply);
+                this.$root.$emit('drawViolin', this.$filters.toApply);
             }
             this.$root.$emit('drawParallel', this.$filters.toApply);
             this.$root.$emit('drawScatter', this.$filters.toApply);
@@ -426,8 +427,9 @@ export default {
                 this.$filters.toApply = this.$els;
 
                 this.$root.$emit('drawParallel', this.$els);
-                this.$root.$emit('drawBoxplot', this.$els);
                 this.$root.$emit('drawScatter', this.$els);
+                this.$root.$emit('drawViolin', this.$els);
+                this.$root.$emit('drawBoxplot', this.$els);
                 this.$root.$emit('drawHistogram', this.$els);
                 this.$root.$emit('updateFilter', this.$els);
             }

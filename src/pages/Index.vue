@@ -3,8 +3,9 @@
     <Parallel />
     <Scatter />
     <Heatmap />
-    <Boxplot />
-    <Histogram />
+    <Violin />
+    <!--<Boxplot />
+    <Histogram />-->
     <Sankey />
   </div>
 </template>
@@ -17,6 +18,7 @@ import Heatmap from 'components/Heatmap';
 import Boxplot from 'components/Boxplot';
 import Histogram from 'components/Histogram';
 import Sankey from 'components/Sankey';
+import Violin from 'components/Violin';
 
 export default {
   name: 'PageIndex',
@@ -24,6 +26,7 @@ export default {
     Parallel,
     Scatter,
     Heatmap,
+    Violin,
     Boxplot,
     Histogram,
     Sankey
@@ -57,6 +60,7 @@ export default {
 
         self.$root.$emit('drawParallel', self.$els);
         self.$root.$emit('drawScatter', self.$els);
+        self.$root.$emit('drawViolin', self.$els);
         self.$root.$emit('drawBoxplot', self.$els);
         self.$root.$emit('drawHistogram', self.$els, 0);
       });

@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md q-gutter-md" v-drag-and-drop:options="options">
+  <div class="q-pa-md q-gutter-md categories" v-drag-and-drop:options="options">
     <q-list
       dense
       padding
@@ -96,10 +96,10 @@ export default {
 </script>
 
 <style lang="scss">
-  .q-item:hover {
+  .categories .q-item:hover {
     cursor: grab !important;
   }
-  .q-item[aria-grabbed="true"] {
+  .categories .q-item[aria-grabbed="true"] {
     background-color: $secondary;
     color: white;
   }

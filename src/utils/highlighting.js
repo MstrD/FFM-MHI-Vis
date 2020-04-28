@@ -2,6 +2,7 @@ function highlightSubject(subj) {
     this.$root.$emit('highlightParallel', subj);
     this.$root.$emit('highlightHistogram', subj);
     this.$root.$emit('highlightBoxplot', subj);
+    this.$root.$emit('highlightViolin', subj);
     this.$root.$emit('drawHeatmap', subj);
 }
 
@@ -9,6 +10,7 @@ function dehighlightSubject(subj) {
     this.$root.$emit('dehighlightParallel', subj);
     this.$root.$emit('dehighlightHistogram', subj);
     this.$root.$emit('dehighlightBoxplot');
+    this.$root.$emit('dehighlightViolin');
     this.$root.$emit('removeHeatmap');
 }
 

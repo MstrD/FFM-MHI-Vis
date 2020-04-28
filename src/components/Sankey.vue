@@ -1,5 +1,5 @@
 <template>
-    <div id="sankey" class="col-12 col-md-5" style="height: 500px">
+    <div id="sankey" class="col-12 col-md-7" style="height: 500px">
         <svg></svg>
         <div class="btn-holder">
             <q-btn round color="primary" icon="list">
@@ -42,29 +42,6 @@ export default {
         }
     },
     methods: {
-        filterSankeyData(data) {
-            let tmp = JSON.parse(JSON.stringify(data)); // a temporary variable is used to avoid data loss
-            
-            if (!this.firstLoad) { // this is only processed on mounting
-                this.allCategories = JSON.parse(JSON.stringify(data.categories));
-                this.allData = JSON.parse(JSON.stringify(data));
-                this.firstLoad = true;
-            }
-            var filteredLinks = this.filterElements(tmp.links, this.defaultNodes);
-            tmp.links = filteredLinks;
-            this.counter++;
-            this.drawSankey(tmp);
-        },
-        filterElements(links, myNodes) {
-            var result = [];
-            for (let i = 0; i < myNodes.length - 1; i++) {
-                links.forEach(element => {
-                    if (element.sourceCat === myNodes[i] && element.targetCat === myNodes[i+1])
-                        result.push(element);
-                });
-            }
-            return result;
-        },
         drawSankey(data) {
             var margin = {top: 30, right: 20, bottom: 10, left: 40},
                 width = this.$d3.select("#sankey").property("clientWidth") - margin.left - margin.right,
@@ -126,6 +103,29 @@ export default {
             node.append("title")
                 .text((d) => d.name + "\n" + d.value);
         },
+        filterSankeyData(data) {
+            let tmp = JSON.parse(JSON.stringify(data)); // a temporary variable is used to avoid data loss
+            
+            if (!this.firstLoad) { // this is only processed on mounting
+                this.allCategories = JSON.parse(JSON.stringify(data.categories));
+                this.allData = JSON.parse(JSON.stringify(data));
+                this.firstLoad = true;
+            }
+            var filteredLinks = this.filterElements(tmp.links, this.defaultNodes);
+            tmp.links = filteredLinks;
+            this.counter++;
+            this.drawSankey(tmp);
+        },
+        filterElements(links, myNodes) {
+            var result = [];
+            for (let i = 0; i < myNodes.length - 1; i++) {
+                links.forEach(element => {
+                    if (element.sourceCat === myNodes[i] && element.targetCat === myNodes[i+1])
+                        result.push(element);
+                });
+            }
+            return result;
+        },
         updateOrder(nodes) {
             this.allCategories = nodes;
         },
@@ -155,6 +155,6 @@ export default {
     #sankey .btn-holder {
         justify-content: flex-end;
         display: flex;
-        margin-right: -40px;
+        //margin-right: -40px;
     }
 </style>
