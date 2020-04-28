@@ -42,11 +42,16 @@ export default {
   methods: {
     toggleOnSankey(cat) { // FIXME: as well
       let current = this.checkedNodes; // cloned var to not use the prop
+      let nodes = this.allNodes; // cloned var to not use the prop
 
       if (current.includes(cat)) // remove element from sankey
         current = current.filter(d => d !== cat);
-      else // add element to sankey
+      else { // add element to sankey
         current.push(cat);
+        current.sort(function(a, b) {
+          return nodes.indexOf(a) - nodes.indexOf(b);
+        });
+      }
 
       // spread current list to parent
       this.$emit("update-current", current);
