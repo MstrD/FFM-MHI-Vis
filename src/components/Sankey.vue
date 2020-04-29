@@ -47,7 +47,7 @@ export default {
         drawSankey(data) {
             var margin = {top: 30, right: 20, bottom: 10, left: 40},
                 width = this.$d3.select("#sankey").property("clientWidth") - margin.left - margin.right,
-                height = 500 - margin.top - margin.bottom;
+                height = this.$d3.select("#sankey").property("clientHeight") - margin.top - margin.bottom;
 
             this.$d3.select("#sankey").select("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -95,6 +95,13 @@ export default {
                 .attr("width", (d) => d.x1 - d.x0)
                 .attr("fill", (d) => color(d.name))
                 .attr("stroke", "#000");
+            node.append("text")
+                .attr("x", (d) => d.x0 + 5) // this +5 is hammered; it's just to center the text
+                .attr("y", (d) => -margin.top/2)
+                .attr("dy", "0.35em")
+                .style("text-anchor", "middle")
+                .style("font-weight", "bold")
+                .text((d) => this.defaultNodes.includes(d.category) ? d.category : null);
             node.append("text")
                 .attr("x", (d) => d.x0 - 6)
                 .attr("y", (d) => (d.y1 + d.y0) / 2)
