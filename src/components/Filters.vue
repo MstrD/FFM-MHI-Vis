@@ -247,6 +247,16 @@
           />
         </template>
       </q-field>
+
+      <q-btn
+        outline
+        class="q-mr-lg q-mt-sm q-mb-md"
+        color="negative"
+        icon-right="restore"
+        label="Restore Selection"
+        style="float: right"
+        @click="restoreSelection()"
+      />
     </q-list>
   </div>
 </template>
@@ -433,6 +443,14 @@ export default {
                 this.$root.$emit('drawHistogram', this.$els);
                 this.$root.$emit('updateFilter', this.$els);
             }
+        },
+        restoreSelection() {
+          this.drawOriginals(false);
+          // the lines below clear the checkboxes
+          this.info_id = false;
+          this.info_gender = false;
+          this.info_age = false;
+          this.info_traits = false;
         }
     }
 }
