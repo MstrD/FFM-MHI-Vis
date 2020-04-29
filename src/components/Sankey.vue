@@ -107,7 +107,7 @@ export default {
                 .attr("y", (d) => (d.y1 + d.y0) / 2)
                 .attr("dy", "0.35em")
                 .attr("text-anchor", "end")
-                .style("overflow", "ellipsis")
+                .style("text-overflow", "ellipsis")
                 .text((d) => this.defaultNodes.includes(d.category) ? d.name : null);
             node.append("title")
                 .text((d) => d.name + "\n" + d.value);
