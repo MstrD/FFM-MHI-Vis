@@ -38,7 +38,9 @@ export default {
             ],
             firstLoad: false,
             allData: null,
-            counter: 0
+            counter: 0,
+            userSelected: null,
+            userLinks: null
         }
     },
     methods: {
@@ -111,17 +113,23 @@ export default {
                 this.allData = JSON.parse(JSON.stringify(data));
                 this.firstLoad = true;
             }
-            var filteredLinks = this.filterElements(tmp.links, this.defaultNodes);
+            var filteredLinks = this.filterElements(tmp.links, this.defaultNodes, true);
             tmp.links = filteredLinks;
             this.counter++;
             this.drawSankey(tmp);
         },
-        filterElements(links, myNodes) {
+        filterElements(links, myNodes, isMain) {
             var result = [];
             for (let i = 0; i < myNodes.length - 1; i++) {
                 links.forEach(element => {
-                    if (element.sourceCat === myNodes[i] && element.targetCat === myNodes[i+1])
-                        result.push(element);
+                    if (isMain) {
+                        if (element.sourceCat === myNodes[i] && element.targetCat === myNodes[i+1])
+                            result.push(element);
+                    }
+                    else {
+                        if (element.source === myNodes[i] && element.target === myNodes[i+1])
+                            result.push(element);
+                    }
                 });
             }
             return result;
@@ -131,16 +139,56 @@ export default {
         },
         updateCurrent(current) {
             this.defaultNodes = current;
+        },
+        highlightSankey(subj) {
+            let results = [];
+            this.defaultNodes.forEach(element => {
+                // this shady piece of code invokes a function from user-info.js based on its name
+                let funcName = `$get${element.replace(/\s+/g, '')}`;
+                const res = this[funcName](subj);
+                // the string results are stored to be further processed
+                results.push(res);
+            });
+            let tmp = this.filterElements(this.allData.links, results, false);
+            // filter the paths that belong to 'subj'
+            let linkPaths = this.$d3.select("#sankey").select("svg").select("g").selectAll("path");
+            linkPaths = linkPaths.filter((d) => {
+                return tmp.some((f) => {
+                    return f.source === d.source.name && f.target === d.target.name;
+                });
+            });
+            // these paths will be painted with another color
+            linkPaths
+                .transition()
+                .duration(1000)
+                .style("stroke", "orange")
+                .style("stroke-opacity", 0.75);
+            this.userLinks = linkPaths;
+            this.userSelected = subj;
+        },
+        dehighlightSankey() {
+            this.userLinks
+                .transition()
+                .duration(1000)
+                .style("stroke", "#000")
+                .style("stroke-opacity", 0.2);
+            this.userSelected = null;
+            this.userLinks = null;
         }
     },
     watch: {
         defaultNodes: function() {
             this.$d3.select("#sankey").select("svg").select("g").remove();
             this.filterSankeyData(this.allData);
+            if (this.userSelected) {
+                this.highlightSankey(this.userSelected);
+            }
         }
     },
     mounted() {
         this.$root.$on('drawSankey', (data) => this.filterSankeyData(data));
+        this.$root.$on('highlightSankey', (subj) => this.highlightSankey(subj));
+        this.$root.$on('dehighlightSankey', () => this.dehighlightSankey());
     }
 }
 </script>

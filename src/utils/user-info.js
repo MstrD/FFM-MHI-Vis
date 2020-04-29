@@ -7,15 +7,15 @@ function getAge(d) {
 }
 
 function getGender(d) {
-    return (typeof(d) === Object ? d.Q1_Sexo : d) === 1 ? "Male" : "Female";
+    return (typeof(d) === 'object' ? d.Q1_Sexo : d) === 1 ? "Male" : "Female";
 }
 
 function getResidence(d) {
-    return (typeof(d) === Object ? d.Q4_Residência : d) === 1 ? "City" : "Countryside";
+    return (typeof(d) === 'object' ? d.Q4_Residência : d) === 1 ? "City" : "Countryside";
 }
 
 function getSchooling(d) {
-    switch (typeof(d) === Object ? d.Q5_Ensino : d) {
+    switch (typeof(d) === 'object' ? d.Q5_Ensino : d) {
         case 1:
             return "Primary School";
         case 2:
@@ -32,7 +32,7 @@ function getSchooling(d) {
 };
 
 function getWorkStatus(d) {
-    switch (typeof(d) === Object ? d.Q6_Profissão : d) {
+    switch (typeof(d) === 'object' ? d.Q6_Profissão : d) {
         case 1:
             return "Employed";
         case 2:
@@ -47,7 +47,7 @@ function getWorkStatus(d) {
 };
 
 function getEconomicalStatus(d) {
-    switch (typeof(d) === Object ? d.Q8_Situação_Económica : d) {
+    switch (typeof(d) === 'object' ? d.Q8_Situação_Económica : d) {
         case 1:
             return "Very Satisfying";
         case 2:
@@ -60,7 +60,7 @@ function getEconomicalStatus(d) {
 };
 
 function getMaritalStatus(d) {
-    switch (typeof(d) === Object ? d.Q9_Estado_Civil : d) {
+    switch (typeof(d) === 'object' ? d.Q9_Estado_Civil : d) {
         case 1:
             return "Single";
         case 2:
@@ -73,7 +73,7 @@ function getMaritalStatus(d) {
 };
 
 function getHousehold(d) {
-    switch (typeof(d) === Object ? d.Q10_Agregado_Familiar : d) {
+    switch (typeof(d) === 'object' ? d.Q10_Agregado_Familiar : d) {
         case 1:
             return "Alone";
         case 2:
@@ -90,13 +90,13 @@ function getHousehold(d) {
 };
 
 function getReligion(d, other) {
-    switch (typeof(d) === Object ? d.Q13_Religião : d) {
+    switch (typeof(d) === 'object' ? d.Q13_Religião : d) {
         case 1:
             return "Catholic (practicing)";
         case 2:
             return "Catholic (non-practicing)";
         case 3:
-            if (typeof(d) === Object)
+            if (typeof(d) === 'object')
                 return d.Descrição_Outra_Religião.charAt(0).toUpperCase() + d.Descrição_Outra_Religião.slice(1);
             else
                 return other.charAt(0).toUpperCase() + other.slice(1);
