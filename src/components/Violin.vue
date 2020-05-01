@@ -19,8 +19,7 @@ export default {
                 d.AberturaExperiência_NEOFFI,
                 d.AmabIilidade_NEOFFI,
                 d.Conscienciosidade_NEOFFI
-            ],
-            violinUsers: []
+            ]
         }
     },
     methods: {
@@ -205,11 +204,9 @@ export default {
 
             this.$d3.select("#violin").select("svg").select("g")
                 .selectAll(`.myIndLabel${subj.Nº}`)
-                //.selectAll(".myIndLabel")
                 .data(this.violin_data(subj)).enter()
                 .append("text")
                 .attr("class", `myIndLabel${subj.Nº}`)
-                //.attr("class", "myIndLabel")
                 .attr("transform", (d, i) => `translate(${(this.violin_center * (i+1) + 10)}, ${this.violin_y(d)})`)
                 .style("font-size", "9pt")
                 .style("opacity", 0)
@@ -218,10 +215,10 @@ export default {
                 .style("opacity", 1)
                 .text(`#${subj.Nº}`);
 
-            this.violinUsers.push(subj);
+            this.$violinUsers.push(subj);
         },
         dehighlightViolin(subj) {
-            console.log(this);
+            console.log(subj.Nº);
             this.$d3.select("#violin").select("svg").select("g")
                 .selectAll(`.myInd${subj.Nº}`)
                 .transition()
@@ -236,7 +233,7 @@ export default {
                 .style("opacity", 0)
                 .remove();
 
-            this.violinUsers = this.violinUsers.filter((d) => d.Nº !== subj.Nº);
+            this.$violinUsers = this.$violinUsers.filter((d) => d.Nº !== subj.Nº);
         }
     },
     mounted() {

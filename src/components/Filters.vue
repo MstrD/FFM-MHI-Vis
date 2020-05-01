@@ -322,10 +322,12 @@ export default {
     },
     methods: {
         filterDataById(id) {
+            this.removeHighlightedSubjects();
             this.$filters.toApply = this.$els.filter((d) => d.Nº === id);
             this.renewCharts(this.filterDataById.name);
         },
         filterDataByGender(gender) {
+            this.removeHighlightedSubjects();
             if (this.$filters.gender.length)
                 this.$filters.gender = [];
             switch (gender) {
@@ -341,6 +343,7 @@ export default {
             this.renewCharts(this.filterDataByGender.name);
         },
         filterDataByAge(age1, age2, toRenew) {
+            this.removeHighlightedSubjects();
             var myFilter = this.$filters.gender.length ? this.$filters.gender : this.$els;
             if (age1 < age2) {
                 this.currentAge1 = age1;
@@ -353,6 +356,7 @@ export default {
             }
         },
         filterDataByTraits(trait, value1, value2) { // FIXME: a different array for each trait, perhaps?
+            this.removeHighlightedSubjects();
             var myFilter = this.$filters.toApplyGenderAndAge === this.$filters.toApply ? this.$filters.toApplyGenderAndAge : this.$filters.toApply;
             switch (trait) {
                 case 0:
@@ -451,6 +455,18 @@ export default {
           this.info_gender = false;
           this.info_age = false;
           this.info_traits = false;
+        },
+        removeHighlightedSubjects() {
+          // from scatterplot
+          this.$d3.select("#scatter").select("g").selectAll("circle")
+              .data(this.$filters.toApply)
+              .transition()
+              .duration(1000)
+              .attr("r", 3)
+              .style("stroke", "none");
+          // from violin chart
+          this.$violinUsers.forEach((el) => {this.$root.$emit('dehighlightViolin', el)});
+          // TODO: from sankey?
         }
     }
 }
