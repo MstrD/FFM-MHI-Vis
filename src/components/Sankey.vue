@@ -168,7 +168,7 @@ export default {
             linkPaths
                 .transition()
                 .duration(1000)
-                .style("stroke", "orange")
+                .style("stroke", this.$getColor("dark"))
                 .style("stroke-opacity", 0.75);
             this.userLinks = linkPaths;
             this.userSelected = subj;

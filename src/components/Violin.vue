@@ -19,7 +19,8 @@ export default {
                 d.AberturaExperiência_NEOFFI,
                 d.AmabIilidade_NEOFFI,
                 d.Conscienciosidade_NEOFFI
-            ]
+            ],
+            violinUsers: []
         }
     },
     methods: {
@@ -187,34 +188,61 @@ export default {
         },
         highlightViolin(subj) {
             var arc = this.$d3.symbol().type(this.$d3.symbolDiamond); // identifies user with diamond symbol
+            
+            this.$d3.select("#violin").select("svg").select("g")
+                .selectAll(`.myInd${subj.Nº}`)
+                .data(this.violin_data(subj)).enter()
+                .append("path")
+                .attr("d", arc)
+                .attr("class", `myInd${subj.Nº}`)
+                .attr("transform", (d, i) => `translate(${(this.violin_center * (i+1))}, ${this.violin_y(d)})`)
+                .style("fill", "orange")
+                .style("stroke", this.$getColor("dark"))
+                .style("opacity", 0)
+                .transition()
+                .duration(1000)
+                .style("opacity", 1);
 
             this.$d3.select("#violin").select("svg").select("g")
-            .selectAll(".myInd")
-            .data(this.violin_data(subj)).enter()
-            .append("path")
-            .attr("d", arc)
-            .attr("class", "myInd")
-            .attr("transform", (d, i) => "translate(" + (this.violin_center * (i+1)) + "," + this.violin_y(d) + ")")
-            .style("fill", "orange")
-            .style("stroke", this.$getColor("dark"))
-            .style("opacity", 0)
-            .transition()
-            .duration(1000)
-            .style("opacity", 1);
+                .selectAll(`.myIndLabel${subj.Nº}`)
+                //.selectAll(".myIndLabel")
+                .data(this.violin_data(subj)).enter()
+                .append("text")
+                .attr("class", `myIndLabel${subj.Nº}`)
+                //.attr("class", "myIndLabel")
+                .attr("transform", (d, i) => `translate(${(this.violin_center * (i+1) + 10)}, ${this.violin_y(d)})`)
+                .style("font-size", "9pt")
+                .style("opacity", 0)
+                .transition()
+                .duration(1000)
+                .style("opacity", 1)
+                .text(`#${subj.Nº}`);
+
+            this.violinUsers.push(subj);
         },
-        dehighlightViolin() {
+        dehighlightViolin(subj) {
+            console.log(this);
             this.$d3.select("#violin").select("svg").select("g")
-            .selectAll(".myInd")
-            .transition()
-            .duration(1000)
-            .style("opacity", 0)
-            .remove();
+                .selectAll(`.myInd${subj.Nº}`)
+                .transition()
+                .duration(1000)
+                .style("opacity", 0)
+                .remove();
+
+            this.$d3.select("#violin").select("svg").select("g")
+                .selectAll(`.myIndLabel${subj.Nº}`)
+                .transition()
+                .duration(1000)
+                .style("opacity", 0)
+                .remove();
+
+            this.violinUsers = this.violinUsers.filter((d) => d.Nº !== subj.Nº);
         }
     },
     mounted() {
         this.$root.$on('drawViolin', (data) => this.drawViolin(data));
         this.$root.$on('highlightViolin', (subj) => this.highlightViolin(subj));
-        this.$root.$on('dehighlightViolin', () => this.dehighlightViolin());
+        this.$root.$on('dehighlightViolin', (subj) => this.dehighlightViolin(subj));
     }
 }
 </script>

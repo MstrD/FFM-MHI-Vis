@@ -11,7 +11,7 @@ function dehighlightSubject(subj) {
     this.$root.$emit('dehighlightParallel', subj);
     this.$root.$emit('dehighlightHistogram', subj);
     this.$root.$emit('dehighlightBoxplot');
-    this.$root.$emit('dehighlightViolin');
+    this.$root.$emit('dehighlightViolin', subj);
     this.$root.$emit('dehighlightSankey');
     this.$root.$emit('removeHeatmap');
 }
