@@ -174,11 +174,17 @@ export default {
             this.userSelected = subj;
         },
         dehighlightSankey() {
-            this.userLinks
+            this.$d3.select("#sankey").select("svg").select("g").selectAll("path")
                 .transition()
                 .duration(1000)
                 .style("stroke", "#000")
                 .style("stroke-opacity", 0.2);
+            /* if (this.userLinks)
+                this.userLinks
+                    .transition()
+                    .duration(1000)
+                    .style("stroke", "#000")
+                    .style("stroke-opacity", 0.2); */
             this.userSelected = null;
             this.userLinks = null;
         }

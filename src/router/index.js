@@ -71,6 +71,7 @@ Vue.prototype.currentAgreeableness2 = 48;
 Vue.prototype.currentConscientiousness1 = 0;
 Vue.prototype.currentConscientiousness2 = 48;
 
+Vue.prototype.$scatterUsers = [];
 Vue.prototype.$violinUsers = [];
 
 Vue.prototype.$d3 = d3;

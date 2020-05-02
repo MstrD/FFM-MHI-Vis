@@ -219,6 +219,7 @@ export default {
                     self.$d3.select(this)
                         .style("stroke", "black");
                     self.$highlightSubject(d);
+                    self.$scatterUsers.push(d);
                 }
                 else {
                     self.$d3.select(this).classed("clicked", false);
@@ -228,6 +229,7 @@ export default {
                         .duration(1000)
                         .attr("r", 3);
                     self.$dehighlightSubject(d);
+                    self.$scatterUsers = self.$scatterUsers.filter(el => d.Nº !== el.Nº);
                 }
             });
 

@@ -189,11 +189,11 @@ export default {
             var arc = this.$d3.symbol().type(this.$d3.symbolDiamond); // identifies user with diamond symbol
             
             this.$d3.select("#violin").select("svg").select("g")
-                .selectAll(`.myInd${subj.Nº}`)
+                .selectAll(`.myInd${this.$getNumber(subj)}`)
                 .data(this.violin_data(subj)).enter()
                 .append("path")
                 .attr("d", arc)
-                .attr("class", `myInd${subj.Nº}`)
+                .attr("class", `myInd${this.$getNumber(subj)}`)
                 .attr("transform", (d, i) => `translate(${(this.violin_center * (i+1))}, ${this.violin_y(d)})`)
                 .style("fill", "orange")
                 .style("stroke", this.$getColor("dark"))
@@ -203,37 +203,36 @@ export default {
                 .style("opacity", 1);
 
             this.$d3.select("#violin").select("svg").select("g")
-                .selectAll(`.myIndLabel${subj.Nº}`)
+                .selectAll(`.myIndLabel${this.$getNumber(subj)}`)
                 .data(this.violin_data(subj)).enter()
                 .append("text")
-                .attr("class", `myIndLabel${subj.Nº}`)
+                .attr("class", `myIndLabel${this.$getNumber(subj)}`)
                 .attr("transform", (d, i) => `translate(${(this.violin_center * (i+1) + 10)}, ${this.violin_y(d)})`)
                 .style("font-size", "9pt")
                 .style("opacity", 0)
                 .transition()
                 .duration(1000)
                 .style("opacity", 1)
-                .text(`#${subj.Nº}`);
+                .text(`#${this.$getNumber(subj)}`);
 
             this.$violinUsers.push(subj);
         },
         dehighlightViolin(subj) {
-            console.log(subj.Nº);
             this.$d3.select("#violin").select("svg").select("g")
-                .selectAll(`.myInd${subj.Nº}`)
+                .selectAll(`.myInd${this.$getNumber(subj)}`)
                 .transition()
                 .duration(1000)
                 .style("opacity", 0)
                 .remove();
 
             this.$d3.select("#violin").select("svg").select("g")
-                .selectAll(`.myIndLabel${subj.Nº}`)
+                .selectAll(`.myIndLabel${this.$getNumber(subj)}`)
                 .transition()
                 .duration(1000)
                 .style("opacity", 0)
                 .remove();
 
-            this.$violinUsers = this.$violinUsers.filter((d) => d.Nº !== subj.Nº);
+            this.$violinUsers = this.$violinUsers.filter((d) => this.$getNumber(d) !== this.$getNumber(subj));
         }
     },
     mounted() {

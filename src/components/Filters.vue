@@ -322,12 +322,10 @@ export default {
     },
     methods: {
         filterDataById(id) {
-            this.removeHighlightedSubjects();
             this.$filters.toApply = this.$els.filter((d) => d.Nº === id);
             this.renewCharts(this.filterDataById.name);
         },
         filterDataByGender(gender) {
-            this.removeHighlightedSubjects();
             if (this.$filters.gender.length)
                 this.$filters.gender = [];
             switch (gender) {
@@ -343,7 +341,6 @@ export default {
             this.renewCharts(this.filterDataByGender.name);
         },
         filterDataByAge(age1, age2, toRenew) {
-            this.removeHighlightedSubjects();
             var myFilter = this.$filters.gender.length ? this.$filters.gender : this.$els;
             if (age1 < age2) {
                 this.currentAge1 = age1;
@@ -356,7 +353,6 @@ export default {
             }
         },
         filterDataByTraits(trait, value1, value2) { // FIXME: a different array for each trait, perhaps?
-            this.removeHighlightedSubjects();
             var myFilter = this.$filters.toApplyGenderAndAge === this.$filters.toApply ? this.$filters.toApplyGenderAndAge : this.$filters.toApply;
             switch (trait) {
                 case 0:
@@ -408,6 +404,7 @@ export default {
             this.$root.$emit('drawScatter', this.$filters.toApply);
             this.$root.$emit('drawHistogram', this.$filters.toApply);
             this.$root.$emit('updateFilter', this.$filters.toApply);
+            this.removeHighlightedSubjects();
         },
         filterAllTraits() {
             this.filterDataByTraits(0, this.currentNeuroticism1, this.currentNeuroticism2);
@@ -457,16 +454,21 @@ export default {
           this.info_traits = false;
         },
         removeHighlightedSubjects() {
-          // from scatterplot
-          this.$d3.select("#scatter").select("g").selectAll("circle")
+          // from scatterplot (needs to be manually removed)
+          this.$d3.select("#scatter").select("g").selectAll(".dot")
               .data(this.$filters.toApply)
-              .transition()
-              .duration(1000)
               .attr("r", 3)
               .style("stroke", "none");
-          // from violin chart
-          this.$violinUsers.forEach((el) => {this.$root.$emit('dehighlightViolin', el)});
-          // TODO: from sankey?
+          // highlighting removed from all other charts
+          this.$scatterUsers.forEach((el) => this.$dehighlightSubject(el));
+          // parallel still needs to be further refurbished
+          this.$d3.select("#parallel").select("svg").selectAll(".target")
+            .classed("highlighted", false)
+            .transition()
+            .duration(500)
+            .style("opacity", 0.5)
+            .style("stroke-width", 1)
+            .style("stroke", (d) => d.Q1_Sexo !== 1 ? this.$getColor("primary") : "orange");
         }
     }
 }
