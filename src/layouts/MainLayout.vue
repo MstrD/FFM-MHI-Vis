@@ -19,7 +19,7 @@
         </q-toolbar-title>
         <q-space />
           <div style="display: inline-block">
-          <q-btn-dropdown flat round dense persistent icon="filter_list" class="q-mr-xs" id="dropdown">
+          <q-btn-dropdown flat round dense persistent label="Filters" icon="filter_list" class="q-mr-xs" id="dropdown">
             <Filters />
           </q-btn-dropdown>
           <q-tooltip content-class="bg-dark">Filters</q-tooltip>
@@ -65,6 +65,7 @@
         <div class="q-pl-md q-mb-xs" style="font-size: 9pt">
           <q-icon name="lens" color="primary" /> Female
           <q-icon name="lens" color="orange" class="q-pl-md q-pr-sm" /> Male
+          <span style="float: right" class="q-mr-lg text-grey-6"><i>{{ elements.length }} subjects found</i></span>
         </div>
         <UserProfile 
           v-for="link in elements"

@@ -84,7 +84,7 @@ export default {
                     .call(this.$d3.axisLeft(y));
 
                 this.violin_center = (width - margin.left - margin.right) / data.length;
-                this.violin_width = 50;
+                this.violin_width = 30; // FIXME: this value probably needs to be responsive
                 this.violin_y = y;
             }
             else
@@ -136,7 +136,7 @@ export default {
                         .attr("height", (y(q1[i]) - y(q3[i])))
                         .attr("width", this.violin_width/2)
                         .attr("stroke", "black")
-                        .style("fill", this.$getColor("secondary"));
+                        .style("fill", "white");
 
                     // show median, min and max horizontal lines
                     svg.selectAll("toto")

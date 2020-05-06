@@ -19,7 +19,7 @@
         </q-item-section>
       </q-item>
 
-      <q-field
+      <!--q-field
         filled
         clearable
         v-if="info_id"
@@ -39,7 +39,26 @@
             class="q-mt-md"
           />
         </template>
-      </q-field>
+      </q-field-->
+
+      <q-input class="q-mb-md q-pl-md q-pr-md q-mt-xs"
+          clearable
+          dense
+          clear-icon="close"
+          filled
+          type="number"
+          color="primary"
+          v-if="info_id"
+          v-model="model_id"
+          hint="Choose a subject between #0 and #199..."
+          :rules="[val => val >= 0 && val <= 199 || 'Your subject ID must be between #0 and #199']"
+          @input="val => filterDataById(parseInt(val))"
+          @clear="val => drawOriginals(false)"
+        >
+          <template v-slot:append>
+            <q-icon v-if="!model_id" name="search" />
+          </template>
+        </q-input>
 
       <q-separator spaced />
       <q-item-label header>General Filters</q-item-label>
@@ -269,6 +288,7 @@ export default {
             slider: 0,
 
             info_id: false,
+            model_id: '',
 
             info_gender: false,
             gender_group: '',
@@ -323,7 +343,10 @@ export default {
     methods: {
         filterDataById(id) {
             this.$filters.toApply = this.$els.filter((d) => d.Nº === id);
-            this.renewCharts(this.filterDataById.name);
+            if (id)
+              this.renewCharts(this.filterDataById.name);
+            else
+              this.drawOriginals(false);
         },
         filterDataByGender(gender) {
             if (this.$filters.gender.length)
