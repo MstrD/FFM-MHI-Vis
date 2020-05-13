@@ -18,7 +18,8 @@ export default {
                 d.Extroversão_NEOFFI,
                 d.AberturaExperiência_NEOFFI,
                 d.AmabIilidade_NEOFFI,
-                d.Conscienciosidade_NEOFFI
+                d.Conscienciosidade_NEOFFI,
+                d.MH5_total
             ]
         }
     },
