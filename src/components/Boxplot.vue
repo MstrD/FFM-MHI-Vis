@@ -1,5 +1,5 @@
 <template>
-    <div class="q-mt-md col-12 col-md-3" id="boxplot" style="height: 400px">
+    <div class="q-mt-md col-12 col-md-4" id="boxplot" style="height: 400px">
     </div>
 </template>
 
@@ -30,13 +30,14 @@ export default {
                 height = this.$d3.select("#boxplot").property("clientHeight") - margin.top - margin.bottom;
         
             // create dummy data
-            var data = [[], [], [], [], []];
+            var data = [[], [], [], [], [], []];
             d.forEach((el) => {
                 data[0].push(el.Neuroticismo_NEOFFI);
                 data[1].push(el.Extroversão_NEOFFI);
                 data[2].push(el.AberturaExperiência_NEOFFI);
                 data[3].push(el.AmabIilidade_NEOFFI);
                 data[4].push(el.Conscienciosidade_NEOFFI);
+                data[5].push(el.MH5_total);
             });
             // Compute summary statistics used for the box:
             // https://www.d3-graph-gallery.com/graph/boxplot_basic.html
@@ -56,12 +57,16 @@ export default {
         
             // Show the X scale
             var x = this.$d3.scalePoint()
-                .domain(['', 'N', 'E', 'O', 'A', 'C'])
+                .domain(['', 'N', 'E', 'O', 'A', 'C', 'MHI'])
                 .range([0, width - margin.left - margin.right]); // valor de right range = denominador da definicao de var center (mais abaixo)
 
             // Show the Y scale
             var y = this.$d3.scaleLinear()
                 .domain([0,48])
+                .range([height, 0]).nice();
+
+            var y_mhi = this.$d3.scaleLinear()
+                .domain([0, 30])
                 .range([height, 0]).nice();
         
             // a few features for the box
@@ -80,6 +85,9 @@ export default {
                 svg
                     .append("g")
                     .call(this.$d3.axisLeft(y));
+                svg.append("g")
+                    .attr("transform", `translate(${width - margin.right}, 0)`)
+                    .call(this.$d3.axisRight(y_mhi));
                 this.bp_center = (width - margin.left - margin.right) / data.length;
                 this.bp_width = 35;
                 this.bp_y = y;
@@ -120,6 +128,15 @@ export default {
                         .attr("y1", (d) => y(d))
                         .attr("y2", (d) => y(d))
                         .attr("stroke", "black");
+                    
+                    // append tooltip for each rect
+                    svg.data(data[i])
+                        .append("div")
+                        .attr("class", "tooltip")
+                        .attr("transform", (d, i) => `translate(${this.bp_center * (i+1) - this.bp_width/2}, ${y(d)})`)
+                        .style("opacity", 0.75)
+                        .append("text")
+                        .text((_, i) => `Trait ${i+1}`)
                 }
                 else {
                     // update vertical axis
@@ -152,6 +169,7 @@ export default {
                         .attr("y2", (d) => y(d));
                 }
             }
+            
             if (!this.boxplotExists)
                 this.boxplotExists = true;
         },
