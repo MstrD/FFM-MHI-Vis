@@ -18,6 +18,17 @@
           <q-item-label caption class="text-white" style="font-size: 10pt">An InfoVis Tool on Personality and Mental Health</q-item-label>
         </q-toolbar-title>
         <q-space />
+          <div class="btn-holder" style="display: inline-block">
+            <q-btn-dropdown flat round dense label="Sociodemographics" icon="group">
+              <Categories
+                  :allNodes="allCategories"
+                  :currentNodes="defaultNodes"
+                  @update-order="updateOrder"
+                  @update-current="updateCurrent"
+              />
+            </q-btn-dropdown>
+            <q-tooltip content-class="bg-dark">Sociodemographic Factors</q-tooltip>
+          </div>
           <div style="display: inline-block">
           <q-btn-dropdown flat round dense persistent label="Filters" icon="filter_list" class="q-mr-xs" id="dropdown">
             <Filters />
@@ -83,21 +94,32 @@
 <script>
 import UserProfile from 'components/UserProfile';
 import Filters from 'components/Filters';
+import Categories from 'components/Categories';
 
 export default {
   name: 'MainLayout',
 
   components: {
     UserProfile,
-    Filters
+    Filters,
+    Categories
   },
 
+  
   data () {
     return {
       leftDrawerOpen: false,
       elements: this.$filters.toApply,
 
-      model: ''
+      model: '',
+
+      allCategories: null,
+      defaultNodes: [
+          'Gender',
+          'Residence',
+          'Work Status',
+          'Religion'
+      ]
     }
   },
   methods: {
@@ -111,10 +133,17 @@ export default {
     },
     resetElements() {
       this.elements = this.$filters.toApply;
-    }
+    },
+    updateOrder(nodes) {
+      this.$root.$emit('updateOrder', nodes);
+    },
+    updateCurrent(current) {
+      this.$root.$emit('updateCurrent', current);
+    },
   },
   mounted() {
     this.$root.$on('updateFilter', (filter) => this.elements = filter);
+    this.$root.$on('allCategories', (cats) => this.allCategories = cats);
   }
 }
 </script>

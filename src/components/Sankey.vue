@@ -1,19 +1,6 @@
 <template>
     <div id="sankey" class="col-12 col-md-7" style="height: 500px">
         <svg></svg>
-        <div class="btn-holder">
-            <q-btn round color="primary" icon="list">
-                <q-tooltip content-class="bg-dark">Socioeconomical Factors</q-tooltip>
-                <q-menu transition-show="scale" transition-hide="scale">
-                    <Categories
-                        :allNodes="allCategories"
-                        :currentNodes="defaultNodes"
-                        @update-order="updateOrder"
-                        @update-current="updateCurrent"
-                    />
-                </q-menu>
-            </q-btn>
-        </div>
     </div>
 </template>
 
@@ -117,6 +104,8 @@ export default {
             
             if (!this.firstLoad) { // this is only processed on mounting
                 this.allCategories = JSON.parse(JSON.stringify(data.categories));
+                this.$root.$emit('allCategories', this.allCategories);
+
                 this.allData = JSON.parse(JSON.stringify(data));
                 this.firstLoad = true;
             }
@@ -202,6 +191,9 @@ export default {
         this.$root.$on('drawSankey', (data) => this.filterSankeyData(data));
         this.$root.$on('highlightSankey', (subj) => this.highlightSankey(subj));
         this.$root.$on('dehighlightSankey', () => this.dehighlightSankey());
+
+        this.$root.$on('updateOrder', (nodes) => this.updateOrder(nodes));
+        this.$root.$on('updateCurrent', (current) => this.updateCurrent(current));
     }
 }
 </script>

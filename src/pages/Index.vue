@@ -3,9 +3,9 @@
     <Parallel />
     <Scatter />
     <Heatmap />
-    <Violin />
-    <!--<Boxplot />
-    <Histogram />-->
+    <!-- <Violin /> -->
+    <Boxplot />
+    <!-- <Histogram /> -->
     <Sankey />
   </div>
 </template>
