@@ -156,30 +156,55 @@ export default {
                 this.boxplotExists = true;
         },
         highlightBoxplot(subj) {
+            var arc = this.$d3.symbol().type(this.$d3.symbolDiamond); // identifies user with diamond symbol
+            
             this.$d3.select("#boxplot").select("svg").select("g")
-            .selectAll(".myInd")
-            .data(this.bp_data(subj)).enter()
-            .append("line")
-            .attr("class", "myInd")
-            .attr("x1", (_, i) => this.bp_center * (i+1) - this.bp_width/2)
-            .attr("x2", (_, i) => this.bp_center * (i+1) + this.bp_width/2)
-            .attr("y1", (d) => this.bp_y(d))
-            .attr("y2", (d) => this.bp_y(d))
-            .style("stroke", "blue");
+                .selectAll(`.myInd${this.$getNumber(subj)}`)
+                .data(this.bp_data(subj)).enter()
+                .append("path")
+                .attr("d", arc)
+                .attr("class", `myInd${this.$getNumber(subj)}`)
+                .attr("transform", (d, i) => `translate(${(this.bp_center * (i+1))}, ${this.bp_y(d)})`)
+                .style("fill", "orange")
+                .style("stroke", this.$getColor("dark"))
+                .style("opacity", 0)
+                .transition()
+                .duration(1000)
+                .style("opacity", 1);
+
+            this.$d3.select("#boxplot").select("svg").select("g")
+                .selectAll(`.myIndLabel${this.$getNumber(subj)}`)
+                .data(this.bp_data(subj)).enter()
+                .append("text")
+                .attr("class", `myIndLabel${this.$getNumber(subj)}`)
+                .attr("transform", (d, i) => `translate(${(this.bp_center * (i+1) + 10)}, ${this.bp_y(d)})`)
+                .style("font-size", "9pt")
+                .style("opacity", 0)
+                .transition()
+                .duration(1000)
+                .style("opacity", 1)
+                .text(`#${this.$getNumber(subj)}`);
         },
-        dehighlightBoxplot() {
+        dehighlightBoxplot(subj) {
             this.$d3.select("#boxplot").select("svg").select("g")
-            .selectAll(".myInd")
-            .transition()
-            .duration(1000)
-            .style("opacity", 0)
-            .remove();
+                .selectAll(`.myInd${this.$getNumber(subj)}`)
+                .transition()
+                .duration(1000)
+                .style("opacity", 0)
+                .remove();
+
+            this.$d3.select("#boxplot").select("svg").select("g")
+                .selectAll(`.myIndLabel${this.$getNumber(subj)}`)
+                .transition()
+                .duration(1000)
+                .style("opacity", 0)
+                .remove();
         }
     },
     mounted() {
         this.$root.$on('drawBoxplot', (data) => this.drawBoxplot(data));
         this.$root.$on('highlightBoxplot', (subj) => this.highlightBoxplot(subj));
-        this.$root.$on('dehighlightBoxplot', () => this.dehighlightBoxplot());
+        this.$root.$on('dehighlightBoxplot', (subj) => this.dehighlightBoxplot(subj));
     }
 }
 </script>
