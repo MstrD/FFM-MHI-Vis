@@ -52,7 +52,7 @@ export default {
           return nodes.indexOf(a) - nodes.indexOf(b);
         });
       }
-
+      this.checkedNodes = current;
       // spread current list to parent
       this.$emit("update-current", current);
     },
@@ -82,14 +82,23 @@ export default {
       this.checkedNodes.sort(function(a, b) {
         return nodes.indexOf(a) - nodes.indexOf(b);
       });
-        
+      // the entire node list must be sorted by the same order
+      this.allNodes.sort(function(a, b) {
+        return nodes.indexOf(a) - nodes.indexOf(b);
+      });
+
       // the new node order is then spread to the parent (Sankey.vue)
       this.$emit("update-order", nodes);
     }
   },
   computed: {
-    checkedNodes: function() {
-      return this.currentNodes;
+    checkedNodes: {
+      get() {
+        return this.currentNodes;
+      },
+      set(update) {
+        this.currentNodes = update;
+      }
     }
   },
 }
