@@ -5,6 +5,8 @@
         group="somegroup"
         label="First"
         header-class="bg-grey-3 text-primary"
+        @show="triggerHighlighting(Nº)"
+        @hide="triggerDehighlighting(Nº)"
       >
         <template v-slot:header>
           <q-item-section avatar>
@@ -77,8 +79,11 @@ export default {
     }
   },
   methods: {
-    getColor() {
-      console.log("ora ca estamos");
+    triggerHighlighting(id) {
+      this.$highlightSubject(this.$getUserById(id), true);
+    },
+    triggerDehighlighting(id) {
+      this.$dehighlightSubject(this.$getUserById(id), true);
     }
   }
 }

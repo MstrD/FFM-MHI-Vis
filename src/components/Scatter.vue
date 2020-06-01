@@ -237,10 +237,31 @@ export default {
             if (!this.scatterExists)
                 this.scatterExists = true;
             this.scatterData = data;
+        },
+        highlightScatter(id) {
+            this.dehighlightScatter();
+            var dots = this.$d3.select("#scatter").select("g").selectAll(".dot")
+                .data(this.$els)
+                .filter((d) => d.Nº === id.Nº);
+            dots.transition()
+                .duration(1000)
+                .style("stroke", "black")
+                .attr("r", 6);
+        },
+        dehighlightScatter() {
+            var dots = this.$d3.select("#scatter").select("g").selectAll(".dot[r^='6']");
+            console.log(dots);
+            if (dots.nodes().length)
+                dots.transition()
+                    .duration(1000)
+                    .style("stroke", "none")
+                    .attr("r", 3);
         }
     },
     mounted() {
         this.$root.$on('drawScatter', (data) => this.drawScatter(data, this.scatterIndex));
+        this.$root.$on('highlightScatter', (id) => this.highlightScatter(id));
+        this.$root.$on('dehighlightScatter', () => this.dehighlightScatter());
     },
     watch: {
         scatterIndex: function() {

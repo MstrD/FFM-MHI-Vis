@@ -223,6 +223,10 @@ function getCorrectTrait(d, trait) {
     }
 }
 
+function getUserById(id) {
+    return this.$els[id];
+}
+
 function getQuestionsVerbose() {
     return {
         Neuroticism: [
@@ -309,5 +313,5 @@ export {
     getNumber, getAge, getGender, getResidence, getSchooling, 
     getWorkStatus, getEconomicalStatus, getMaritalStatus, 
     getHousehold, getReligion, getTraitQuestions, 
-    getTraitAnswers, getTraitName, getCorrectTrait, getQuestionsVerbose
+    getTraitAnswers, getTraitName, getCorrectTrait, getUserById, getQuestionsVerbose
 };

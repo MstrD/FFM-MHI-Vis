@@ -40,7 +40,7 @@ export default {
     }
   },
   methods: {
-    toggleOnSankey(cat) { // FIXME: as well
+    toggleOnSankey(cat) {
       let current = this.checkedNodes; // cloned var to not use the prop
       let nodes = this.allNodes; // cloned var to not use the prop
 
