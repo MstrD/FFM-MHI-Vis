@@ -137,6 +137,8 @@ export default {
             this.defaultNodes = current;
         },
         highlightSankey(subj) {
+            this.dehighlightSankey();
+
             let results = [];
             this.defaultNodes.forEach(element => {
                 // this shady piece of code invokes a function from user-info.js based on its name
@@ -164,16 +166,8 @@ export default {
         },
         dehighlightSankey() {
             this.$d3.select("#sankey").select("svg").select("g").selectAll("path")
-                .transition()
-                .duration(1000)
                 .style("stroke", "#000")
                 .style("stroke-opacity", 0.2);
-            /* if (this.userLinks)
-                this.userLinks
-                    .transition()
-                    .duration(1000)
-                    .style("stroke", "#000")
-                    .style("stroke-opacity", 0.2); */
             this.userSelected = null;
             this.userLinks = null;
         }

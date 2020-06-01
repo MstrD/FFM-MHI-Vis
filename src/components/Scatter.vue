@@ -250,7 +250,6 @@ export default {
         },
         dehighlightScatter() {
             var dots = this.$d3.select("#scatter").select("g").selectAll(".dot[r^='6']");
-            console.log(dots);
             if (dots.nodes().length)
                 dots.transition()
                     .duration(1000)
