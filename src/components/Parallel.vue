@@ -1,5 +1,9 @@
 <template>
-    <div class="q-mt-md col-12 col-md-5" id="parallel" style="height: 375px">
+    <div class="col-12 col-md-5" id="parallel" style="height: 375px">
+        <div class="q-mt-md q-pl-lg q-gutter-sm">
+            <q-radio dense v-model="parallelIndex" val="Individual" label="Individual" />
+            <q-radio dense v-model="parallelIndex" val="Grouping" label="Grouping" />
+        </div>
         <div id="chart">
         </div>
     </div>
@@ -11,16 +15,21 @@ export default {
     data() {
         return {
             parallelExists: false,
-            parallelData: null
+            parallelData: null,
+            parallelGroupingData: null,
+            parallelIndex: 'Individual',
+            parallelGrouping: null,
+            parallelThresholds: null
         }
     },
     methods: {
-        drawParallel(data) {
+        drawParallel(data, parallelIndex) {
             // set the dimensions and margins of the graph
             var margin = {top: 30, right: 10, bottom: 10, left: 0},
             width = this.$d3.select("#parallel").property("clientWidth") - margin.left - margin.right,
             height = this.$d3.select("#parallel").property("clientHeight") - margin.top - margin.bottom;
-        
+            if (!this.parallelGrouping)
+                this.createGrouping(data);
             // Extract the list of dimensions we want to keep in the plot. Here I keep all except the column called Species
             var dimensions = ["Neuroticismo_NEOFFI", "Extroversão_NEOFFI", "AberturaExperiência_NEOFFI",
                         "AmabIilidade_NEOFFI", "Conscienciosidade_NEOFFI", "MH5_total"];
@@ -28,17 +37,23 @@ export default {
             var dimensions_name = ["Neuroticism", "Extraversion", "Openness", "Agreeableness", "Conscientiousness", "MHI"];
         
             // For each dimension, I build a linear scale. I store all in a y object
-            var y = {}
-                for (let i in dimensions) {
+            var y = {};
+            for (let i in dimensions) {
                 name = dimensions[i];
-                if (name !== "MH5_total")
+                if (name !== "MH5_total") {
                     y[name] = this.$d3.scaleLinear()
-                        .domain( [0, 48] )
+                        .domain( parallelIndex === 'Individual' ? [0, 48] : this.parallelThresholds[name])
                         .range([height, 0]);
-                else
+                    if (parallelIndex !== "Individual")
+                        y[name].nice();
+                }
+                else {
                     y[name] = this.$d3.scaleLinear()
-                        .domain( [0, 30] )
+                        .domain( parallelIndex === 'Individual' ? [0, 30] : this.parallelThresholds[name])
                         .range([height, 0]);
+                    if (parallelIndex !== "Individual")
+                        y[name].nice();
+                }
             }
         
             // Build the X scale -> it find the best position for each Y axis
@@ -103,7 +118,7 @@ export default {
                 // Draw the lines
                 svg
                     .selectAll("myPath")
-                    .data(data)
+                    .data(this.parallelIndex === 'Individual' ? data : this.parallelGrouping)
                     .enter().append("path")
                     .attr("d", path)
                     .attr("class", "target")
@@ -138,8 +153,9 @@ export default {
             }
             else {
                 var svg = this.$d3.select("#parallel").select("#chart").select("svg").select("g");
-                var myPath = svg.selectAll(".target").data(data);
+                var myPath = svg.selectAll(".target").data(this.parallelIndex === 'Individual' ? data : this.parallelGrouping);
                 myPath.exit().remove();
+                svg.selectAll(".myAxis").each(function(d) { return self.$d3.select(this).transition().duration(1000).call(self.$d3.axisLeft().scale(y[d]));})
                 if (data.length > this.parallelData.length)
                     myPath.enter()
                         .append("path")
@@ -151,7 +167,7 @@ export default {
                         .transition()
                         .duration(1000)
                         .style("stroke", (d) => d.Q1_Sexo !== 1 ? this.$getColor("primary") : "orange")
-                        .style("opacity", 0.5);
+                        .style("opacity", 0.5)
                 else
                     myPath.enter().merge(myPath)
                         .transition()
@@ -163,6 +179,52 @@ export default {
             if (!this.parallelExists)
                 this.parallelExists = true;
             this.parallelData = data;
+        },
+        createGrouping(data) {
+            // grouping by age is generated here
+            var first_grouping = [];
+            var grouping = [];
+            first_grouping.push(
+                data.filter((d) => this.$getAge(d) >= 18 && this.$getAge(d) < 30)
+            );
+            for (let age = 30; age < 80; age += 10) {
+                first_grouping.push(
+                    data.filter((d) => this.$getAge(d) >= age && this.$getAge(d) < age + 10)
+                );
+            }
+            first_grouping.forEach(element => {
+                let n = 0, e = 0, o = 0, a = 0, c = 0, mhi = 0;
+                element.forEach(d => {
+                    n += d.Neuroticismo_NEOFFI;
+                    e += d.Extroversão_NEOFFI;
+                    o += d.AberturaExperiência_NEOFFI;
+                    a += d.AmabIilidade_NEOFFI;
+                    c += d.Conscienciosidade_NEOFFI;
+                    mhi += d.MH5_total;
+                });
+                grouping.push({
+                    Neuroticismo_NEOFFI: n / element.length,
+                    Extroversão_NEOFFI: e / element.length,
+                    AberturaExperiência_NEOFFI: o / element.length,
+                    AmabIilidade_NEOFFI: a / element.length,
+                    Conscienciosidade_NEOFFI: c / element.length,
+                    MH5_total: mhi / element.length
+                });
+            });
+            this.parallelGrouping = grouping;
+            this.getGroupingThresholds(grouping);
+        },
+        getGroupingThresholds(grouping) {
+            let thresholds = {
+                Neuroticismo_NEOFFI: [this.$d3.min(grouping, d => d.Neuroticismo_NEOFFI), this.$d3.max(grouping, d => d.Neuroticismo_NEOFFI)],
+                Extroversão_NEOFFI: [this.$d3.min(grouping, d => d.Extroversão_NEOFFI), this.$d3.max(grouping, d => d.Extroversão_NEOFFI)],
+                AberturaExperiência_NEOFFI: [this.$d3.min(grouping, d => d.AberturaExperiência_NEOFFI), this.$d3.max(grouping, d => d.AberturaExperiência_NEOFFI)],
+                AmabIilidade_NEOFFI: [this.$d3.min(grouping, d => d.AmabIilidade_NEOFFI), this.$d3.max(grouping, d => d.AmabIilidade_NEOFFI)],
+                Conscienciosidade_NEOFFI: [this.$d3.min(grouping, d => d.Conscienciosidade_NEOFFI), this.$d3.max(grouping, d => d.Conscienciosidade_NEOFFI)],
+                MH5_total: [this.$d3.min(grouping, d => d.MH5_total), this.$d3.max(grouping, d => d.MH5_total)]
+            };
+            this.parallelThresholds = thresholds;
+            return thresholds;
         },
         highlightParallel(subj) {
             this.$d3.select("#parallel").select("svg").selectAll(".target:not(.highlighted)")
@@ -202,10 +264,15 @@ export default {
         }
     },
     mounted() {
-        this.$root.$on('drawParallel', (data) => this.drawParallel(data));
+        this.$root.$on('drawParallel', (data) => this.drawParallel(data, this.parallelIndex));
         this.$root.$on('highlightParallel', (subj) => this.highlightParallel(subj));
         this.$root.$on('dehighlightParallel', (subj) => this.dehighlightParallel(subj));
         this.$root.$on('dehighlightAllParallel', () => this.dehighlightAllParallel());
-    }
+    },
+    watch: {
+        parallelIndex: function() {
+            this.drawParallel(this.parallelData, this.parallelIndex);
+        }
+    },
 }
 </script>
