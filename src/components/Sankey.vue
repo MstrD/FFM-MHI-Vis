@@ -1,5 +1,5 @@
 <template>
-    <div id="sankey" class="col-12 col-md-7" style="height: 500px">
+    <div id="sankey" class="q-mt-xl col-12 col-md-7" style="height: 500px">
         <svg></svg>
     </div>
 </template>

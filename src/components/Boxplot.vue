@@ -1,5 +1,5 @@
 <template>
-    <div class="q-mt-md col-12 col-md-4" id="boxplot" style="height: 400px">
+    <div class="q-mt-xl col-12 col-md-4" id="boxplot" style="height: 400px">
     </div>
 </template>
 
@@ -106,7 +106,8 @@ export default {
                         .attr("x2", this.bp_center * (i+1))
                         .attr("y1", y(min[i]))
                         .attr("y2", y(max[i]))
-                        .attr("stroke", "black");
+                        .attr("stroke", "black")
+                        .style("stroke-dasharray", "5,5");
 
                     // Show the box
                     svg.data(data[i])
