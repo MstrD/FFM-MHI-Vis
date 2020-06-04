@@ -40,6 +40,7 @@ export default {
                 data[4].push(el.Conscienciosidade_NEOFFI);
                 data[5].push(el.MH5_total);
             });
+            var dimensions_name = ["Neuroticism", "Extraversion", "Openness", "Agreeableness", "Conscientiousness", "MHI"];
             // Compute summary statistics used for the box:
             // https://www.d3-graph-gallery.com/graph/boxplot_basic.html
             var data_sorted = data;
@@ -92,9 +93,13 @@ export default {
                 this.bp_center = (width - margin.left - margin.right) / data.length;
                 this.bp_width = 35;
                 this.bp_y = y;
+
+                var tooltip = this.$d3.select("#boxplot").append("div").attr("class", "tooltip");
             }
-            else
+            else {
                 var svg = this.$d3.select("#boxplot").select("svg").select("g");
+                var tooltip = this.$d3.select("#boxplot").select(".tooltip");
+            }
 
             for (let i = 0; i < data.length; i++) {
                 if (!this.boxplotExists) {
@@ -130,15 +135,6 @@ export default {
                         .attr("y1", (d) => y(d))
                         .attr("y2", (d) => y(d))
                         .attr("stroke", "black");
-                    
-                    // append tooltip for each rect
-                    svg.data(data[i])
-                        .append("div")
-                        .attr("class", "tooltip")
-                        .attr("transform", (d, i) => `translate(${this.bp_center * (i+1) - this.bp_width/2}, ${y(d)})`)
-                        .style("opacity", 0.75)
-                        .append("text")
-                        .text((_, i) => `Trait ${i+1}`)
                 }
                 else {
                     // update vertical axis
@@ -171,6 +167,60 @@ export default {
                         .attr("y2", (d) => y(d));
                 }
             }
+            var boxes = svg.selectAll("rect");
+            var self = this; // scope change
+            boxes.on("mouseover", function(_, i) {
+                self.$d3.select(this)
+                    .classed("hovered", true)
+                    .transition()
+                    .duration(500)
+                    .style("stroke-width", "3px");
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", 0.9)
+                    .style("padding", "2px")
+                    .style("left", (self.$d3.mouse(this)[0] + 350) + "px")
+                    .style("top", (self.$d3.mouse(this)[1] + 500) + "px");
+                tooltip
+                    .html(`
+                            <p style="text-align: center; margin-bottom: 5px; border-bottom: 1px solid #000">
+                                <b>${dimensions_name[i]}</b>
+                            </p>
+                            <table class="tg">
+                                <tbody>
+                                    <tr>
+                                        <th class="tg-73oq">Minimum</th>
+                                        <th class="tg-3z1b">${min[i]}</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-73oq">Quartile 1</td>
+                                        <td class="tg-3z1b">${q1[i]}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-73oq">Median</td>
+                                        <td class="tg-3z1b">${median[i]}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-73oq">Quartile 3</td>
+                                        <td class="tg-3z1b">${q3[i]}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-73oq">Maximum</td>
+                                        <td class="tg-3z1b">${max[i]}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                    `);
+            });
+            boxes.on("mouseout", function(_, i) {
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+                self.$d3.select(this)
+                    .transition()
+                    .duration(500)
+                    .style("stroke-width", "1px");
+            })
             
             if (!this.boxplotExists)
                 this.boxplotExists = true;
@@ -228,3 +278,47 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+    #boxplot .tooltip {
+        position: absolute;
+        opacity: 0;
+        width: auto;
+        height: auto;
+        pointer-events: none;
+        font-size: 10pt;
+        background-color: cornsilk;
+        border-radius: 4px;
+        padding-left: 2px;
+        z-index: 1;
+    }
+    .tg {
+        border-collapse: collapse;
+        border-spacing: 0;
+        font-size:  12px;
+    }
+    .tg td {
+        border-style: solid;
+        border-width: 0px;
+        overflow: hidden;
+        word-break: normal;
+    }
+    .tg th {
+        border-style: solid;
+        border-width: 0px;
+        font-weight: normal;
+        overflow: hidden;
+        word-break: normal;
+    }
+    .tg .tg-3z1b {
+        border-color: #000000;
+        text-align: right;
+        vertical-align: top;
+    }
+    .tg .tg-73oq {
+        border-color: #000000;
+        text-align: left;
+        vertical-align: top;
+        padding-right: 30px;
+    }
+</style>
