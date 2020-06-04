@@ -106,7 +106,7 @@ export default {
                     // Show the main vertical line
                     svg.data(data[i])
                         .append("line")
-                        .attr("class", "vertical")
+                        .attr("class", `vertical${i}`)
                         .attr("x1", this.bp_center * (i+1))
                         .attr("x2", this.bp_center * (i+1))
                         .attr("y1", y(min[i]))
@@ -129,7 +129,7 @@ export default {
                         .data([min[i], median[i], max[i]])
                         .enter()
                         .append("line")
-                        .attr("class", "toto")
+                        .attr("class", `toto${i}`)
                         .attr("x1", this.bp_center * (i+1) - this.bp_width/2)
                         .attr("x2", this.bp_center * (i+1) + this.bp_width/2)
                         .attr("y1", (d) => y(d))
@@ -175,6 +175,14 @@ export default {
                     .transition()
                     .duration(500)
                     .style("stroke-width", "3px");
+                self.$d3.selectAll(`.vertical${i}`)
+                    .transition()
+                    .duration(500)
+                    .style("stroke-width", "3px");
+                self.$d3.selectAll(`.toto${i}`)
+                    .transition()
+                    .duration(500)
+                    .style("stroke-width", "3px");
                 tooltip.transition()
                     .duration(200)
                     .style("opacity", 0.9)
@@ -217,6 +225,15 @@ export default {
                     .duration(500)
                     .style("opacity", 0);
                 self.$d3.select(this)
+                    .classed("hovered", false)
+                    .transition()
+                    .duration(500)
+                    .style("stroke-width", "1px");
+                self.$d3.selectAll(`.vertical${i}`)
+                    .transition()
+                    .duration(500)
+                    .style("stroke-width", "1px");
+                self.$d3.selectAll(`.toto${i}`)
                     .transition()
                     .duration(500)
                     .style("stroke-width", "1px");
