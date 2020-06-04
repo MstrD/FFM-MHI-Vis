@@ -2,7 +2,7 @@
     <div class="col-12 col-md-5" id="parallel" style="height: 375px">
         <div class="q-mt-md q-pl-lg q-gutter-sm">
             <q-radio dense v-model="parallelIndex" val="Individual" label="Individual" />
-            <q-radio dense v-model="parallelIndex" val="Grouping" label="Grouping" />
+            <q-radio dense v-model="parallelIndex" val="Grouping" label="Grouping Average" />
         </div>
         <div id="chart">
         </div>
@@ -16,10 +16,11 @@ export default {
         return {
             parallelExists: false,
             parallelData: null,
-            parallelGroupingData: null,
             parallelIndex: 'Individual',
+            parallelPrevIndex: 'Individual',
             parallelGrouping: null,
-            parallelThresholds: null
+            parallelThresholds: null,
+            color: this.$d3.scaleOrdinal(this.$d3.schemeCategory10)
         }
     },
     methods: {
@@ -126,7 +127,7 @@ export default {
                     .style("opacity", 0)
                     .transition()
                     .duration(1000)
-                    .style("stroke", (d) => d.Q1_Sexo !== 1 ? this.$getColor("primary") : "orange")
+                    .style("stroke", (d, i) => this.choosePainting(d, i))
                     .style("opacity", 0.5); // TODO: highlight subject when hovering line
             
                 // Draw the axis:
@@ -156,8 +157,10 @@ export default {
                 var myPath = svg.selectAll(".target").data(this.parallelIndex === 'Individual' ? data : this.parallelGrouping);
                 myPath.exit().remove();
                 svg.selectAll(".myAxis").each(function(d) { return self.$d3.select(this).transition().duration(1000).call(self.$d3.axisLeft().scale(y[d]));})
-                if (data.length > this.parallelData.length)
-                    myPath.enter()
+                let actual = this.parallelIndex === 'Individual' ? data.length : this.parallelGrouping.length;
+                let previous = this.parallelPrevIndex === 'Individual' ? this.parallelData.length : this.parallelGrouping.length;
+                if (actual > previous) // more lines than before
+                    myPath.remove().enter()
                         .append("path")
                         .attr("d", path)
                         .attr("class", "target")
@@ -166,19 +169,19 @@ export default {
                         .merge(myPath)
                         .transition()
                         .duration(1000)
-                        .style("stroke", (d) => d.Q1_Sexo !== 1 ? this.$getColor("primary") : "orange")
+                        .style("stroke", (d, i) => this.choosePainting(d, i))
                         .style("opacity", 0.5)
-                else
+                else // same or less lines than before
                     myPath.enter().merge(myPath)
                         .transition()
                         .duration(1000)
                         .attr("d", path)
-                        .style("stroke", (d) => d.Q1_Sexo !== 1 ? this.$getColor("primary") : "orange");
+                        .style("stroke", (d, i) => this.choosePainting(d, i));
             }
-
             if (!this.parallelExists)
                 this.parallelExists = true;
             this.parallelData = data;
+            this.parallelPrevIndex = parallelIndex;
         },
         createGrouping(data) {
             // grouping by age is generated here
@@ -225,6 +228,12 @@ export default {
             };
             this.parallelThresholds = thresholds;
             return thresholds;
+        },
+        choosePainting(d, i) {
+            if (this.parallelIndex === 'Individual') // choose between blue or orange for each of the 200 subjects
+                return d.Q1_Sexo !== 1 ? this.$getColor("primary") : "orange";
+            else // uses d3.schemeCategory10 (one for each group presented)
+                return this.color(i);
         },
         highlightParallel(subj) {
             this.$d3.select("#parallel").select("svg").selectAll(".target:not(.highlighted)")
