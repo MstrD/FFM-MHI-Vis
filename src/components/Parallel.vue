@@ -180,7 +180,8 @@ export default {
                         .transition()
                         .duration(1000)
                         .attr("d", path)
-                        .style("stroke", (d, i) => this.choosePainting(d, i));
+                        .style("stroke", (d, i) => this.choosePainting(d, i))
+                        .style("stroke-width", (d) => this.parallelIndex === "Individual" ? "1px" : "3px");
             }
             if (!this.parallelExists)
                 this.parallelExists = true;
@@ -239,32 +240,79 @@ export default {
             else // uses d3.schemeCategory10 (one for each group presented)
                 return this.color(i);
         },
+        getAgeIndex(age) {
+            switch (true) {
+                case 18 <= age && age < 30:
+                    return 0;
+                case 30 <= age && age < 40:
+                    return 1;
+                case 40 <= age && age < 50:
+                    return 2;
+                case 50 <= age && age < 60:
+                    return 3;
+                case 60 <= age && age < 70:
+                    return 4;
+                case 70 <= age && age < 80:
+                    return 5;
+            }
+        },
         highlightParallel(subj) {
-            console.log("entrei nisto pah")
-            this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target:not(.highlighted)")
-                .filter((d) => this.$getNumber(subj) !== this.$getNumber(d))
-                .transition()
-                .duration(500)
-                .style("opacity", 0.1);
-        
-            this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target")
-                .filter((d) => this.$getNumber(subj) === this.$getNumber(d))
-                .classed("highlighted", true)
-                .transition()
-                .duration(500)
-                .style("opacity", 0.75)
-                .style("stroke-width", "3px");
-                // TODO: it would be pretty cool if the only values shown in the axes were the ones from the subject
+            if (this.parallelIndex === "Individual") {
+                this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target:not(.highlighted)")
+                    .filter((d) => this.$getNumber(subj) !== this.$getNumber(d))
+                    .transition()
+                    .duration(500)
+                    .style("opacity", 0.1);
+            
+                this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target")
+                    .filter((d) => this.$getNumber(subj) === this.$getNumber(d))
+                    .classed("highlighted", true)
+                    .transition()
+                    .duration(500)
+                    .style("opacity", 0.75)
+                    .style("stroke-width", "3px");
+                    // TODO: it would be pretty cool if the only values shown in the axes were the ones from the subject
+            }
+            else {
+                let index = this.getAgeIndex(subj.Q2_Idade);
+                console.log(index);
+                this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target:not(.highlighted)")
+                    .filter((d, i) => i !== index)
+                    .transition()
+                    .duration(500)
+                    .style("opacity", 0.1)
+                    .style("stroke-width", "3px");
+
+                this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target")
+                    .filter((d, i) => i === index)
+                    .classed("highlighted", true)
+                    .transition()
+                    .duration(500)
+                    .style("opacity", "0.75");
+                console.log(this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted"))
+            }
         },
         dehighlightParallel(subj) {
-            this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted")
-                .filter((d) => this.$getNumber(subj) === this.$getNumber(d))
-                .classed("highlighted", false)
-                .transition()
-                .duration(500)
-                .style("opacity", this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").data().length ? 0.1 : 0.5)
-                .style("stroke-width", "1px")
-                .style("stroke", (d) => d.Q1_Sexo !== 1 ? this.$getColor("primary") : "orange");
+            if (this.parallelIndex === "Individual")
+                this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted")
+                    .filter((d) => this.$getNumber(subj) === this.$getNumber(d))
+                    .classed("highlighted", false)
+                    .transition()
+                    .duration(500)
+                    .style("opacity", this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").data().length ? 0.1 : 0.5)
+                    .style("stroke-width", "1px")
+                    .style("stroke", (d, i) => this.choosePainting(d, i));
+            else {
+                let index = this.getAgeIndex(subj.Q2_Idade);
+                this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target")
+                    .filter((d, i) => i === index)
+                    .classed("highlighted", false)
+                    .transition()
+                    .duration(500)
+                    .style("opacity", this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").data().length ? 0.1 : 0.5)
+                    .style("stroke-width", "3px");
+                    //.style("stroke", (d, i) => this.choosePainting(d, i));
+            }
             if (!this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").data().length)
                 this.dehighlightAllParallel();
         },
@@ -273,8 +321,8 @@ export default {
                 .transition()
                 .duration(500)
                 .style("opacity", 0.5)
-                .style("stroke-width", "1px")
-                .style("stroke", (d) => d.Q1_Sexo !== 1 ? this.$getColor("primary") : "orange");
+                .style("stroke-width", (d) => this.parallelIndex === "Individual" ? "1px" : "3px")
+                .style("stroke", (d, i) => this.choosePainting(d, i));
         }
     },
     mounted() {
