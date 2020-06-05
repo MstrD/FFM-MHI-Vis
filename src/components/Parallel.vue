@@ -156,11 +156,14 @@ export default {
                 var svg = this.$d3.select("#parallel").select("#chart").select("svg").select("g");
                 var myPath = svg.selectAll(".target").data(this.parallelIndex === 'Individual' ? data : this.parallelGrouping);
                 myPath.exit().remove();
-                svg.selectAll(".myAxis").each(function(d) { return self.$d3.select(this).transition().duration(1000).call(self.$d3.axisLeft().scale(y[d]));})
+                if (this.parallelPrevIndex != parallelIndex)
+                    svg.selectAll(".myAxis").each(function(d) { return self.$d3.select(this).transition().duration(1000).call(self.$d3.axisLeft().scale(y[d]));})
                 let actual = this.parallelIndex === 'Individual' ? data.length : this.parallelGrouping.length;
                 let previous = this.parallelPrevIndex === 'Individual' ? this.parallelData.length : this.parallelGrouping.length;
-                if (actual > previous) // more lines than before
-                    myPath.remove().enter()
+                if (actual > previous) { // more lines than before
+                    if (this.parallelPrevIndex != parallelIndex)
+                        myPath.remove();
+                    myPath.enter()
                         .append("path")
                         .attr("d", path)
                         .attr("class", "target")
@@ -171,6 +174,7 @@ export default {
                         .duration(1000)
                         .style("stroke", (d, i) => this.choosePainting(d, i))
                         .style("opacity", 0.5)
+                }
                 else // same or less lines than before
                     myPath.enter().merge(myPath)
                         .transition()

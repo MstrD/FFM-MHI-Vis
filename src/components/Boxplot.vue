@@ -138,17 +138,17 @@ export default {
                 }
                 else {
                     // update vertical axis
-                    var vertLine = svg.selectAll(".vertical").filter((_, index) => index === i);
-                    vertLine.enter().merge(vertLine)
-                        .transition()
-                        .duration(1000)
-                        .delay((d, i) => i * 20)
-                        .attr("y1", y(min[i]))
-                        .attr("y2", y(max[i]));
+                    var vertLine = svg.selectAll(`.vertical${i}`);
+                    vertLine.merge(vertLine)
+                            .transition()
+                            .duration(1000)
+                            .delay((d, i) => i * 20)
+                            .attr("y1", y(min[i]))
+                            .attr("y2", y(max[i]));
 
                     // update boxes
                     var rects = svg.selectAll("rect").filter((_, index) => index === i);
-                    rects.enter().merge(rects)
+                    rects.merge(rects)
                         .transition()
                         .duration(1000)
                         .delay((d, i) => i * 20)
@@ -157,9 +157,9 @@ export default {
                         .attr("width", this.bp_width);
                     
                     // update min, med, max (a.k.a. whiskers)
-                    var totos = svg.selectAll(".toto").filter((_, index) => index >= i * 3 && index < (i+1) * 3);
+                    var totos = svg.selectAll(`.toto${i}`);
                     totos.data([min[i], median[i], max[i]])
-                        .enter().merge(totos)
+                        .merge(totos)
                         .transition()
                         .duration(1000)
                         .delay((d, i) => i * 20)
