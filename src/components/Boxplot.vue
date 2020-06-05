@@ -11,6 +11,7 @@ export default {
         return {
             boxplotExists: false,
             bp_y: null,
+            bp_y_mhi: null,
             bp_center: null,
             bp_width: null,
             bp_data: (d) => [
@@ -110,6 +111,7 @@ export default {
                 this.bp_center = (width - margin.right) / (data.length + 1);
                 this.bp_width = 35;
                 this.bp_y = y;
+                this.bp_y_mhi = y_mhi;
 
                 var tooltip = this.$d3.select("#boxplot").append("div").attr("class", "tooltip");
             }
@@ -261,14 +263,14 @@ export default {
         },
         highlightBoxplot(subj) {
             var arc = this.$d3.symbol().type(this.$d3.symbolDiamond); // identifies user with diamond symbol
-            
+
             this.$d3.select("#boxplot").select("svg").select("g")
                 .selectAll(`.myInd${this.$getNumber(subj)}`)
                 .data(this.bp_data(subj)).enter()
                 .append("path")
                 .attr("d", arc)
                 .attr("class", `myInd${this.$getNumber(subj)}`)
-                .attr("transform", (d, i) => `translate(${(this.bp_center * (i+1))}, ${this.bp_y(d)})`)
+                .attr("transform", (d, i) => `translate(${(this.bp_center * (i+1))}, ${i !== this.bp_data(subj).length - 1 ? this.bp_y(d) : this.bp_y_mhi(d)})`)
                 .style("fill", "orange")
                 .style("stroke", this.$getColor("dark"))
                 .style("opacity", 0)
@@ -281,7 +283,7 @@ export default {
                 .data(this.bp_data(subj)).enter()
                 .append("text")
                 .attr("class", `myIndLabel${this.$getNumber(subj)}`)
-                .attr("transform", (d, i) => `translate(${(this.bp_center * (i+1) + 10)}, ${this.bp_y(d)})`)
+                .attr("transform", (d, i) => `translate(${(this.bp_center * (i+1) + 10)}, ${i !== this.bp_data(subj).length - 1 ? this.bp_y(d) : this.bp_y_mhi(d)})`)
                 .style("font-size", "9pt")
                 .style("opacity", 0)
                 .transition()
