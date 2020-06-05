@@ -126,8 +126,8 @@ export default {
                         .attr("class", `vertical${i}`)
                         .attr("x1", this.bp_center * (i+1))
                         .attr("x2", this.bp_center * (i+1))
-                        .attr("y1", y(min[i]))
-                        .attr("y2", y(max[i]))
+                        .attr("y1", i !== data.length - 1 ? y(min[i]) : y_mhi(min[i]))
+                        .attr("y2", i !== data.length - 1 ? y(max[i]) : y_mhi(max[i]))
                         .attr("stroke", "black")
                         .style("stroke-dasharray", "5,5");
 
@@ -135,8 +135,8 @@ export default {
                     svg.data(data[i])
                         .append("rect")
                         .attr("x", this.bp_center * (i+1) - this.bp_width/2)
-                        .attr("y", y(q3[i]))
-                        .attr("height", (y(q1[i]) - y(q3[i])))
+                        .attr("y", i !== data.length - 1 ? y(q3[i]) : y_mhi(q3[i]))
+                        .attr("height", i !== data.length - 1 ? (y(q1[i]) - y(q3[i])) : (y_mhi(q1[i]) - y_mhi(q3[i])))
                         .attr("width", this.bp_width)
                         .attr("stroke", "black")
                         .style("fill", this.$getColor("primary"));
@@ -149,8 +149,8 @@ export default {
                         .attr("class", `toto${i}`)
                         .attr("x1", this.bp_center * (i+1) - this.bp_width/2)
                         .attr("x2", this.bp_center * (i+1) + this.bp_width/2)
-                        .attr("y1", (d) => y(d))
-                        .attr("y2", (d) => y(d))
+                        .attr("y1", (d) => i !== data.length - 1 ? y(d) : y_mhi(d))
+                        .attr("y2", (d) => i !== data.length - 1 ? y(d) : y_mhi(d))
                         .attr("stroke", "black");
                 }
                 else {
@@ -160,8 +160,8 @@ export default {
                             .transition()
                             .duration(1000)
                             .delay((d, i) => i * 20)
-                            .attr("y1", y(min[i]))
-                            .attr("y2", y(max[i]));
+                            .attr("y1", i !== data.length - 1 ? y(min[i]) : y_mhi(min[i]))
+                            .attr("y2", i !== data.length - 1 ? y(max[i]) : y_mhi(max[i]));
 
                     // update boxes
                     var rects = svg.selectAll("rect").filter((_, index) => index === i);
@@ -169,8 +169,8 @@ export default {
                         .transition()
                         .duration(1000)
                         .delay((d, i) => i * 20)
-                        .attr("y", y(q3[i]))
-                        .attr("height", (y(q1[i]) - y(q3[i])))
+                        .attr("y", i !== data.length - 1 ? y(q3[i]) : y_mhi(q3[i]))
+                        .attr("height", i !== data.length - 1 ? (y(q1[i]) - y(q3[i])) : (y_mhi(q1[i]) - y_mhi(q3[i])))
                         .attr("width", this.bp_width);
                     
                     // update min, med, max (a.k.a. whiskers)
@@ -180,8 +180,8 @@ export default {
                         .transition()
                         .duration(1000)
                         .delay((d, i) => i * 20)
-                        .attr("y1", (d) => y(d))
-                        .attr("y2", (d) => y(d));
+                        .attr("y1", (d) => i !== data.length - 1 ? y(d) : y_mhi(d))
+                        .attr("y2", (d) => i !== data.length - 1 ? y(d) : y_mhi(d));
                 }
             }
             var boxes = svg.selectAll("rect");
