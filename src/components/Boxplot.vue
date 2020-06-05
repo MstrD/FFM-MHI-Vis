@@ -59,8 +59,8 @@ export default {
         
             // Show the X scale
             var x = this.$d3.scalePoint()
-                .domain(['', 'N', 'E', 'O', 'A', 'C', 'MHI'])
-                .range([0, width - margin.left - margin.right]); // valor de right range = denominador da definicao de var center (mais abaixo)
+                .domain(['', 'N', 'E', 'O', 'A', 'C', 'MHI', '\n'])
+                .range([0, width - margin.right]); // valor de right range = denominador da definicao de var center (mais abaixo)
 
             // Show the Y scale
             var y = this.$d3.scaleLinear()
@@ -86,11 +86,28 @@ export default {
                     .call(this.$d3.axisBottom(x));
                 svg
                     .append("g")
-                    .call(this.$d3.axisLeft(y));
+                    .call(this.$d3.axisLeft(y))
+                    .append("text")
+                    .attr("class", "label")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 6)
+                    .attr("dy", ".61em")
+                    .style("text-anchor", "end")
+                    .style("fill", "black")
+                    .text("FFM Traits");
                 svg.append("g")
                     .attr("transform", `translate(${width - margin.right}, 0)`)
-                    .call(this.$d3.axisRight(y_mhi));
-                this.bp_center = (width - margin.left - margin.right) / data.length;
+                    .call(this.$d3.axisRight(y_mhi))
+                    .append("text")
+                    .attr("class", "label")
+                    .attr("transform", "rotate(90)")
+                    .attr("y", 6)
+                    .attr("dy", ".61em")
+                    .style("text-anchor", "initial")
+                    .style("fill", "black")
+                    .text("MHI");
+
+                this.bp_center = (width - margin.right) / (data.length + 1);
                 this.bp_width = 35;
                 this.bp_y = y;
 
