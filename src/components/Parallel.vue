@@ -240,13 +240,14 @@ export default {
                 return this.color(i);
         },
         highlightParallel(subj) {
-            this.$d3.select("#parallel").select("svg").selectAll(".target:not(.highlighted)")
+            console.log("entrei nisto pah")
+            this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target:not(.highlighted)")
                 .filter((d) => this.$getNumber(subj) !== this.$getNumber(d))
                 .transition()
                 .duration(500)
                 .style("opacity", 0.1);
         
-            this.$d3.select("#parallel").select("svg").selectAll(".target")
+            this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target")
                 .filter((d) => this.$getNumber(subj) === this.$getNumber(d))
                 .classed("highlighted", true)
                 .transition()
@@ -256,19 +257,19 @@ export default {
                 // TODO: it would be pretty cool if the only values shown in the axes were the ones from the subject
         },
         dehighlightParallel(subj) {
-            this.$d3.select("#parallel").select("svg").selectAll(".target.highlighted")
+            this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted")
                 .filter((d) => this.$getNumber(subj) === this.$getNumber(d))
                 .classed("highlighted", false)
                 .transition()
                 .duration(500)
-                .style("opacity", this.$d3.select("#parallel").select("svg").selectAll(".target.highlighted").data().length ? 0.1 : 0.5)
+                .style("opacity", this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").data().length ? 0.1 : 0.5)
                 .style("stroke-width", "1px")
                 .style("stroke", (d) => d.Q1_Sexo !== 1 ? this.$getColor("primary") : "orange");
-            if (!this.$d3.select("#parallel").select("svg").selectAll(".target.highlighted").data().length)
+            if (!this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").data().length)
                 this.dehighlightAllParallel();
         },
         dehighlightAllParallel() {
-            this.$d3.select("#parallel").select("svg").selectAll(".target")
+            this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target")
                 .transition()
                 .duration(500)
                 .style("opacity", 0.5)
