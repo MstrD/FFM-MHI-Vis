@@ -275,7 +275,6 @@ export default {
             }
             else {
                 let index = this.getAgeIndex(subj.Q2_Idade);
-                console.log(index);
                 this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target:not(.highlighted)")
                     .filter((d, i) => i !== index)
                     .transition()
@@ -288,8 +287,8 @@ export default {
                     .classed("highlighted", true)
                     .transition()
                     .duration(500)
-                    .style("opacity", "0.75");
-                console.log(this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted"))
+                    .style("opacity", "0.75")
+                    .style("stroke-width", "3px");
             }
         },
         dehighlightParallel(subj) {
@@ -330,10 +329,17 @@ export default {
         this.$root.$on('highlightParallel', (subj) => this.highlightParallel(subj));
         this.$root.$on('dehighlightParallel', (subj) => this.dehighlightParallel(subj));
         this.$root.$on('dehighlightAllParallel', () => this.dehighlightAllParallel());
+        this.$root.$on('removeScatterUsers', (data) => this.$scatterUsers = data); // hammered for when v-model changes: variable override
     },
     watch: {
         parallelIndex: function() {
             this.drawParallel(this.parallelData, this.parallelIndex);
+            setTimeout(() =>
+                this.$scatterUsers.forEach(element => {
+                    this.highlightParallel(element);
+                })
+            , 1010);
+            // TODO: highlighting from left drawer?
         }
     },
 }

@@ -230,6 +230,7 @@ export default {
                         .attr("r", 3);
                     self.$dehighlightSubject(d);
                     self.$scatterUsers = self.$scatterUsers.filter(el => d.Nº !== el.Nº);
+                    self.$root.$emit("removeScatterUsers", self.$scatterUsers); // this is hammered, needs to be here for parallel highlighting when v-model changes
                 }
             });
 
