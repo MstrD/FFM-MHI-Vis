@@ -21,7 +21,8 @@ export default {
                 d.AmabIilidade_NEOFFI,
                 d.Conscienciosidade_NEOFFI,
                 d.MH5_total
-            ]
+            ],
+            bp_highlights: []
         }
     },
     methods: {
@@ -290,6 +291,8 @@ export default {
                 .duration(1000)
                 .style("opacity", 1)
                 .text(`#${this.$getNumber(subj)}`);
+
+            this.bp_highlights.push(subj);
         },
         dehighlightBoxplot(subj) {
             this.$d3.select("#boxplot").select("svg").select("g")
@@ -305,12 +308,20 @@ export default {
                 .duration(1000)
                 .style("opacity", 0)
                 .remove();
+
+            this.bp_highlights = this.bp_highlights.filter(el => this.$getNumber(el) !== this.$getNumber(subj));
+        },
+        dehighlightAllBoxplot() {
+            this.bp_highlights.forEach(el => {
+                this.dehighlightBoxplot(el);
+            })
         }
     },
     mounted() {
         this.$root.$on('drawBoxplot', (data) => this.drawBoxplot(data));
         this.$root.$on('highlightBoxplot', (subj) => this.highlightBoxplot(subj));
         this.$root.$on('dehighlightBoxplot', (subj) => this.dehighlightBoxplot(subj));
+        this.$root.$on('dehighlightAllBoxplot', () => this.dehighlightAllBoxplot());
     }
 }
 </script>

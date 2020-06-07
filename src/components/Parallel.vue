@@ -271,7 +271,6 @@ export default {
                     .duration(500)
                     .style("opacity", 0.75)
                     .style("stroke-width", "3px");
-                    // TODO: it would be pretty cool if the only values shown in the axes were the ones from the subject
             }
             else {
                 let index = this.getAgeIndex(subj.Q2_Idade);
@@ -310,16 +309,16 @@ export default {
                     .duration(500)
                     .style("opacity", this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").data().length ? 0.1 : 0.5)
                     .style("stroke-width", "3px");
-                    //.style("stroke", (d, i) => this.choosePainting(d, i));
             }
             if (!this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").data().length)
                 this.dehighlightAllParallel();
         },
         dehighlightAllParallel() {
             this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target")
+                .classed("highlighted", false)
                 .transition()
                 .duration(500)
-                .style("opacity", 0.5)
+                .style("opacity", this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").data().length ? 0.1 : 0.5)
                 .style("stroke-width", (d) => this.parallelIndex === "Individual" ? "1px" : "3px")
                 .style("stroke", (d, i) => this.choosePainting(d, i));
         }
@@ -339,7 +338,6 @@ export default {
                     this.highlightParallel(element);
                 })
             , 1010);
-            // TODO: highlighting from left drawer?
         }
     },
 }

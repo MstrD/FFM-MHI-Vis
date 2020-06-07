@@ -1,12 +1,15 @@
 function highlightSubject(subj, isFromLeftDrawer = false) {
+    if (isFromLeftDrawer) {
+        this.$root.$emit('highlightScatter', subj);
+        this.$dehighlightAllSubjects();
+        this.$root.$emit('dehighlightBoxplot', subj);
+    }
     this.$root.$emit('highlightParallel', subj);
     this.$root.$emit('highlightHistogram', subj);
     this.$root.$emit('highlightBoxplot', subj);
     this.$root.$emit('highlightViolin', subj);
     this.$root.$emit('highlightSankey', subj);
     this.$root.$emit('drawHeatmap', subj);
-    if (isFromLeftDrawer)
-        this.$root.$emit('highlightScatter', subj);
 }
 
 function dehighlightSubject(subj, isFromLeftDrawer = false) {
@@ -22,6 +25,7 @@ function dehighlightSubject(subj, isFromLeftDrawer = false) {
 
 function dehighlightAllSubjects() {
     this.$root.$emit('dehighlightAllParallel');
+    this.$root.$emit('dehighlightAllBoxplot');
 }
 
 export { highlightSubject, dehighlightSubject, dehighlightAllSubjects };
