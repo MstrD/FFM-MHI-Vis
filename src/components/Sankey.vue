@@ -27,7 +27,8 @@ export default {
             allData: null,
             counter: 0,
             userSelected: null,
-            userLinks: null
+            userLinks: null,
+            xPositions: [],
         }
     },
     methods: {
@@ -64,6 +65,7 @@ export default {
             .selectAll("g");
 
             var graph = sankey(data);
+            var self = this;
             link = link
                 .data(data.links)
                 .enter().append("path")
@@ -74,21 +76,32 @@ export default {
                 
             node = node
                 .data(data.nodes)
-                .enter().append("g");
+                .enter().append("g")
+                .call(this.$d3.drag()
+                    .subject(function(d){return d})
+                    .on('start', function () { this.parentNode.appendChild(this); })
+                    .on('drag', function(d) {
+                        var rectY = self.$d3.select(this).select("rect").attr("y");
+                        d.y0 = d.y0 + self.$d3.event.dy;
+                        var yTranslate = d.y0 - rectY;
+                        self.$d3.select(this).attr("transform", 
+                                    "translate(0" + "," + (yTranslate) + ")");
+                        sankey.update(graph);
+                        link.attr("d", d3sankey.sankeyLinkHorizontal());
+                    })
+                );
             node.append("rect")
-                .attr("x", (d) => d.x0)
+                .attr("x", (d) => {
+                    if (!this.xPositions.includes(d.x0 + 5) && this.defaultNodes.includes(d.category))
+                        this.xPositions.push(d.x0 + 5);
+                    this.xPositions = this.xPositions.sort(this.$d3.ascending);
+                    return d.x0;
+                })
                 .attr("y", (d) => d.y0)
                 .attr("height", (d) => d.y1 - d.y0)
                 .attr("width", (d) => d.x1 - d.x0)
                 .attr("fill", (d) => color(d.name))
                 .attr("stroke", "#000");
-            node.append("text")
-                .attr("x", (d) => d.x0 + 5) // this +5 is hammered; it's just to center the text
-                .attr("y", (d) => -margin.top/2)
-                .attr("dy", "0.35em")
-                .style("text-anchor", "middle")
-                .style("font-weight", "bold")
-                .text((d) => this.defaultNodes.includes(d.category) ? d.category : null);
             node.append("text")
                 .attr("x", (d) => d.x0 - 6)
                 .attr("y", (d) => (d.y1 + d.y0) / 2)
@@ -98,6 +111,19 @@ export default {
                 .text((d) => this.defaultNodes.includes(d.category) ? d.name : null);
             node.append("title")
                 .text((d) => d.name + "\n" + d.value);
+            // add category labels
+            svg.selectAll(".label")
+                .data(this.defaultNodes)
+                .enter()
+                .append("text")
+                .attr("class", "label")
+                .attr("x", (d, i) => this.xPositions[i]) // this +5 is hammered; it's just to center the text
+                .attr("y", (d) => -margin.top/2)
+                .attr("dy", "0.35em")
+                .style("text-anchor", "middle")
+                .style("font-weight", "bold")
+                .style("font-size", "9pt")
+                .text((d) => d ? d : null);
         },
         filterSankeyData(data) {
             let tmp = JSON.parse(JSON.stringify(data)); // a temporary variable is used to avoid data loss
@@ -112,6 +138,7 @@ export default {
             var filteredLinks = this.filterElements(tmp.links, this.defaultNodes, true);
             tmp.links = filteredLinks;
             this.counter++;
+            this.xPositions = [];
             this.drawSankey(tmp);
         },
         filterElements(links, myNodes, isMain) {

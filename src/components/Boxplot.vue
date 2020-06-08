@@ -48,7 +48,7 @@ export default {
             var data_sorted = data;
             var q1 = [], median = [], q3 = [], interQuantileRange = [], min = [], max = [];
             data_sorted.forEach((el) => {
-                el.sort(this.$d3.ascending);
+                el = el.sort(this.$d3.ascending);
                 q1.push(this.$d3.quantile(el, 0.25));
                 median.push(this.$d3.quantile(el, 0.5));
                 q3.push(this.$d3.quantile(el, 0.75));
