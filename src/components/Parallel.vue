@@ -67,7 +67,7 @@ export default {
             // draggable behavior
             var dragging = {};
             var drag_handler = this.$d3.drag()
-                .subject(function(d) { return {x: x(d) }; })
+                .subject(function(d) { return {x: x(d)}; })
                 .on("start", drag_start)
                 .on("drag", drag_drag)
                 .on("end", drag_end);

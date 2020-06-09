@@ -101,7 +101,8 @@ export default {
                 .attr("height", (d) => d.y1 - d.y0)
                 .attr("width", (d) => d.x1 - d.x0)
                 .attr("fill", (d) => color(d.name))
-                .attr("stroke", "#000");
+                .attr("stroke", "#000")
+                .style("cursor", "move");
             node.append("text")
                 .attr("x", (d) => d.x0 - 6)
                 .attr("y", (d) => (d.y1 + d.y0) / 2)
@@ -111,6 +112,7 @@ export default {
                 .text((d) => this.defaultNodes.includes(d.category) ? d.name : null);
             node.append("title")
                 .text((d) => d.name + "\n" + d.value);
+            
             // add category labels
             svg.selectAll(".label")
                 .data(this.defaultNodes)
