@@ -65,10 +65,9 @@ export default {
             var self = this;
 
             // draggable behavior
-            var start_x;
             var dragging = {};
             var drag_handler = this.$d3.drag()
-                .subject(function(d) { return {x: x(d)}; })
+                .subject(function(d) { return {x: x(d) }; })
                 .on("start", drag_start)
                 .on("drag", drag_drag)
                 .on("end", drag_end);
@@ -102,7 +101,15 @@ export default {
 
             // The path function take a row of the csv as input, and return x and y coordinates of the line to draw for this raw.
             function path(d) {
-                return self.$d3.line()(dimensions.map(function(p) { return [position(p), y[p](d[p])]; }));
+                return self.$d3.line()(dimensions.map(function(p) {
+                    if (self.parallelIndex !== 'Individual')
+                        y[p].domain(self.parallelThresholds[p]);
+                    else
+                        if (p !== 'MH5_total')
+                            y[p].domain([0, 48]);
+                        else
+                            y[p].domain([0, 30]);
+                    return [position(p), y[p](d[p])]; }));
             }
 
             if (!this.parallelExists) {
