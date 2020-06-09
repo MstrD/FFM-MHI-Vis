@@ -52,11 +52,13 @@ export default {
                 q1.push(this.$d3.quantile(el, 0.25));
                 median.push(this.$d3.quantile(el, 0.5));
                 q3.push(this.$d3.quantile(el, 0.75));
+                min.push(el[0]);
+                max.push(el[el.length - 1]);
             });
             for (let i = 0; i < q1.length; i++) {
                 interQuantileRange.push(q3[i] - q1[i]);
-                min.push(q1[i] - 1.5 * interQuantileRange[i]);
-                max.push(q1[i] + 1.5 * interQuantileRange[i]);
+                /* min.push(q1[i] - 1.5 * interQuantileRange[i]);
+                max.push(q1[i] + 1.5 * interQuantileRange[i]); */
             }
         
             // Show the X scale
