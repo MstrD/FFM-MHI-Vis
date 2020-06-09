@@ -30,15 +30,55 @@
             <q-tooltip content-class="bg-dark">Sociodemographic Factors</q-tooltip>
           </div>
           <div style="display: inline-block">
-          <q-btn-dropdown flat round dense persistent label="Filters" icon="filter_list" class="q-mr-xs" id="dropdown">
+          <q-btn-dropdown flat round dense label="Filters" icon="filter_list" class="q-mr-xs" id="dropdown">
             <Filters />
           </q-btn-dropdown>
           <q-tooltip content-class="bg-dark">Filters</q-tooltip>
           </div>
-          <q-btn flat round dense icon="settings" class="q-mr-xs">
+          <q-btn flat round dense icon="settings" @click="settings_dialog = true">
+            <q-dialog v-model="settings_dialog">
+              <q-card>
+                  <q-card-section>
+                  <div class="text-h6">Settings</div>
+                  </q-card-section>
+
+                  <q-separator />
+
+                  <q-card-section style="max-height: 50vh" class="scroll">
+                  <p v-for="n in 15" :key="n">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.</p>
+                  </q-card-section>
+
+                  <q-separator />
+
+                  <q-card-actions align="right">
+                  <q-btn flat label="Decline" color="primary" v-close-popup />
+                  <q-btn flat label="Accept" color="primary" v-close-popup />
+                  </q-card-actions>
+              </q-card>
+            </q-dialog>
             <q-tooltip content-class="bg-dark">Settings</q-tooltip>
           </q-btn>
-          <q-btn flat round dense icon="help_outline">
+          <q-btn flat round dense icon="help_outline" @click="help_dialog = true">
+            <q-dialog v-model="help_dialog">
+              <q-card>
+                  <q-card-section>
+                  <div class="text-h6">Help</div>
+                  </q-card-section>
+
+                  <q-separator />
+
+                  <q-card-section style="max-height: 50vh" class="scroll">
+                  <p v-for="n in 15" :key="n">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.</p>
+                  </q-card-section>
+
+                  <q-separator />
+
+                  <q-card-actions align="right">
+                  <q-btn flat label="Decline" color="primary" v-close-popup />
+                  <q-btn flat label="Accept" color="primary" v-close-popup />
+                  </q-card-actions>
+              </q-card>
+            </q-dialog>
             <q-tooltip content-class="bg-dark">Help</q-tooltip>
           </q-btn>
         </q-toolbar>
@@ -112,6 +152,8 @@ export default {
       elements: this.$filters.toApply,
 
       model: '',
+      settings_dialog: false,
+      help_dialog: false,
 
       allCategories: null,
       defaultNodes: [
@@ -139,7 +181,7 @@ export default {
     },
     updateCurrent(current) {
       this.$root.$emit('updateCurrent', current);
-    },
+    }
   },
   mounted() {
     this.$root.$on('updateFilter', (filter) => this.elements = filter);
