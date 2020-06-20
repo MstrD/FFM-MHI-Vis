@@ -24,10 +24,14 @@ export default {
             }
             var answers = this.$getTraitAnswers(d);
             var labels = ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'];
-        
-            var svg = this.$d3.select("#scatter").select(".tooltip").select("#chart").append("svg")
+
+            this.$d3.select(".rightDrawer").append("div")
+                .attr("class", `q-ml-md q-mt-md title${this.$getNumber(d)}`)
+                .html(`<b>Subject ${this.$getNumber(d)}:</b>`);
+            var svg = this.$d3.select(".rightDrawer").append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
+                .attr("class", `chart chart${this.$getNumber(d)}`)
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         
@@ -38,7 +42,7 @@ export default {
                 .padding(0.01);
                 svg.append("g")
                 .attr("transform", "translate(0," + height + ")")
-                .call(this.$d3.axisBottom(x));
+                .call(this.$d3.axisBottom(x).tickSize(0));
         
             // Build Y scales and axis:
             var y = this.$d3.scaleBand()
@@ -46,7 +50,7 @@ export default {
                 .domain(myGroupsReduced)
                 .padding(0.01);
                 svg.append("g")
-                .call(this.$d3.axisLeft(y));
+                .call(this.$d3.axisLeft(y).tickSize(0));
         
             // Color scale to use
             const colorScale = this.$d3.scaleLinear()
@@ -101,15 +105,28 @@ export default {
                     .style("fill", (d) => d.value !== "" ? colorScale(d.value) : bgColor)
             
                 // TODO: linha de heatmap para o MHI
+
+            this.$root.$emit('openRightDrawer');
         },
-        removeHeatmap() {
-            if (this.$d3.select("#scatter").select(".tooltip").select("svg"))
-                this.$d3.select("#scatter").select(".tooltip").select("svg").remove();
+        removeHeatmap(d) {
+            if (this.$d3.select(".rightDrawer").select(`.chart${this.$getNumber(d)}`)) {
+                this.$d3.select(".rightDrawer").select(`.chart${this.$getNumber(d)}`).remove();
+                this.$d3.select(".rightDrawer").select(`.title${this.$getNumber(d)}`).remove();
+            }
+            if (!this.$d3.select(".rightDrawer").select(`.chart`))
+                this.$root.$emit('closeRightDrawer');
         }
     },
     mounted() {
         this.$root.$on('drawHeatmap', (d) => this.drawHeatmap(d));
-        this.$root.$on('removeHeatmap', () => this.removeHeatmap());
+        this.$root.$on('removeHeatmap', (d) => this.removeHeatmap(d));
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    svg g.tick line {
+        stroke: none;
+        fill: none;
+    }
+</style>

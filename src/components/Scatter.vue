@@ -1,5 +1,5 @@
 <template>
-    <div id="scatter" class="col-12 col-md-6" style="height: 365px">
+    <div id="scatter" class="col-12 col-md-6" style="height: 400px">
         <div class="q-mt-md q-pl-lg q-gutter-sm">
             <q-radio dense v-model="scatterIndex" val="Neuroticism" label="Neuroticism" />
             <q-radio dense v-model="scatterIndex" val="Extraversion" label="Extraversion" />
@@ -29,7 +29,7 @@ export default {
         drawScatter(data, trait) {
             var margin = {top: 20, right: 20, bottom: 30, left: 40},
             width = this.$d3.select("#scatter").property("clientWidth") - margin.left - margin.right,
-            height = this.$d3.select("#parallel").property("clientHeight") - 20 - margin.top - margin.bottom;
+            height = this.$d3.select("#parallel").property("clientHeight") - margin.top - margin.bottom;
             // setup x 
             var xValue = (d) => d.Q2_Idade, // data -> value
             xScale = this.$d3.scaleLinear().range([0, width]), // value -> display

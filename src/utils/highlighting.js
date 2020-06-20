@@ -18,7 +18,7 @@ function dehighlightSubject(subj, isFromLeftDrawer = false) {
     this.$root.$emit('dehighlightBoxplot', subj);
     this.$root.$emit('dehighlightViolin', subj);
     this.$root.$emit('dehighlightSankey');
-    this.$root.$emit('removeHeatmap');
+    this.$root.$emit('removeHeatmap', subj);
     if (isFromLeftDrawer)
         this.$root.$emit('dehighlightScatter');
 }

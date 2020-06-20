@@ -36,6 +36,7 @@ Vue.prototype.$dehighlightSubject = dehighlightSubject;
 Vue.prototype.$dehighlightAllSubjects = dehighlightAllSubjects;
 
 Vue.prototype.$getColor = colors.getBrand;
+Vue.prototype.$setColor = colors.setBrand;
 
 Vue.prototype.$els = [];
 Vue.prototype.$filters = {
@@ -76,6 +77,9 @@ Vue.prototype.$scatterUsers = [];
 Vue.prototype.$violinUsers = [];
 
 Vue.prototype.$d3 = d3;
+
+colors.setBrand('male', '#FFA500');
+colors.setBrand('female', "#1976D2");
 
 Vue.use(VueRouter)
 Vue.use(VueDraggable)

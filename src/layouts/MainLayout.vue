@@ -45,14 +45,47 @@
                   <q-separator />
 
                   <q-card-section style="max-height: 50vh" class="scroll">
-                  <p v-for="n in 15" :key="n">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.</p>
+                    <q-item-label header class="settings_header">Male Color</q-item-label>
+                    <q-input
+                      filled
+                      v-model="maleColor"
+                      :rules="['anyColor']"
+                      class="color-input color-input-male"
+                    >
+                      <template v-slot:append>
+                        <q-icon name="colorize" class="cursor-pointer">
+                          <q-popup-proxy transition-show="scale" transition-hide="scale">
+                            <q-color v-model="maleColor" />
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                    <q-item-label header class="settings_header">Female Color</q-item-label>
+                    <q-input
+                      filled
+                      v-model="femaleColor"
+                      :rules="['anyColor']"
+                      class="color-input color-input-female"
+                    >
+                      <template v-slot:append>
+                        <q-icon name="colorize" class="cursor-pointer">
+                          <q-popup-proxy transition-show="scale" transition-hide="scale">
+                            <q-color v-model="femaleColor" />
+                          </q-popup-proxy>
+                        </q-icon>
+                      </template>
+                    </q-input>
+                    <q-toggle
+                      v-model="showHeatmap"
+                      label="Show Heatmap"
+                    />
                   </q-card-section>
 
                   <q-separator />
 
                   <q-card-actions align="right">
-                  <q-btn flat label="Decline" color="primary" v-close-popup />
-                  <q-btn flat label="Accept" color="primary" v-close-popup />
+                  <q-btn flat label="Cancel" color="negative" v-close-popup />
+                  <q-btn flat label="Apply" color="primary" v-close-popup />
                   </q-card-actions>
               </q-card>
             </q-dialog>
@@ -80,6 +113,16 @@
               </q-card>
             </q-dialog>
             <q-tooltip content-class="bg-dark">Help</q-tooltip>
+          </q-btn>
+          <q-btn
+            flat
+            round
+            dense
+            icon="menu"
+            class="q-mr-sm"
+            aria-label="Menu"
+            @click="rightDrawerOpen = !rightDrawerOpen">
+            <q-tooltip content-class="bg-dark">Heatmaps</q-tooltip>
           </q-btn>
         </q-toolbar>
     </q-header>
@@ -125,6 +168,24 @@
       </q-list>
     </q-drawer>
 
+    <q-drawer
+      v-model="rightDrawerOpen"
+      side="right"
+      show-if-above
+      bordered
+      content-class="bg-grey-1"
+    >
+      <q-list class="rightDrawer">
+        <q-item-label
+          header
+          class="text-grey-8"
+        >
+          Heatmaps
+        </q-item-label>
+        <q-separator />
+      </q-list>
+    </q-drawer>
+
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -148,12 +209,17 @@ export default {
   
   data () {
     return {
-      leftDrawerOpen: false,
+      leftDrawerOpen: true,
+      rightDrawerOpen: false,
       elements: this.$filters.toApply,
 
       model: '',
       settings_dialog: false,
       help_dialog: false,
+
+      maleColor: this.$getColor("male"),
+      femaleColor: this.$getColor("female"),
+      showHeatmap: true,
 
       allCategories: null,
       defaultNodes: [
@@ -181,11 +247,48 @@ export default {
     },
     updateCurrent(current) {
       this.$root.$emit('updateCurrent', current);
+    },
+    drawHeatmapLegend() {
+      var labels = ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'];
+      var width = 300, height = 50;
+      const colorScale = this.$d3.scaleLinear()
+        .domain([0, 4])
+        .range([this.$getColor("info"), this.$getColor("primary")]);
+      var svg = this.$d3.select(".rightDrawer").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+      // draw legend
+      const legend = svg.selectAll(".legend")
+          .data(labels)
+          .enter().append("g")
+          .attr("class", "legend")
+          .attr("transform", (d, i) => `translate(${i * 40}, 10)`);
+
+      // draw legend colored rectangles
+      legend
+          .append("rect")
+          .attr("x", 50)
+          .attr("width", 40)
+          .attr("height", 18)
+          .style("fill", (_, i) => colorScale(i));
+
+      // draw legend text
+      legend.append("text")
+          .attr("x", 70)
+          .attr("y", 30)
+          .attr("dy", ".35em")
+          .style("text-anchor", "middle")
+          .style("font-size", "8pt")
+          .text((d, i) => i === 0 || i === (labels.length - 1) ? d : null);
     }
   },
   mounted() {
     this.$root.$on('updateFilter', (filter) => this.elements = filter);
     this.$root.$on('allCategories', (cats) => this.allCategories = cats);
+    this.$root.$on('openRightDrawer', () => this.rightDrawerOpen = true);
+    this.$root.$on('closeRightDrawer', () => this.rightDrawerOpen = false);
+    this.drawHeatmapLegend();
   }
 }
 </script>
@@ -198,5 +301,14 @@ export default {
   
   input[type="number"] {
       -moz-appearance: textfield;
+  }
+
+  .color-input .q-field__inner {
+    border-radius: 10px;
+  }
+
+  .settings_header {
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
 </style>

@@ -1,1 +1,11 @@
 // app global css in SCSS form
+$male      : #FFA500;
+$female    : #1976D2;
+
+.color-input-male .q-field__inner {
+    background-color: $male;
+}
+
+.color-input-female .q-field__inner {
+    background-color: $female;
+}
