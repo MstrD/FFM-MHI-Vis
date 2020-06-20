@@ -1,6 +1,6 @@
 <template>
-    <div id="scatter" class="col-12 col-md-6" style="height: 400px">
-        <div class="q-mt-md q-pl-lg q-gutter-sm">
+    <div id="scatter" class="col-12 col-md-7" style="height: 400px">
+        <div class="q-mt-md q-pl-md q-gutter-sm">
             <q-radio dense v-model="scatterIndex" val="Neuroticism" label="Neuroticism" />
             <q-radio dense v-model="scatterIndex" val="Extraversion" label="Extraversion" />
             <q-radio dense v-model="scatterIndex" val="Openness" label="Openness" />

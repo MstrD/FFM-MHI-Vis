@@ -57,14 +57,16 @@ export default {
                 }
             }
         
-            // Build the X scale -> it find the best position for each Y axis
+            // Build the X scale -> it finds the best position for each Y axis
             var x = this.$d3.scalePoint()
                 .range([0, width])
                 .padding(1)
                 .domain(dimensions);
+                
+            var y_coords = {};
             var self = this;
 
-            // draggable behavior
+            // BEGIN OF draggable behavior
             var dragging = {};
             var drag_handler = this.$d3.drag()
                 .subject(function(d) { return {x: x(d)}; })
@@ -93,14 +95,19 @@ export default {
                     .transition()
                     .duration(1000)
                     .attr("d", path);
+                svg.selectAll(".groupingRange")
+                    .transition()
+                    .duration(1000)
+                    .attr("y", (d, i) => y_coords[`${dimensions[dimensions.length - 1]}${i}`]);
             }
 
             function position(d) {
                 return dragging[d] == null ? x(d) : dragging[d];
             }
 
-            // The path function take a row of the csv as input, and return x and y coordinates of the line to draw for this raw.
-            function path(d) {
+            // The path function returns x and y coordinates 
+            // of the line to draw for this raw.
+            function path(d, i) {
                 return self.$d3.line()(dimensions.map(function(p) {
                     if (self.parallelIndex !== 'Individual')
                         y[p].domain(self.parallelThresholds[p]);
@@ -109,8 +116,10 @@ export default {
                             y[p].domain([0, 48]);
                         else
                             y[p].domain([0, 30]);
+                    y_coords[`${p}${i}`] = y[p](d[p]) + 5; // +5 for better alignment
                     return [position(p), y[p](d[p])]; }));
             }
+            // END OF draggable behavior
 
             if (!this.parallelExists) {
                 // append the svg object to the body of the page
@@ -180,7 +189,8 @@ export default {
                         .transition()
                         .duration(1000)
                         .style("stroke", (d, i) => this.choosePainting(d, i))
-                        .style("opacity", 0.5)
+                        .style("opacity", 0.5);
+                    svg.selectAll(".groupingRange").remove();
                 }
                 else // same or less lines than before
                     myPath.enter().merge(myPath)
@@ -189,6 +199,17 @@ export default {
                         .attr("d", path)
                         .style("stroke", (d, i) => this.choosePainting(d, i))
                         .style("stroke-width", (d) => this.parallelIndex === "Individual" ? "1px" : "3px");
+                    if (this.parallelIndex === 'Grouping') {
+                        svg.selectAll("groupingRange")
+                            .data(this.parallelGrouping)
+                            .enter()
+                            .append("text")
+                            .attr("class", "groupingRange")
+                            .attr("y", (d, i) => y_coords[`${dimensions[dimensions.length - 1]}${i}`])
+                            .attr("x", width - 60)
+                            .style("font-size", "8pt")
+                            .text((d, i) => this.getTextAge(i) + " y.o.");
+                    }
             }
             if (!this.parallelExists)
                 this.parallelExists = true;
@@ -261,6 +282,22 @@ export default {
                     return 4;
                 case 70 <= age && age < 80:
                     return 5;
+            }
+        },
+        getTextAge(index) {
+            switch (index) {
+                case 0:
+                    return "18-30";
+                case 1:
+                    return "30-40";
+                case 2:
+                    return "40-50";
+                case 3:
+                    return "50-60";
+                case 4:
+                    return "60-70";
+                case 5:
+                    return "70-80";
             }
         },
         highlightParallel(subj) {

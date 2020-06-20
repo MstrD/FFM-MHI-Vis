@@ -77,7 +77,7 @@
                     </q-input>
                     <q-toggle
                       v-model="showHeatmap"
-                      label="Show Heatmap"
+                      label="Show Heatmap Results"
                     />
                   </q-card-section>
 
@@ -114,7 +114,7 @@
             </q-dialog>
             <q-tooltip content-class="bg-dark">Help</q-tooltip>
           </q-btn>
-          <q-btn
+          <!--q-btn
             flat
             round
             dense
@@ -123,7 +123,7 @@
             aria-label="Menu"
             @click="rightDrawerOpen = !rightDrawerOpen">
             <q-tooltip content-class="bg-dark">Heatmaps</q-tooltip>
-          </q-btn>
+          </q-btn>-->
         </q-toolbar>
     </q-header>
 
@@ -169,6 +169,7 @@
     </q-drawer>
 
     <q-drawer
+      v-if="showHeatmap"
       v-model="rightDrawerOpen"
       side="right"
       show-if-above
