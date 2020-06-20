@@ -205,9 +205,10 @@ export default {
                             .enter()
                             .append("text")
                             .attr("class", "groupingRange")
-                            .attr("y", (d, i) => y_coords[`${dimensions[dimensions.length - 1]}${i}`])
+                            .attr("y", (_, i) => y_coords[`${dimensions[dimensions.length - 1]}${i}`])
                             .attr("x", width - 60)
                             .style("font-size", "8pt")
+                            .style("fill", (_, i) => this.color(i))
                             .text((d, i) => this.getTextAge(i) + " y.o.");
                     }
             }
