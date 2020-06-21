@@ -37,7 +37,9 @@ export default {
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
             // tooltip for mouse events
-            var tooltip = this.$d3.select(".rightDrawer").append("div").attr("class", "tooltip").style("opacity", 0);
+            var tooltip = this.$d3.select(".rightDrawer").append("div")
+                .attr("class", `tooltip tooltip${this.$getNumber(d)}`)
+                .style("opacity", 0);
         
             // Build X scales and axis:
             var x = this.$d3.scaleBand()
@@ -117,6 +119,7 @@ export default {
             if (this.$d3.select(".rightDrawer").select(`.chart${this.$getNumber(d)}`)) {
                 this.$d3.select(".rightDrawer").select(`.chart${this.$getNumber(d)}`).remove();
                 this.$d3.select(".rightDrawer").select(`.title${this.$getNumber(d)}`).remove();
+                this.$d3.select(".rightDrawer").select(`.tooltip${this.$getNumber(d)}`).remove();
             }
             if (!this.$d3.select(".rightDrawer").select(`.chart`))
                 this.$root.$emit('closeRightDrawer');
