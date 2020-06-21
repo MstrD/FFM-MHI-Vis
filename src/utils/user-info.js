@@ -111,8 +111,11 @@ function getTraitQuestions() {
         extraversion: [],
         openness: [],
         agreeableness: [],
-        conscientiousness: []
+        conscientiousness: [],
+        mhi: []
     };
+    let mhi_indices = [11, 17, 19, 27, 34];
+    // FFM questions
     for (let i = 1; i <= 60; i++) {
         switch (i % 5) {
             case 1:
@@ -132,12 +135,18 @@ function getTraitQuestions() {
                 continue;
         }
     }
+    // MHI questions
+    mhi_indices.forEach(el => {
+        traits.mhi.push(el);
+    });
     return traits;
 }
 
 function getTraitAnswers(d) {
     let traits = [];
+    let mhi_indices = [11, 17, 19, 27, 34];
     let q = 0;
+    // FFM answers
     for (let i = 1; i <= 60; i++) {
         switch (i % 5) {
             case 1:
@@ -188,6 +197,17 @@ function getTraitAnswers(d) {
                 continue;
         }
     }
+    // MHI answers
+    mhi_indices.forEach((el, i) => {
+        traits.push({
+            id: d.Nº,
+            trait: 'MHI',
+            traitReduced: 'MHI',
+            question: el,
+            value: d[`D${el}_MH5`],
+            index: i
+        });
+    });
     return traits;
 }
 
