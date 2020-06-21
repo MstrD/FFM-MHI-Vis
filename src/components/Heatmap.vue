@@ -94,7 +94,7 @@ export default {
                     <b>Question ${d.question} (${d.traitReduced}):</b>
                     ${self.$getQuestionsVerbose()[d.trait][d.question - 1]}</br>
                     <b>Response:</b>
-                    ${d.value} (${labels[d.value]})
+                    ${d.value ? d.value : 'N/D'} (${labels[d.value]})
                 `)
                 .transition()
                 .duration(1000)
