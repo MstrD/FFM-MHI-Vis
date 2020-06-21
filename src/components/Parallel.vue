@@ -192,7 +192,7 @@ export default {
                         .style("opacity", 0.5);
                     svg.selectAll(".groupingRange").remove();
                 }
-                else // same or less lines than before
+                else { // same or less lines than before
                     myPath.enter().merge(myPath)
                         .transition()
                         .duration(1000)
@@ -211,6 +211,7 @@ export default {
                             .style("fill", (_, i) => this.color(i))
                             .text((d, i) => this.getTextAge(i) + " y.o.");
                     }
+                }
             }
             if (!this.parallelExists)
                 this.parallelExists = true;
@@ -265,7 +266,7 @@ export default {
         },
         choosePainting(d, i) {
             if (this.parallelIndex === 'Individual') // choose between blue or orange for each of the 200 subjects
-                return d.Q1_Sexo !== 1 ? this.$getColor("primary") : "orange";
+                return d.Q1_Sexo !== 1 ? this.$getColor("female") : this.$getColor("male");
             else // uses d3.schemeCategory10 (one for each group presented)
                 return this.color(i);
         },

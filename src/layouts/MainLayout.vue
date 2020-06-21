@@ -55,7 +55,7 @@
                       <template v-slot:append>
                         <q-icon name="colorize" class="cursor-pointer">
                           <q-popup-proxy transition-show="scale" transition-hide="scale">
-                            <q-color v-model="maleColor" />
+                            <q-color v-model="maleColor" no-footer />
                           </q-popup-proxy>
                         </q-icon>
                       </template>
@@ -70,7 +70,7 @@
                       <template v-slot:append>
                         <q-icon name="colorize" class="cursor-pointer">
                           <q-popup-proxy transition-show="scale" transition-hide="scale">
-                            <q-color v-model="femaleColor" />
+                            <q-color v-model="femaleColor" no-footer />
                           </q-popup-proxy>
                         </q-icon>
                       </template>
@@ -85,7 +85,7 @@
 
                   <q-card-actions align="right">
                   <q-btn flat label="Cancel" color="negative" v-close-popup />
-                  <q-btn flat label="Apply" color="primary" v-close-popup />
+                  <q-btn flat label="Apply" color="primary" v-close-popup @click="saveSettings()"/>
                   </q-card-actions>
               </q-card>
             </q-dialog>
@@ -157,8 +157,8 @@
           </template>
         </q-input>
         <div class="q-pl-md q-mb-xs" style="font-size: 9pt">
-          <q-icon name="lens" color="primary" /> Female
-          <q-icon name="lens" color="orange" class="q-pl-md q-pr-sm" /> Male
+          <q-icon name="lens" color="female" /> Female
+          <q-icon name="lens" color="male" class="q-pl-md q-pr-sm" /> Male
           <span style="float: right" class="q-mr-lg text-grey-6"><i>{{ elements.length }} subjects found</i></span>
         </div>
         <UserProfile 
@@ -183,6 +183,13 @@
         >
           Heatmaps
         </q-item-label>
+        <q-separator />
+        <svg
+          class="heatmap_legend"
+          width="300"
+          height="50"
+        >
+        </svg>
         <q-separator />
       </q-list>
     </q-drawer>
@@ -255,9 +262,7 @@ export default {
       const colorScale = this.$d3.scaleLinear()
         .domain([0, 4])
         .range([this.$getColor("info"), this.$getColor("primary")]);
-      var svg = this.$d3.select(".rightDrawer").append("svg")
-        .attr("width", width)
-        .attr("height", height);
+      var svg = this.$d3.select(".rightDrawer").select("svg.heatmap_legend")
 
       // draw legend
       const legend = svg.selectAll(".legend")
@@ -282,6 +287,11 @@ export default {
           .style("text-anchor", "middle")
           .style("font-size", "8pt")
           .text((d, i) => i === 0 || i === (labels.length - 1) ? d : null);
+    },
+    saveSettings() {
+      this.$setColor('male', this.maleColor);
+      this.$setColor('female', this.femaleColor);
+      //this.$router.go();
     }
   },
   mounted() {

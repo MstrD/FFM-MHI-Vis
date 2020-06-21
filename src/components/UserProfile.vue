@@ -10,10 +10,10 @@
       >
         <template v-slot:header>
           <q-item-section avatar>
-            <q-avatar square v-if="Q1_Sexo === 2" color="primary" text-color="white">
+            <q-avatar square v-if="Q1_Sexo === 2" color="female" text-color="white">
               {{ Nº }}
             </q-avatar>
-            <q-avatar square v-else color="orange" text-color="white">
+            <q-avatar square v-else color="male" text-color="white">
               {{ Nº }}
             </q-avatar>
           </q-item-section>

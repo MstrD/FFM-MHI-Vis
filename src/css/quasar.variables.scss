@@ -22,3 +22,31 @@ $positive  : #21BA45;
 $negative  : #C10015;
 $info      : #31CCEC;
 $warning   : #F2C037;
+
+$male      : #FFA500;
+$female    : #1976D2;
+
+:root {
+    --q-color-male: $male;
+    --q-color-female: $female;
+}
+
+.bg-male {
+    background: $male !important;
+    background: var(--q-color-male) !important;
+}
+
+.text-male {
+    color: $male !important;
+    color: var(--q-color-male) !important;
+}
+
+.bg-female {
+    background: $female !important;
+    background: var(--q-color-female) !important;
+}
+
+.text-female {
+    color: $female !important;
+    color: var(--q-color-female) !important;
+}
