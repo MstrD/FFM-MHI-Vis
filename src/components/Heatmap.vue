@@ -24,16 +24,20 @@ export default {
             }
             var answers = this.$getTraitAnswers(d);
             var labels = ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'];
-
+            
+            // heatmap title (subject ID)
             this.$d3.select(".rightDrawer").append("div")
                 .attr("class", `q-ml-md q-mt-md title${this.$getNumber(d)}`)
                 .html(`<b>Subject ${this.$getNumber(d)}:</b>`);
+            // svg (heatmap per se)
             var svg = this.$d3.select(".rightDrawer").append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .attr("class", `chart chart${this.$getNumber(d)}`)
                 .append("g")
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            // tooltip for mouse events
+            var tooltip = this.$d3.select(".rightDrawer").append("div").attr("class", "tooltip").style("opacity", 0);
         
             // Build X scales and axis:
             var x = this.$d3.scaleBand()
@@ -56,44 +60,13 @@ export default {
             const colorScale = this.$d3.scaleLinear()
                 .domain([0, 4])
                 .range([this.$getColor("info"), this.$getColor("primary")]);
-            
-            /* // Append title
-            svg.append("text")
-                .attr("class", "title")
-                .attr("x", (width / 2))
-                .attr("y", 0 - (margin.top / 2))
-                .attr("text-anchor", "middle")
-                .text("Heatmap for subject #" + d.Nº); */
-
-            /* // draw legend
-            const legend = svg.selectAll(".legend")
-                .data(labels)
-                .enter().append("g")
-                .attr("class", "legend")
-                .attr("transform", (d, i) => "translate(50," + i * 20 + ")");
-
-            // draw legend colored rectangles
-            legend
-                .append("rect")
-                .attr("x", width - 18)
-                .attr("width", 18)
-                .attr("height", 18)
-                .style("fill", (_, i) => colorScale(i));
-
-            // draw legend text
-            legend.append("text")
-                .attr("x", width - 24)
-                .attr("y", 9)
-                .attr("dy", ".35em")
-                .style("text-anchor", "end")
-                .text((d) => d); */
         
             const cards = svg.selectAll()
                 .data(answers);
             
             cards.enter()
                 .append("rect")
-                .attr("x", (d) => x("#" + String(d.question + 1)))
+                .attr("x", (d) => x("#" + String(d.question)))
                 .attr("y", (d) => y(d.traitReduced)) // change to y(d.trait) to print full name in y-axis
                 .attr("width", x.bandwidth() )
                 .attr("height", y.bandwidth() )
@@ -102,11 +75,43 @@ export default {
                     .transition()
                     .duration(1000)
                     .attr("value", (d) => d.value)
-                    .style("fill", (d) => d.value !== "" ? colorScale(d.value) : bgColor)
+                    .style("fill", (d) => d.value !== "" ? colorScale(d.value) : bgColor);
             
                 // TODO: linha de heatmap para o MHI
 
-            this.$root.$emit('openRightDrawer');
+            // tooltip events
+            var self = this;
+            var rects = svg.selectAll("rect");
+            rects.on('mouseover', function(d) {
+                console.log(d);
+                self.$d3.select(this)
+                    .transition()
+                    .duration(1000)
+                    .style("stroke", "black");
+                tooltip.html(`
+                    <b>Question ${d.question} (${d.traitReduced}):</b>
+                    ${self.$getQuestionsVerbose()[d.trait][d.question - 1]}</br>
+                    <b>Response:</b>
+                    ${d.value} (${labels[d.value]})
+                `)
+                .transition()
+                .duration(1000)
+                .style("opacity", 1)
+                .style("left", (self.$d3.mouse(this)[0] + 0) + "px")
+                .style("top", (self.$d3.mouse(this)[1] + 100) + "px");;
+            });
+            rects.on('mouseout', function(d) {
+                self.$d3.select(this)
+                    .transition()
+                    .duration(1000)
+                    .style("stroke", "none");
+                tooltip
+                    .transition()
+                    .duration(1000)
+                    .style("opacity", 0);
+            })
+
+            this.$root.$emit('openRightDrawer'); // FIXME: this will become false
         },
         removeHeatmap(d) {
             if (this.$d3.select(".rightDrawer").select(`.chart${this.$getNumber(d)}`)) {
@@ -128,5 +133,16 @@ export default {
     svg g.tick line {
         stroke: none;
         fill: none;
+    }
+</style>
+
+<style lang="scss">
+    .rightDrawer .tooltip {
+        margin: 0px 5px;
+        padding-left: 5px;
+        background: cornsilk;
+        border: 1px solid black;
+        border-radius: 5px;
+        font-size: 9pt;
     }
 </style>

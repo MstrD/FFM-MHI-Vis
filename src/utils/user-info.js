@@ -137,14 +137,16 @@ function getTraitQuestions() {
 
 function getTraitAnswers(d) {
     let traits = [];
+    let q = 0;
     for (let i = 1; i <= 60; i++) {
         switch (i % 5) {
             case 1:
+                q++;
                 traits.push({
                     id: d.Nº,
                     trait: 'Neuroticism',
                     traitReduced: 'N',
-                    question: Math.round(i / 5),
+                    question: q,
                     value: d[`NEOFF${i}`]
                 });
                 continue;
@@ -153,7 +155,7 @@ function getTraitAnswers(d) {
                     id: d.Nº,
                     trait: 'Extraversion',
                     traitReduced: 'E',
-                    question: Math.round(i / 5),
+                    question: q,
                     value: d[`NEOFF${i}`]
                 });
                 continue;
@@ -162,7 +164,7 @@ function getTraitAnswers(d) {
                     id: d.Nº,
                     trait: 'Openness',
                     traitReduced: 'O',
-                    question: Math.round(i / 5),
+                    question: q,
                     value: d[`NEOFF${i}`]
                 });
                 continue;
@@ -171,7 +173,7 @@ function getTraitAnswers(d) {
                     id: d.Nº,
                     trait: 'Agreeableness',
                     traitReduced: 'A',
-                    question: Math.round(i / 5),
+                    question: q,
                     value: d[`NEOFF${i}`]
                 });
                 continue;
@@ -180,7 +182,7 @@ function getTraitAnswers(d) {
                     id: d.Nº,
                     trait: 'Conscientiousness',
                     traitReduced: 'C',
-                    question: Math.round(i / 5),
+                    question: q,
                     value: d[`NEOFF${i}`]
                 });
                 continue;
@@ -232,7 +234,7 @@ function getQuestionsVerbose() {
         Neuroticism: [
             'No worrier',
             'At times felt bitter, resentful',
-            'When under great stress, sometimes feel I’m going to pieces',
+            'When under great stress, sometimes feel I’m falling to pieces',
             'Rarely feel lonely or downhearted',
             'Often tense, jittery',
             'Sometimes feel completely worthless',
