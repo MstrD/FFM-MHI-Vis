@@ -75,10 +75,10 @@
                         </q-icon>
                       </template>
                     </q-input>
-                    <q-toggle
+                    <!-- <q-toggle
                       v-model="showHeatmap"
                       label="Show Heatmap Results"
-                    />
+                    /> -->
                   </q-card-section>
 
                   <q-separator />

@@ -10,6 +10,7 @@ function highlightSubject(subj, isFromLeftDrawer = false) {
     this.$root.$emit('highlightViolin', subj);
     this.$root.$emit('highlightSankey', subj);
     this.$root.$emit('drawHeatmap', subj);
+    this.$isHighlighted.value = true;
 }
 
 function dehighlightSubject(subj, isFromLeftDrawer = false) {
@@ -21,6 +22,7 @@ function dehighlightSubject(subj, isFromLeftDrawer = false) {
     this.$root.$emit('removeHeatmap', subj);
     if (isFromLeftDrawer)
         this.$root.$emit('dehighlightScatter');
+    this.$isHighlighted.value = false;
 }
 
 function dehighlightAllSubjects() {

@@ -38,6 +38,8 @@ Vue.prototype.$dehighlightAllSubjects = dehighlightAllSubjects;
 Vue.prototype.$getColor = colors.getBrand;
 Vue.prototype.$setColor = colors.setBrand;
 
+Vue.prototype.$isHighlighted = { value: false };
+
 Vue.prototype.$els = [];
 Vue.prototype.$filters = {
   gender: [],

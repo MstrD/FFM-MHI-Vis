@@ -198,7 +198,7 @@ export default {
                     .duration(200)
                     .style("opacity", 0.9)
                     .style("padding", "2px")
-                    .style("left", (self.$d3.mouse(this)[0] + 925) + "px")
+                    .style("left", (self.$d3.mouse(this)[0] + 850) + "px")
                     .style("top", (self.$d3.mouse(this)[1] + 130) + "px");
                 tooltip.select("#text")
                     .html("<b>Subject #" + d.Nº + "</b><br/> Age: " + xValue(d) + "<br>" + trait + ": " + yValue(d));
@@ -218,7 +218,7 @@ export default {
                     self.$d3.select(this).classed("clicked", true);
                     self.$d3.select(this)
                         .style("stroke", "black");
-                    self.$highlightSubject(d);
+                    self.$isHighlighted.value ? self.$dehighlightSubject(d) : self.$highlightSubject(d);
                     self.$scatterUsers.push(d);
                 }
                 else {
@@ -228,7 +228,7 @@ export default {
                         .transition()
                         .duration(1000)
                         .attr("r", 3);
-                    self.$dehighlightSubject(d);
+                    self.$isHighlighted.value ? self.$dehighlightSubject(d) : self.$highlightSubject(d);
                     self.$scatterUsers = self.$scatterUsers.filter(el => d.Nº !== el.Nº);
                     self.$root.$emit("removeScatterUsers", self.$scatterUsers); // this is hammered, needs to be here for parallel highlighting when v-model changes
                 }
