@@ -13,6 +13,7 @@ import { highlightSubject, dehighlightSubject, dehighlightAllSubjects } from '..
 import * as d3 from 'd3v4';
 import VueDraggable from 'vue-draggable';
 import { colors } from 'quasar';
+import { axiosInstance, maleColor, femaleColor } from 'boot/axios';
 
 Vue.prototype.$getNumber = getNumber;
 Vue.prototype.$getAge = getAge;
@@ -80,8 +81,25 @@ Vue.prototype.$violinUsers = [];
 
 Vue.prototype.$d3 = d3;
 
-colors.setBrand('male', '#FFA500');
-colors.setBrand('female', "#1976D2");
+axiosInstance.get('/maleColor')
+    .then((res) => {
+      console.log(res.data);
+      colors.setBrand('male', res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+;
+
+axiosInstance.get('/femaleColor')
+    .then((res) => {
+      console.log(res.data);
+      colors.setBrand('female', res.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+;
 
 Vue.use(VueRouter)
 Vue.use(VueDraggable)
