@@ -57,9 +57,10 @@ export default {
             yMap = (d) => yScale(yValue(d)), // data -> display
             yAxis = this.$d3.axisLeft(yScale);
             
-            // setup fill color
-            var cValue = (d) => d.Q1_Sexo,
-            color = this.$d3.scaleOrdinal(this.$d3.schemeCategory10);
+            // setup fill color for legend
+            var cValue = (d, i) => i !== 1 ? this.$getColor("female") : this.$getColor("male");
+            // setup fill color for dots
+            var color = (d) => d.Q1_Sexo !== 1 ? this.$getColor("female") : this.$getColor("male");
 
             // don't want dots overlapping axis, so add in buffer to data domain
             if (data.length > 1)
@@ -119,11 +120,11 @@ export default {
                     .attr("r", 3)
                     .attr("cx", xMap)
                     .attr("cy", yMap)
-                    .style("fill", (d) => color(cValue(d)));
+                    .style("fill", (d) => color(d));
 
                 // draw legend
                 var legend = svg.selectAll(".legend")
-                    .data(color.domain())
+                    .data(["Female", "Male"])
                     .enter().append("g")
                     .attr("class", "legend")
                     .attr("transform", (d, i) => "translate(0," + i * 20 + ")");
@@ -133,7 +134,7 @@ export default {
                     .attr("x", width - 18)
                     .attr("width", 18)
                     .attr("height", 18)
-                    .style("fill", color);
+                    .style("fill", cValue);
 
                 // draw legend text
                 legend.append("text")
@@ -141,7 +142,7 @@ export default {
                     .attr("y", 9)
                     .attr("dy", ".35em")
                     .style("text-anchor", "end")
-                    .text((d) => d == 1 ? 'Male' : 'Female');
+                    .text((d) => d);
             }
             else {
                 var svg = this.$d3.select("#scatter").select("g");
@@ -177,14 +178,14 @@ export default {
                         .duration(1000)
                         .attr("cx", xMap)
                         .attr("cy", yMap)
-                        .style("fill", (d) => color(cValue(d)));
+                        .style("fill", (d) => color(d));
                 else
                     dots.enter().merge(dots)
                         .transition()
                         .duration(1000)
                         .attr("cx", xMap)
                         .attr("cy", yMap)
-                        .style("fill", (d) => color(cValue(d)));
+                        .style("fill", (d) => color(d));
             }
             var self = this; // scope changes in mouse events; this line is necessary
             dots.on("mouseover", function (d) {
