@@ -83,7 +83,6 @@ Vue.prototype.$d3 = d3;
 
 axiosInstance.get('/maleColor')
     .then((res) => {
-      console.log(res.data);
       colors.setBrand('male', res.data);
     })
     .catch((err) => {
@@ -93,7 +92,6 @@ axiosInstance.get('/maleColor')
 
 axiosInstance.get('/femaleColor')
     .then((res) => {
-      console.log(res.data);
       colors.setBrand('female', res.data);
     })
     .catch((err) => {

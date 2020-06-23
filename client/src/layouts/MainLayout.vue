@@ -288,10 +288,14 @@ export default {
           .style("font-size", "8pt")
           .text((d, i) => i === 0 || i === (labels.length - 1) ? d : null);
     },
-    saveSettings() {
-      this.$setColor('male', this.maleColor);
-      this.$setColor('female', this.femaleColor);
-      //this.$router.go();
+    async saveSettings() {
+      await this.$axios.post('/maleColor', {
+        maleColor: this.maleColor
+      });
+      await this.$axios.post('/femaleColor', {
+        femaleColor: this.femaleColor
+      });
+      this.$router.go();
     }
   },
   mounted() {
