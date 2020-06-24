@@ -163,7 +163,7 @@ export default {
                 svg.selectAll(".legend")
                     .transition()
                     .duration(1000)
-                    .style("fill", color);
+                    .style("fill", cValue);
 
                 var dots = svg.selectAll(".dot")
                     .data(data);

@@ -85,7 +85,7 @@
 
                   <q-card-actions align="right">
                   <q-btn flat label="Cancel" color="negative" v-close-popup />
-                  <q-btn flat label="Restore to Default" color="positive" v-close-popup @click="defaultSettings()"/>
+                  <q-btn flat label="Restore to Default" color="primary" v-close-popup @click="defaultSettings()"/>
                   <q-btn flat label="Apply" color="primary" v-close-popup @click="saveSettings()"/>
                   </q-card-actions>
               </q-card>
