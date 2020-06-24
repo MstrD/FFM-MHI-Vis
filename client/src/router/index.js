@@ -13,7 +13,7 @@ import { highlightSubject, dehighlightSubject, dehighlightAllSubjects } from '..
 import * as d3 from 'd3v4';
 import VueDraggable from 'vue-draggable';
 import { colors } from 'quasar';
-import { axiosInstance, maleColor, femaleColor } from 'boot/axios';
+import { axiosInstance } from 'boot/axios';
 
 Vue.prototype.$getNumber = getNumber;
 Vue.prototype.$getAge = getAge;
