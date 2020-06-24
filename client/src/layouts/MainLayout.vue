@@ -206,8 +206,6 @@ import UserProfile from 'components/UserProfile';
 import Filters from 'components/Filters';
 import Categories from 'components/Categories';
 
-import { colors } from 'quasar';
-
 export default {
   name: 'MainLayout',
 
