@@ -1,4 +1,4 @@
-# FFM-MHI Vis (ffm-mhi-vis)
+# FFM-MHI Vis (ffm-mhi-vis) - Client Side
 
 An InfoVis Tool for FFM and MHI
 
