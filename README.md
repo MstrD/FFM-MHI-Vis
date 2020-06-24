@@ -7,9 +7,10 @@ An InfoVis Tool for FFM and MHI (MSc Thesis, IST, 2020)
 cd client
 ```
 
-### Server-side Folder
+## Server-side Folder
 ```bash
 cd server
 ```
 
-More instruction on each folder's `README.md` file.
+## Instructions
+More instructions on each folder's `README.md` file.

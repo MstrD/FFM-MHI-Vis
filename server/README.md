@@ -18,6 +18,6 @@ npm run test
 npm run start
 ```
 
-### Important files
+## Important files
 This is a very simple server, composed by a single file, `src/server.js`.
 The settings file, which is read and modified by user request, is also unique and can be found in `src/settings/settings.json`.
