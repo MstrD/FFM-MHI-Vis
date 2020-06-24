@@ -13,10 +13,11 @@ npm run test
 ```
 
 
-### Build the app for production
+### Build the server for production
 ```bash
 npm run start
 ```
 
 ### Important files
-This is a very simple server, composed by a single file, `src/server.js`. In order to modify anything, this file demands your requests.
+This is a very simple server, composed by a single file, `src/server.js`.
+The settings file, which is read and modified by user request, is also unique and can be found in `src/settings/settings.json`.
