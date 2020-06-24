@@ -27,6 +27,18 @@ function writeSetting(setting, value) {
     });
 }
 
+function restoreToDefault() {
+    const data = fs.readFileSync(settingsDir);
+    let settings = JSON.parse(data);
+    settings['maleColor'] = settings['maleColorDefault'];
+    settings['femaleColor'] = settings['femaleColorDefault'];
+    let newData = JSON.stringify(settings, null, 2);
+    fs.writeFile(settingsDir, newData, (err) => {
+        if (err) throw err;
+        console.log('Data written to file!');
+    });
+}
+
 app.get('/settings/maleColor', (req, res) => {
     res.send(readSetting('maleColor'));
 });
@@ -43,6 +55,11 @@ app.post('/settings/maleColor', (req, res) => {
 app.post('/settings/femaleColor', (req, res) => {
     writeSetting('femaleColor', req.body.femaleColor);
     res.send('Female color changed!');
+});
+
+app.get('/settings/default', (req, res) => {
+    restoreToDefault();
+    res.send("Colors restored to default!");
 });
 
 const PORT = process.env.PORT || 4000;

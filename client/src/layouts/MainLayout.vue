@@ -85,6 +85,7 @@
 
                   <q-card-actions align="right">
                   <q-btn flat label="Cancel" color="negative" v-close-popup />
+                  <q-btn flat label="Restore to Default" color="positive" v-close-popup @click="defaultSettings()"/>
                   <q-btn flat label="Apply" color="primary" v-close-popup @click="saveSettings()"/>
                   </q-card-actions>
               </q-card>
@@ -205,6 +206,8 @@ import UserProfile from 'components/UserProfile';
 import Filters from 'components/Filters';
 import Categories from 'components/Categories';
 
+import { colors } from 'quasar';
+
 export default {
   name: 'MainLayout',
 
@@ -289,12 +292,18 @@ export default {
           .text((d, i) => i === 0 || i === (labels.length - 1) ? d : null);
     },
     async saveSettings() {
-      await this.$axios.post('/maleColor', {
-        maleColor: this.maleColor
-      });
-      await this.$axios.post('/femaleColor', {
-        femaleColor: this.femaleColor
-      });
+      if (this.$getColor("male") !== this.maleColor)
+        await this.$axios.post('/maleColor', {
+          maleColor: this.maleColor
+        });
+      if (this.$getColor("female") !== this.femaleColor)
+        await this.$axios.post('/femaleColor', {
+          femaleColor: this.femaleColor
+        });
+      this.$router.go();
+    },
+    async defaultSettings() {
+      await this.$axios.get('/default');
       this.$router.go();
     }
   },
