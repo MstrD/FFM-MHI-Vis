@@ -35,7 +35,7 @@ function restoreToDefault() {
     let newData = JSON.stringify(settings, null, 2);
     fs.writeFile(settingsDir, newData, (err) => {
         if (err) throw err;
-        console.log('Data written to file!');
+        console.log('Settings restored!');
     });
 }
 

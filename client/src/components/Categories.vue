@@ -15,7 +15,7 @@
           {{ cat }}
         </q-item-section>
         <q-item-section side>
-          <q-checkbox v-model="checkedNodes.includes(cat)" @input="toggleOnSankey(cat)" color="primary" />
+          <q-checkbox v-model="current.includes(cat)" @input="toggleOnSankey(cat)" color="primary" />
         </q-item-section>
       </q-item>
 
@@ -36,68 +36,65 @@ export default {
         multipleDropzonesItemsDraggingEnabled: false,
         dropzoneSelector: ".q-list",
         draggableSelector: ".q-item"
-      }
+      },
+      current: this.currentNodes,
+      nodes: this.allNodes
     }
   },
   methods: {
     toggleOnSankey(cat) {
-      let current = this.checkedNodes; // cloned var to not use the prop
-      let nodes = this.allNodes; // cloned var to not use the prop
-
-      if (current.includes(cat)) // remove element from sankey
-        current = current.filter(d => d !== cat);
+      if (this.current.includes(cat)) // remove element from sankey
+        this.current = this.current.filter(d => d !== cat);
       else { // add element to sankey
-        current.push(cat);
-        current.sort(function(a, b) {
-          return nodes.indexOf(a) - nodes.indexOf(b);
-        });
+        this.current.push(cat);
+        this.current.sort((a, b) =>
+          this.nodes.indexOf(a) - this.nodes.indexOf(b)
+        );
       }
-      this.checkedNodes = current;
+      this.checkedNodes = this.current;
       // spread current list to parent
-      this.$emit("update-current", current);
+      this.$emit("update-current", this.current);
     },
     reordered(event) {
-      let nodes = this.allNodes; // cloned var to not use the prop
-
       let item = event.detail.ids.map(Number)[0]; // element to be dragged
       let dragIndex = event.detail.index; // the position to be dragged
 
       // the node listing is cloned twice, since the new order will consist of 3 different arrays:
-      let newGroup1 = JSON.parse(JSON.stringify(nodes));
-      let newGroup2 = JSON.parse(JSON.stringify(nodes));
+      let newGroup1 = JSON.parse(JSON.stringify(this.nodes));
+      let newGroup2 = JSON.parse(JSON.stringify(this.nodes));
 
       if (item < dragIndex) // if the drag happens to the front
-        nodes = [].concat(
-          newGroup1.splice(0, dragIndex).filter(d => d !== nodes[item]),
-          nodes[item],
+        this.nodes = [].concat(
+          newGroup1.splice(0, dragIndex).filter(d => d !== this.nodes[item]),
+          this.nodes[item],
           newGroup2.splice(dragIndex)
         );
       else // if the drag happens to the back
-        nodes = [].concat(
+        this.nodes = [].concat(
           newGroup1.splice(0, dragIndex),
-          nodes[item],
-          newGroup2.splice(dragIndex).filter(d => d !== nodes[item])
+          this.nodes[item],
+          newGroup2.splice(dragIndex).filter(d => d !== this.nodes[item])
         );
       // the checked nodes must be sorted by the same order
-      this.checkedNodes.sort(function(a, b) {
-        return nodes.indexOf(a) - nodes.indexOf(b);
-      });
+      this.checkedNodes.sort((a, b) =>
+        this.nodes.indexOf(a) - this.nodes.indexOf(b)
+      );
       // the entire node list must be sorted by the same order
-      this.allNodes.sort(function(a, b) {
-        return nodes.indexOf(a) - nodes.indexOf(b);
-      });
-
+      this.allNodes.sort((a, b) =>
+        this.nodes.indexOf(a) - this.nodes.indexOf(b)
+      );
       // the new node order is then spread to the parent (Sankey.vue)
-      this.$emit("update-order", nodes);
+      this.$emit("update-order", this.nodes);
+      this.$emit("update-current", this.checkedNodes);
     }
   },
   computed: {
     checkedNodes: {
       get() {
-        return this.currentNodes;
+        return this.current;
       },
       set(update) {
-        this.currentNodes = update;
+        this.current = update;
       }
     }
   },
