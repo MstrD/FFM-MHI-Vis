@@ -219,7 +219,7 @@ export default {
                     self.$d3.select(this).classed("clicked", true);
                     self.$d3.select(this)
                         .style("stroke", "black");
-                    self.$isHighlighted.value ? self.$dehighlightSubject(d) : self.$highlightSubject(d);
+                    self.$highlightSubject(d);
                     self.$scatterUsers.push(d);
                 }
                 else {
@@ -229,7 +229,7 @@ export default {
                         .transition()
                         .duration(1000)
                         .attr("r", 3);
-                    self.$isHighlighted.value ? self.$dehighlightSubject(d) : self.$highlightSubject(d);
+                    self.$dehighlightSubject(d);
                     self.$scatterUsers = self.$scatterUsers.filter(el => d.Nº !== el.Nº);
                     self.$root.$emit("removeScatterUsers", self.$scatterUsers); // this is hammered, needs to be here for parallel highlighting when v-model changes
                 }
