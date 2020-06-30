@@ -1,5 +1,5 @@
 <template>
-    <div id="sankey" class="q-mt-xl col-12 col-md-7" style="height: 500px">
+    <div id="sankey" class="q-mt-xl q-pl-xl col-12 col-md-7" style="height: 600px">
         <svg></svg>
     </div>
 </template>
@@ -33,7 +33,7 @@ export default {
     },
     methods: {
         drawSankey(data) {
-            var margin = {top: 30, right: 20, bottom: 10, left: 40},
+            var margin = {top: 30, right: 25, bottom: 10, left: 80},
                 width = this.$d3.select("#sankey").property("clientWidth") - margin.left - margin.right,
                 height = this.$d3.select("#sankey").property("clientHeight") - margin.top - margin.bottom;
 
@@ -109,7 +109,9 @@ export default {
                 .attr("dy", "0.35em")
                 .attr("text-anchor", "end")
                 .style("text-overflow", "ellipsis")
-                .text((d) => this.defaultNodes.includes(d.category) ? d.name : null);
+                .style("white-space", "pre-line")
+                .text((d) => this.defaultNodes.includes(d.category) ? d.name : null)
+                .call(wrap, 80);
             node.append("title")
                 .text((d) => d.name + "\n" + d.value);
             
@@ -126,6 +128,34 @@ export default {
                 .style("font-weight", "bold")
                 .style("font-size", "9pt")
                 .text((d) => d ? d : null);
+
+            var self = this;
+            function wrap(text, width) {
+                text.each(function() {
+                    var text = self.$d3.select(this),
+                    words = text.text().split(/\s+/).reverse(),
+                    word,
+                    line = [],
+                    lineNumber = 0,
+                    y = text.attr("y"),
+                    x = text.attr("x"),
+                    dy = parseFloat(text.attr("dy")),
+                    lineHeight = 1.1, // ems
+                    tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");     
+                    while (word = words.pop()) {
+                        line.push(word);
+                        tspan.text(line.join(" "));
+                        var textWidth = tspan.node().getComputedTextLength();
+                        if (tspan.node().getComputedTextLength() > width) {
+                            line.pop();
+                            tspan.text(line.join(" "));
+                            line = [word];
+                            ++lineNumber;
+                            tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", lineNumber * lineHeight + dy + "em").text(word);
+                        }
+                    }
+                });
+            }
         },
         filterSankeyData(data) {
             let tmp = JSON.parse(JSON.stringify(data)); // a temporary variable is used to avoid data loss

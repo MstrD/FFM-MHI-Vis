@@ -1,5 +1,5 @@
 <template>
-    <div class="q-mt-xl col-12 col-md-4" id="boxplot" style="height: 400px">
+    <div class="q-mt-xl col-12 col-md-4" id="boxplot" style="height: 500px">
     </div>
 </template>
 
