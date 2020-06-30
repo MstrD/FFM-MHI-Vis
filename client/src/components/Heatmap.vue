@@ -10,7 +10,7 @@ export default {
         drawHeatmap(d) {
             // set the dimensions and margins of the graph
             var margin = {top: 10, right: 20, bottom: 30, left: 20},
-                width = 300 - margin.left - margin.right,
+                width = 299 - margin.left - margin.right,
                 height = 415 - margin.top - margin.bottom;
         
             var bgColor = this.$d3.select("#scatter").style("background-color");

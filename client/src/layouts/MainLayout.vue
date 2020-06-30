@@ -187,9 +187,8 @@
         <q-separator />
         <svg
           class="heatmap_legend"
-          width="300"
+          width="299"
           height="50"
-          style="max-width: 300"
         >
         </svg>
         <q-separator />
