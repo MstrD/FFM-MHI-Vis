@@ -189,6 +189,7 @@
           class="heatmap_legend"
           width="300"
           height="50"
+          style="max-width: 300"
         >
         </svg>
         <q-separator />
