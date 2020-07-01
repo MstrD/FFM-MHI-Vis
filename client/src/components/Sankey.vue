@@ -130,6 +130,9 @@ export default {
                 .text((d) => d ? d : null);
 
             var self = this;
+
+            // function that implements labels' text wrapping;
+            // imported from https://stackoverflow.com/a/35405267
             function wrap(text, width) {
                 text.each(function() {
                     var text = self.$d3.select(this),

@@ -303,6 +303,16 @@ export default {
     async defaultSettings() {
       await this.$axios.get('/default');
       this.$router.go();
+    },
+    updateColors() {
+      if (this.maleColor === '$male')
+        setTimeout(async () => {
+          this.maleColor = await this.$getColor("male");
+        }, 500);
+      if (this.femaleColor === '$female')
+        setTimeout(async () => {
+          this.femaleColor = await this.$getColor("female");
+        }, 500);
     }
   },
   mounted() {
@@ -311,6 +321,7 @@ export default {
     this.$root.$on('openRightDrawer', () => this.rightDrawerOpen = true);
     this.$root.$on('closeRightDrawer', () => this.rightDrawerOpen = false);
     this.drawHeatmapLegend();
+    this.updateColors();
   }
 }
 </script>
