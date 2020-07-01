@@ -11,13 +11,13 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
+    "@quasar/extras": "^1.8.2",
     "axios": "^0.19.2",
     "d3-sankey": "^0.12.3",
     "d3-svg-legend": "^2.25.6",
     "d3v4": "^4.2.2",
-    "quasar": "^1.0.0",
-    "sass": "^1.26.8",
+    "quasar": "^1.12.8",
+    "sass": "^1.26.9",
     "sass-loader": "^8.0.2",
     "vue-draggable": "^2.0.6"
   },
