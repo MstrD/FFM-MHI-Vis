@@ -106,7 +106,7 @@ export default {
             }
 
             // The path function returns x and y coordinates 
-            // of the line to draw for this raw.
+            // of the line to draw for this row.
             function path(d, i) {
                 return self.$d3.line()(dimensions.map(function(p) {
                     if (self.parallelIndex !== 'Individual')
@@ -120,6 +120,58 @@ export default {
                     return [position(p), y[p](d[p])]; }));
             }
             // END OF draggable behavior
+
+            // BEGIN OF brushing behavior
+            function brushing(d) {
+                let extent = self.$d3.event.selection;
+                let index = dimensions.indexOf(d);
+
+                svg.selectAll(".target").filter(function() {
+                    let yTarget = getYCoord(self.$d3.select(this).attr("d"), index);
+                    return !isBrushed(extent, yTarget);
+                })
+                .style("opacity", 0.2);
+                svg.selectAll(".target").filter(function() {
+                    let yTarget = getYCoord(self.$d3.select(this).attr("d"), index);
+                    return isBrushed(extent, yTarget);
+                })
+                .style("opacity", 0.75);
+            }
+
+            function isBrushed(coords, cy) {
+                var y0 = coords[0],
+                    y1 = coords[1];
+                return y0 <= cy && cy <= y1;
+            }
+
+            function buildPathCoords(node) {
+                // HAMMERED! Returns the [x,y] coordinates of a given path in each axis!
+                // (didn't find a good way to do this unfortunately)
+                let pattern = /[a-z][^a-z]*/ig;
+                let match = node.match(pattern);
+
+                let coords = [];
+
+                match.forEach(function(el, index) {
+                    this[index] = el.substring(1);
+                }, match);
+                
+                match.forEach(el => {
+                    let pat = /(\d+(\.\d+)?)/ig;
+                    coords.push(el.match(pat));
+                });
+                coords.forEach(function(el) {
+                    el.forEach(function(elem, i) {
+                        this[i] = parseFloat(elem);
+                    }, el);
+                });
+                return coords;
+            }
+
+            function getYCoord(node, index) {
+                return buildPathCoords(node)[index][1];
+            }
+            // END OF brushing behavior
 
             if (!this.parallelExists) {
                 // append the svg object to the body of the page
@@ -167,6 +219,18 @@ export default {
                         .text((_, i) => dimensions_name[i])
                         .style("fill", "black")
                         .style("font-weight", "bold");
+
+                // Add a brush for each axis
+                svg.selectAll(".myAxis")
+                    .append("g")
+                    .attr("class", "brush")
+                    .each(function(d, i) {
+                        self.$d3.select(this)
+                            .call(y[d].brush = self.$d3.brushY()
+                                .extent([[-10,0],[10,height]])
+                                .on("start brush", brushing)
+                            )
+                    });
             }
             else {
                 var svg = this.$d3.select("#parallel").select("#chart").select("svg").select("g");
