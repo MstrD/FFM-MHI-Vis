@@ -63,7 +63,13 @@ export default {
                 .padding(1)
                 .domain(dimensions);
                 
+            // for dragging
             var y_coords = {};
+
+            // for brushing
+            var brushIndices = [];
+            var extents = [];
+
             var self = this;
 
             // BEGIN OF draggable behavior
@@ -119,23 +125,53 @@ export default {
                     y_coords[`${p}${i}`] = y[p](d[p]) + 5; // +5 for better alignment
                     return [position(p), y[p](d[p])]; }));
             }
-            // END OF draggable behavior
-
+            // END OF draggable behavior;
             // BEGIN OF brushing behavior
             function brushing(d) {
+                // extent: y-range values for the current axis being brushed
                 let extent = self.$d3.event.selection;
                 let index = dimensions.indexOf(d);
+                // selected: '.target' brushed;
+                // notSelected: '.target' not brushed
+                let selected = svg.selectAll(".target");
+                let notSelected = svg.selectAll(".target");
+                
+                // insert the index of each axis with active brush
+                if (!brushIndices.includes(index)) {
+                    brushIndices.push(index);
+                    extents.push(extent);
+                }
 
-                svg.selectAll(".target").filter(function() {
-                    let yTarget = getYCoord(self.$d3.select(this).attr("d"), index);
-                    return !isBrushed(extent, yTarget);
-                })
-                .style("opacity", 0.2);
-                svg.selectAll(".target").filter(function() {
-                    let yTarget = getYCoord(self.$d3.select(this).attr("d"), index);
-                    return isBrushed(extent, yTarget);
-                })
-                .style("opacity", 0.75);
+                // entering this condition means the brush on the given axis was removed;
+                // it is necessary some treatment that still needs a FIXME:.
+                if (extent[0] === extent[1] && 
+                    extents[brushIndices.indexOf(index)][0] !== extents[brushIndices.indexOf(index)][1]) {
+                    brushIndices.splice(index, 1);
+                    extents.splice(index, 1);
+                }
+                // "extents" must be updated on each brush callback,
+                // otherwise there won't be an extent on next for-cycle
+                else
+                    extents[brushIndices.indexOf(index)] = extent;
+
+                // for each active brush axis
+                for (let el of brushIndices) {
+                    // update notSelected
+                    notSelected.filter(function() {
+                        let node = self.$d3.select(this).attr("d");
+                        let yTarget = getYCoord(node, el);
+                        return !isBrushed(extents[brushIndices.indexOf(el)], yTarget);
+                    })
+                    .style("opacity", 0.1);
+
+                    // update selected
+                    selected = selected.filter(function() {
+                        let node = self.$d3.select(this).attr("d");
+                        let yTarget = getYCoord(node, el);
+                        return isBrushed(extents[brushIndices.indexOf(el)], yTarget);
+                    })
+                    .style("opacity", 0.75);
+                }
             }
 
             function isBrushed(coords, cy) {
@@ -226,7 +262,7 @@ export default {
                     .attr("class", "brush")
                     .each(function(d, i) {
                         self.$d3.select(this)
-                            .call(y[d].brush = self.$d3.brushY()
+                            .call(self.$d3.brushY()
                                 .extent([[-10,0],[10,height]])
                                 .on("start brush", brushing)
                             )
