@@ -144,15 +144,12 @@ export default {
 
                 // entering this condition means the brush on the given axis was removed;
                 // it is necessary some treatment that still needs a FIXME:.
-                if (extent[0] === extent[1] && 
-                    extents[brushIndices.indexOf(index)][0] !== extents[brushIndices.indexOf(index)][1]) {
-                    brushIndices.splice(index, 1);
-                    extents.splice(index, 1);
-                }
+                if (self.$d3.select(this).select(".selection").attr("height") == 0)
+                        extent = [0, height];
+                      
                 // "extents" must be updated on each brush callback,
                 // otherwise there won't be an extent on next for-cycle
-                else
-                    extents[brushIndices.indexOf(index)] = extent;
+                extents[brushIndices.indexOf(index)] = extent;
 
                 // for each active brush axis
                 for (let el of brushIndices) {
