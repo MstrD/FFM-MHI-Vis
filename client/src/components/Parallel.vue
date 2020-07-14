@@ -143,9 +143,9 @@ export default {
                 }
 
                 // entering this condition means the brush on the given axis was removed;
-                // it is necessary some treatment that still needs a FIXME:.
+                // 'extent' is now "everything" in the axis, so to say
                 if (self.$d3.select(this).select(".selection").attr("height") == 0)
-                        extent = [0, height];
+                    extent = [0, height];
                       
                 // "extents" must be updated on each brush callback,
                 // otherwise there won't be an extent on next for-cycle
@@ -269,8 +269,15 @@ export default {
                 var svg = this.$d3.select("#parallel").select("#chart").select("svg").select("g");
                 var myPath = svg.selectAll(".target").data(this.parallelIndex === 'Individual' ? data : this.parallelGrouping);
                 myPath.exit().remove();
-                if (this.parallelPrevIndex != parallelIndex)
-                    svg.selectAll(".myAxis").each(function(d) { return self.$d3.select(this).transition().duration(1000).call(self.$d3.axisLeft().scale(y[d]));})
+                if (this.parallelPrevIndex != parallelIndex) {
+                    // new targets on same axes
+                    svg.selectAll(".myAxis").each(function(d) { return self.$d3.select(this).transition().duration(1000).call(self.$d3.axisLeft().scale(y[d]));});
+                    // remove all the brushes that may exist
+                    svg.selectAll(".myAxis").each(function(d) {
+                        svg.selectAll(".target").style("opacity", 0.75);
+                        return self.$d3.select(this).select(".brush").select(".selection").attr("height", 0);
+                    });
+                }
                 let actual = this.parallelIndex === 'Individual' ? data.length : this.parallelGrouping.length;
                 let previous = this.parallelPrevIndex === 'Individual' ? this.parallelData.length : this.parallelGrouping.length;
                 if (actual > previous) { // more lines than before
