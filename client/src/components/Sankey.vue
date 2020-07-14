@@ -78,7 +78,7 @@ export default {
                 .data(data.nodes)
                 .enter().append("g")
                 .call(this.$d3.drag()
-                    .subject(function(d){return d})
+                    .subject(d => d)
                     .on('start', function () { this.parentNode.appendChild(this); })
                     .on('drag', function(d) {
                         var rectY = self.$d3.select(this).select("rect").attr("y");
@@ -113,7 +113,17 @@ export default {
                 .text((d) => this.defaultNodes.includes(d.category) ? d.name : null)
                 .call(wrap, 80);
             node.append("title")
-                .text((d) => d.name + "\n" + d.value);
+                .text((d) => {
+                    let myRes = `${d.name}: ${d.value}`;
+                    if (this.defaultNodes.indexOf(d.category) !== this.defaultNodes.length - 1) {
+                        let nextCat = this.defaultNodes[this.defaultNodes.indexOf(d.category) + 1];
+                        let list = data.links.filter((el) => el.source.name === d.name && el.targetCat === nextCat);
+                        myRes += '\n\n   from which:\n';
+                        for (let el of list)
+                            myRes += `   • ${el.target.name}: ${el.value}\n`;
+                    }
+                    return myRes;
+                });
             
             // add category labels
             svg.selectAll(".label")
