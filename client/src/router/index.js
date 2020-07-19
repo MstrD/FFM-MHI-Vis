@@ -50,13 +50,70 @@ Vue.prototype.$filters = {
       extraversion: [],
       openness: [],
       agreeableness: [],
-      conscientiousness: []
+      conscientiousness: [],
+      mhi: []
   },
   toApplyGenderAndAge: Vue.prototype.$els,
   toApply: Vue.prototype.$els
 };
 
 Vue.prototype.$elsSankey = {};
+
+Vue.prototype.$filtering = {
+  slider: 0,
+
+  info_id: false,
+  model_id: '',
+
+  info_gender: false,
+  gender_group: '',
+  options: [
+      {
+          label: 'Male',
+          value: 'male'
+      },
+      {
+          label: 'Female',
+          value: 'female'
+      }
+  ],
+
+  info_age: false,
+  range: {
+      min: 18,
+      max: 78
+  },
+
+  info_traits: false,
+  range_ffm: {
+      min: 0,
+      max: 48
+  },
+  range_n: {
+      min: 0,
+      max: 48
+  },
+  range_e: {
+      min: 0,
+      max: 48
+  },
+  range_o: {
+      min: 0,
+      max: 48
+  },
+  range_a: {
+      min: 0,
+      max: 48
+  },
+  range_c: {
+      min: 0,
+      max: 48
+  },
+  range_mhi: {
+      min: 0,
+      max: 30
+  }
+};
 
 Vue.prototype.currentAge1 = 0;
 Vue.prototype.currentAge2 = 100;
@@ -75,6 +132,9 @@ Vue.prototype.currentAgreeableness2 = 48;
 
 Vue.prototype.currentConscientiousness1 = 0;
 Vue.prototype.currentConscientiousness2 = 48;
+
+Vue.prototype.currentMHI1 = 0;
+Vue.prototype.currentMHI2 = 30;
 
 Vue.prototype.$scatterUsers = [];
 Vue.prototype.$violinUsers = [];

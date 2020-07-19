@@ -258,7 +258,7 @@
         <template v-slot:control>
           <q-range
             :value="range_mhi"
-            @change="val => { range_mhi = val; filterDataByTraits(4, range_mhi.min, range_mhi.max) }"
+            @change="val => { range_mhi = val; filterDataByTraits(5, range_mhi.min, range_mhi.max) }"
             label
             label-always
             :min="0"
@@ -284,61 +284,7 @@
 export default {
     name: 'Filters',
     data () {
-        return {
-            slider: 0,
-
-            info_id: false,
-            model_id: '',
-
-            info_gender: false,
-            gender_group: '',
-            options: [
-                {
-                    label: 'Male',
-                    value: 'male'
-                },
-                {
-                    label: 'Female',
-                    value: 'female'
-                }
-            ],
-
-            info_age: false,
-            range: {
-                min: 18,
-                max: 78
-            },
-
-            info_traits: false,
-            range_ffm: {
-                min: 0,
-                max: 48
-            },
-            range_n: {
-                min: 0,
-                max: 48
-            },
-            range_e: {
-                min: 0,
-                max: 48
-            },
-            range_o: {
-                min: 0,
-                max: 48
-            },
-            range_a: {
-                min: 0,
-                max: 48
-            },
-            range_c: {
-                min: 0,
-                max: 48
-            },
-            range_mhi: {
-                min: 0,
-                max: 30
-            }
-        }
+        return this.$filtering;
     },
     methods: {
         filterDataById(id) {
@@ -382,31 +328,49 @@ export default {
                     this.$filters.traits.neuroticism = myFilter.filter((d) => d.Neuroticismo_NEOFFI >= value1 && d.Neuroticismo_NEOFFI <= value2);
                     this.currentNeuroticism1 = value1;
                     this.currentNeuroticism2 = value2;
+                    this.$filtering.range_n.min = value1;
+                    this.$filtering.range_n.max = value2;
                     this.$filters.toApply = this.$filters.traits.neuroticism;
                     break;
                 case 1:
                     this.$filters.traits.extraversion = myFilter.filter((d) => d.Extroversão_NEOFFI >= value1 && d.Extroversão_NEOFFI <= value2);
                     this.currentExtraversion1 = value1;
                     this.currentExtraversion2 = value2;
+                    this.$filtering.range_e.min = value1;
+                    this.$filtering.range_e.max = value2;
                     this.$filters.toApply = this.$filters.traits.extraversion;
                     break;
                 case 2:
                     this.$filters.traits.openness = myFilter.filter((d) => d.AberturaExperiência_NEOFFI >= value1 && d.AberturaExperiência_NEOFFI <= value2);
                     this.currentOpenness1 = value1;
                     this.currentOpenness2 = value2;
+                    this.$filtering.range_o.min = value1;
+                    this.$filtering.range_o.max = value2;
                     this.$filters.toApply = this.$filters.traits.openness;
                     break;
                 case 3:
                     this.$filters.traits.agreeableness = myFilter.filter((d) => d.AmabIilidade_NEOFFI >= value1 && d.AmabIilidade_NEOFFI <= value2);
                     this.currentAgreeableness1 = value1;
                     this.currentAgreeableness2 = value2;
+                    this.$filtering.range_a.min = value1;
+                    this.$filtering.range_a.max = value2;
                     this.$filters.toApply = this.$filters.traits.agreeableness;
                     break;
                 case 4:
                     this.$filters.traits.conscientiousness = myFilter.filter((d) => d.Conscienciosidade_NEOFFI >= value1 && d.Conscienciosidade_NEOFFI <= value2);
                     this.currentConscientiousness1 = value1;
                     this.currentConscientiousness2 = value2;
+                    this.$filtering.range_c.min = value1;
+                    this.$filtering.range_c.max = value2;
                     this.$filters.toApply = this.$filters.traits.conscientiousness;
+                    break;
+                case 5:
+                    this.$filters.traits.mhi = myFilter.filter((d) => d.MH5_total >= value1 && d.MH5_total <= value2);
+                    this.currentMHI1 = value1;
+                    this.currentMHI2 = value2;
+                    this.$filtering.range_mhi.min = value1;
+                    this.$filtering.range_mhi.max = value2;
+                    this.$filters.toApply = this.$filters.traits.mhi;
                     break;
             }
             this.renewCharts(this.filterDataByTraits.name);
