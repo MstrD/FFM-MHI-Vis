@@ -325,55 +325,147 @@ export default {
             var myFilter = this.$filters.toApplyGenderAndAge === this.$filters.toApply ? this.$filters.toApplyGenderAndAge : this.$filters.toApply;
             switch (trait) {
                 case 0:
+                  if (value1 < this.currentNeuroticism1 || value2 > this.currentNeuroticism2)
+                    this.restoreFilteringByTraits(trait, value1, value2);
+                  else {
                     this.$filters.traits.neuroticism = myFilter.filter((d) => d.Neuroticismo_NEOFFI >= value1 && d.Neuroticismo_NEOFFI <= value2);
                     this.currentNeuroticism1 = value1;
                     this.currentNeuroticism2 = value2;
                     this.$filtering.range_n.min = value1;
                     this.$filtering.range_n.max = value2;
                     this.$filters.toApply = this.$filters.traits.neuroticism;
-                    break;
+                  }
+                  break;
                 case 1:
+                  if (value1 < this.currentExtraversion1 || value2 > this.currentExtraversion2)
+                    this.restoreFilteringByTraits(trait, value1, value2);
+                  else {
                     this.$filters.traits.extraversion = myFilter.filter((d) => d.Extroversão_NEOFFI >= value1 && d.Extroversão_NEOFFI <= value2);
                     this.currentExtraversion1 = value1;
                     this.currentExtraversion2 = value2;
                     this.$filtering.range_e.min = value1;
                     this.$filtering.range_e.max = value2;
                     this.$filters.toApply = this.$filters.traits.extraversion;
-                    break;
+                  }
+                  break;
                 case 2:
+                  if (value1 < this.currentOpenness1 || value2 > this.currentOpenness2)
+                    this.restoreFilteringByTraits(trait, value1, value2);
+                  else {
                     this.$filters.traits.openness = myFilter.filter((d) => d.AberturaExperiência_NEOFFI >= value1 && d.AberturaExperiência_NEOFFI <= value2);
                     this.currentOpenness1 = value1;
                     this.currentOpenness2 = value2;
                     this.$filtering.range_o.min = value1;
                     this.$filtering.range_o.max = value2;
                     this.$filters.toApply = this.$filters.traits.openness;
-                    break;
+                  }
+                  break;
                 case 3:
+                  if (value1 < this.currentAgreeableness1 || value2 > this.currentAgreeableness2)
+                    this.restoreFilteringByTraits(trait, value1, value2);
+                  else {
                     this.$filters.traits.agreeableness = myFilter.filter((d) => d.AmabIilidade_NEOFFI >= value1 && d.AmabIilidade_NEOFFI <= value2);
                     this.currentAgreeableness1 = value1;
                     this.currentAgreeableness2 = value2;
                     this.$filtering.range_a.min = value1;
                     this.$filtering.range_a.max = value2;
                     this.$filters.toApply = this.$filters.traits.agreeableness;
-                    break;
+                  }
+                  break;
                 case 4:
+                  if (value1 < this.currentConscientiousness1 || value2 > this.currentConscientiousness2)
+                    this.restoreFilteringByTraits(trait, value1, value2);
+                  else {
                     this.$filters.traits.conscientiousness = myFilter.filter((d) => d.Conscienciosidade_NEOFFI >= value1 && d.Conscienciosidade_NEOFFI <= value2);
                     this.currentConscientiousness1 = value1;
                     this.currentConscientiousness2 = value2;
                     this.$filtering.range_c.min = value1;
                     this.$filtering.range_c.max = value2;
                     this.$filters.toApply = this.$filters.traits.conscientiousness;
-                    break;
+                  }
+                  break;
                 case 5:
+                  if (value1 < this.currentMHI1 || value2 > this.currentMHI2)
+                    this.restoreFilteringByTraits(trait, value1, value2);
+                  else {
                     this.$filters.traits.mhi = myFilter.filter((d) => d.MH5_total >= value1 && d.MH5_total <= value2);
                     this.currentMHI1 = value1;
                     this.currentMHI2 = value2;
                     this.$filtering.range_mhi.min = value1;
                     this.$filtering.range_mhi.max = value2;
                     this.$filters.toApply = this.$filters.traits.mhi;
-                    break;
+                  }
+                  break;
             }
             this.renewCharts(this.filterDataByTraits.name);
+        },
+        restoreFilteringByTraits(trait, value1, value2) {
+          console.log("entrei para " + trait);
+          let myFilter = this.$filters.toApplyGenderAndAge;
+
+          if (this.$filters.traits.neuroticism.length && trait !== 0)
+            myFilter = myFilter.filter(d => this.$filters.traits.neuroticism.includes(d));
+          if (this.$filters.traits.extraversion.length && trait !== 1)
+            myFilter = myFilter.filter(d => this.$filters.traits.extraversion.includes(d));
+          if (this.$filters.traits.openness.length && trait !== 2)
+            myFilter = myFilter.filter(d => this.$filters.traits.openness.includes(d));
+          if (this.$filters.traits.agreeableness.length && trait !== 3)
+            myFilter = myFilter.filter(d => this.$filters.traits.agreeableness.includes(d));
+          if (this.$filters.traits.conscientiousness.length && trait !== 4)
+            myFilter = myFilter.filter(d => this.$filters.traits.conscientiousness.includes(d));
+          if (this.$filters.traits.mhi.length && trait !== 5)
+            myFilter = myFilter.filter(d => this.$filters.traits.mhi.includes(d));
+
+          switch (trait) {
+            case 0:
+              this.$filters.traits.neuroticism = myFilter.filter(d => d.Neuroticismo_NEOFFI >= value1 && d.Neuroticismo_NEOFFI <= value2);
+              this.currentNeuroticism1 = value1;
+              this.currentNeuroticism2 = value2;
+              this.$filtering.range_n.min = value1;
+              this.$filtering.range_n.max = value2;
+              this.$filters.toApply = this.$filters.traits.neuroticism;
+              break;
+            case 1:
+              this.$filters.traits.extraversion = myFilter.filter(d => d.Extroversão_NEOFFI >= value1 && d.Extroversão_NEOFFI <= value2);
+              this.currentExtraversion1 = value1;
+              this.currentExtraversion2 = value2;
+              this.$filtering.range_e.min = value1;
+              this.$filtering.range_e.max = value2;
+              this.$filters.toApply = this.$filters.traits.extraversion;
+              break;
+            case 2:
+              this.$filters.traits.openness = myFilter.filter((d) => d.AberturaExperiência_NEOFFI >= value1 && d.AberturaExperiência_NEOFFI <= value2);
+              this.currentOpenness1 = value1;
+              this.currentOpenness2 = value2;
+              this.$filtering.range_o.min = value1;
+              this.$filtering.range_o.max = value2;
+              this.$filters.toApply = this.$filters.traits.openness;
+              break;
+            case 3:
+              this.$filters.traits.agreeableness = myFilter.filter((d) => d.AmabIilidade_NEOFFI >= value1 && d.AmabIilidade_NEOFFI <= value2);
+              this.currentAgreeableness1 = value1;
+              this.currentAgreeableness2 = value2;
+              this.$filtering.range_a.min = value1;
+              this.$filtering.range_a.max = value2;
+              this.$filters.toApply = this.$filters.traits.agreeableness;
+              break;
+            case 4:
+              this.$filters.traits.conscientiousness = myFilter.filter((d) => d.Conscienciosidade_NEOFFI >= value1 && d.Conscienciosidade_NEOFFI <= value2);
+              this.currentConscientiousness1 = value1;
+              this.currentConscientiousness2 = value2;
+              this.$filtering.range_c.min = value1;
+              this.$filtering.range_c.max = value2;
+              this.$filters.toApply = this.$filters.traits.conscientiousness;
+              break;
+            case 5:
+              this.$filters.traits.mhi = myFilter.filter((d) => d.MH5_total >= value1 && d.MH5_total <= value2);
+              this.currentMHI1 = value1;
+              this.currentMHI2 = value2;
+              this.$filtering.range_mhi.min = value1;
+              this.$filtering.range_mhi.max = value2;
+              this.$filters.toApply = this.$filters.traits.mhi;
+              break;
+          }
         },
         renewCharts(funcName) {
             if (funcName === this.filterDataByGender.name) {
@@ -399,6 +491,7 @@ export default {
             this.filterDataByTraits(2, this.currentOpenness1, this.currentOpenness2);
             this.filterDataByTraits(3, this.currentAgreeableness1, this.currentAgreeableness2);
             this.filterDataByTraits(4, this.currentConscientiousness1, this.currentConscientiousness2);
+            this.filterDataByTraits(5, this.currentMHI1, this.currentMHI2);
         },
         drawOriginals(isChecked) {
             if (!isChecked) { // reset values
@@ -418,10 +511,11 @@ export default {
                 };
                 this.currentNeuroticism1 = this.currentExtraversion1 = 
                 this.currentOpenness1 = this.currentAgreeableness1 =
-                this.currentConscientiousness1 = 0;
+                this.currentConscientiousness1 = this.currentMHI1 = 0;
                 this.currentNeuroticism2 = this.currentExtraversion2 = 
                 this.currentOpenness2 = this.currentAgreeableness2 =
                 this.currentConscientiousness2 = 48;
+                this.currentMHI2 = 30;
                 this.$filters.toApply = this.$els;
 
                 this.$root.$emit('drawParallel', this.$els);

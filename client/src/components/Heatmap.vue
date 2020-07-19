@@ -101,8 +101,6 @@ export default {
                     .duration(1000)
                     .attr("value", (d) => d.value)
                     .style("fill", (d) => d.value !== "" ? colorScale(d.value) : bgColor);
-            
-            // TODO: linha de heatmap para o MHI
 
             // tooltip events
             var self = this;
@@ -140,7 +138,7 @@ export default {
                     .style("opacity", 0);
             })
 
-            this.$root.$emit('openRightDrawer'); // FIXME: this will become false
+            this.$root.$emit('openRightDrawer');
         },
         removeHeatmap(d) {
             if (this.$d3.select(".rightDrawer").select(`.chart${this.$getNumber(d)}`)) {

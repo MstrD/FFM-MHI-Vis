@@ -229,7 +229,7 @@ export default {
                     .transition()
                     .duration(1000)
                     .style("stroke", (d, i) => this.choosePainting(d, i))
-                    .style("opacity", 0.5); // TODO: highlight subject when hovering line
+                    .style("opacity", 0.5);
             
                 // Draw the axis:
                 svg.selectAll("myAxis")
