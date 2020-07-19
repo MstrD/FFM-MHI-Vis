@@ -400,9 +400,9 @@ export default {
             this.renewCharts(this.filterDataByTraits.name);
         },
         restoreFilteringByTraits(trait, value1, value2) {
-          console.log("entrei para " + trait);
+          // the new 'big' array to traverse will be the one with gender and age
           let myFilter = this.$filters.toApplyGenderAndAge;
-
+          // this array will get smaller if there are already traits being filtered
           if (this.$filters.traits.neuroticism.length && trait !== 0)
             myFilter = myFilter.filter(d => this.$filters.traits.neuroticism.includes(d));
           if (this.$filters.traits.extraversion.length && trait !== 1)
@@ -415,7 +415,7 @@ export default {
             myFilter = myFilter.filter(d => this.$filters.traits.conscientiousness.includes(d));
           if (this.$filters.traits.mhi.length && trait !== 5)
             myFilter = myFilter.filter(d => this.$filters.traits.mhi.includes(d));
-
+          // happens the same treatment of function 'filterDataByTraits()'
           switch (trait) {
             case 0:
               this.$filters.traits.neuroticism = myFilter.filter(d => d.Neuroticismo_NEOFFI >= value1 && d.Neuroticismo_NEOFFI <= value2);
