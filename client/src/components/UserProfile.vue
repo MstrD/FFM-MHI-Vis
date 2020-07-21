@@ -80,9 +80,16 @@ export default {
   },
   methods: {
     triggerHighlighting(id) {
+      if (this.$scatterUsers.length)
+        this.$scatterUsers.forEach(el => {
+          this.$dehighlightSubject(el);
+        });
+      // the new selection will be composed only of subject 'id'
+      this.$root.$emit('removeScatterUsers', [this.$getUserById(id)]);
       this.$highlightSubject(this.$getUserById(id), true);
     },
     triggerDehighlighting(id) {
+      this.$root.$emit('removeScatterUsers', []);
       this.$dehighlightSubject(this.$getUserById(id), true);
     }
   }

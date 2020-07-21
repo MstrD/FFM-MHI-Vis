@@ -282,7 +282,7 @@ export default {
                 let previous = this.parallelPrevIndex === 'Individual' ? this.parallelData.length : this.parallelGrouping.length;
                 if (actual > previous) { // more lines than before
                     if (this.parallelPrevIndex != parallelIndex)
-                        myPath.remove();
+                        myPath.classed("highlighted", false);
                     myPath.enter()
                         .append("path")
                         .attr("d", path)
@@ -292,7 +292,9 @@ export default {
                         .merge(myPath)
                         .transition()
                         .duration(1000)
+                        .attr("d", path)
                         .style("stroke", (d, i) => this.choosePainting(d, i))
+                        .style("stroke-width", "1px")
                         .style("opacity", 0.5);
                     svg.selectAll(".groupingRange").remove();
                 }
@@ -413,7 +415,6 @@ export default {
                     .transition()
                     .duration(500)
                     .style("opacity", 0.1);
-            
                 this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target")
                     .filter((d) => this.$getNumber(subj) === this.$getNumber(d))
                     .classed("highlighted", true)
@@ -447,7 +448,7 @@ export default {
                     .classed("highlighted", false)
                     .transition()
                     .duration(500)
-                    .style("opacity", this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").data().length ? 0.1 : 0.5)
+                    .style("opacity", this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").nodes().length ? 0.1 : 0.5)
                     .style("stroke-width", "1px")
                     .style("stroke", (d, i) => this.choosePainting(d, i));
             else {
@@ -457,10 +458,10 @@ export default {
                     .classed("highlighted", false)
                     .transition()
                     .duration(500)
-                    .style("opacity", this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").data().length ? 0.1 : 0.5)
+                    .style("opacity", this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").nodes().length ? 0.1 : 0.5)
                     .style("stroke-width", "3px");
             }
-            if (!this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").data().length)
+            if (!this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").nodes().length)
                 this.dehighlightAllParallel();
         },
         dehighlightAllParallel() {
@@ -468,7 +469,7 @@ export default {
                 .classed("highlighted", false)
                 .transition()
                 .duration(500)
-                .style("opacity", this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").data().length ? 0.1 : 0.5)
+                .style("opacity", this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").nodes().length ? 0.1 : 0.5)
                 .style("stroke-width", (d) => this.parallelIndex === "Individual" ? "1px" : "3px")
                 .style("stroke", (d, i) => this.choosePainting(d, i));
         }
@@ -483,11 +484,13 @@ export default {
     watch: {
         parallelIndex: function() {
             this.drawParallel(this.parallelData, this.parallelIndex);
-            setTimeout(() =>
+            setTimeout(() => {
+                if (this.parallelIndex !== "Individual")
+                    this.dehighlightAllParallel();
                 this.$scatterUsers.forEach(element => {
                     this.highlightParallel(element);
                 })
-            , 1010);
+            }, 1010);
         }
     },
 }

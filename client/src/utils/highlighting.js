@@ -2,7 +2,6 @@ function highlightSubject(subj, isFromLeftDrawer = false) {
     if (isFromLeftDrawer) {
         this.$root.$emit('highlightScatter', subj);
         this.$dehighlightAllSubjects();
-        this.$root.$emit('dehighlightBoxplot', subj);
     }
     this.$root.$emit('highlightParallel', subj);
     this.$root.$emit('highlightHistogram', subj);
