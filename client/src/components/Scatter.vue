@@ -1,11 +1,11 @@
 <template>
     <div id="scatter" class="col-12 col-md-7" style="height: 400px">
         <div class="q-mt-md q-pl-md q-gutter-sm">
-            <q-radio dense v-model="scatterIndex" val="Neuroticism" label="Neuroticism" />
-            <q-radio dense v-model="scatterIndex" val="Extraversion" label="Extraversion" />
-            <q-radio dense v-model="scatterIndex" val="Openness" label="Openness" />
-            <q-radio dense v-model="scatterIndex" val="Agreeableness" label="Agreeableness" />
-            <q-radio dense v-model="scatterIndex" val="Conscientiousness" label="Conscientiousness" />
+            <q-radio dense v-model="scatterIndex" val="Neuroticism" label="N" />
+            <q-radio dense v-model="scatterIndex" val="Extraversion" label="E" />
+            <q-radio dense v-model="scatterIndex" val="Openness" label="O" />
+            <q-radio dense v-model="scatterIndex" val="Agreeableness" label="A" />
+            <q-radio dense v-model="scatterIndex" val="Conscientiousness" label="C" />
             <q-radio dense v-model="scatterIndex" val="MHI" label="MHI" />
         </div>
     </div>

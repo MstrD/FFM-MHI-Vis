@@ -35,7 +35,8 @@ export default {
             var dimensions = ["Neuroticismo_NEOFFI", "Extroversão_NEOFFI", "AberturaExperiência_NEOFFI",
                         "AmabIilidade_NEOFFI", "Conscienciosidade_NEOFFI", "MH5_total"];
         
-            var dimensions_name = ["Neuroticism", "Extraversion", "Openness", "Agreeableness", "Conscientiousness", "MHI"];
+            //var dimensions_name = ["Neuroticism", "Extraversion", "Openness", "Agreeableness", "Conscientiousness", "MHI"];
+            var dimensions_name = ["N", "E", "O", "A", "C", "MHI"];
         
             // For each dimension, I build a linear scale. I store all in a y object
             var y = {};
