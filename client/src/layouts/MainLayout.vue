@@ -92,7 +92,7 @@
             </q-dialog>
             <q-tooltip content-class="bg-dark">Settings</q-tooltip>
           </q-btn>
-          <q-btn flat round dense icon="help_outline" @click="help_dialog = true">
+          <q-btn flat round dense icon="help_outline" @click="help_dialog = !help_dialog">
             <q-dialog v-model="help_dialog">
               <q-card>
                   <q-card-section>
@@ -101,15 +101,55 @@
 
                   <q-separator />
 
-                  <q-card-section style="max-height: 50vh" class="scroll">
-                  <p v-for="n in 15" :key="n">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.</p>
+                  <q-card-section>
+                    <q-carousel
+                      v-model="slide"
+                      swipeable
+                      animated
+                      :control-type="controlType"
+                      control-color="primary"
+                      navigation
+                      padding
+                      arrows
+                      height="300px"
+                      class="text-primary rounded-borders"
+                    >
+                      <q-carousel-slide name="dashboard" class="column no-wrap flex-center">
+                        <q-icon name="dashboard" size="56px" />
+                        <div class="q-mt-md text-center text-black">
+                          The visualization is composed of four charts: Parallel Coordinates, Scatterplot, Boxplot and
+                          Sankey. Each chart is interactive and influence the results shown on the others.
+                        </div>
+                      </q-carousel-slide>
+                      <q-carousel-slide name="drawer" class="column no-wrap flex-center">
+                        <q-icon name="view_sidebar" size="56px" style="transform: scaleX(-1)"/>
+                        <div class="q-mt-md text-center text-black">
+                          Using the left drawer of this visualization, you can highlight a particular subject by its ID.
+                          To do that, please choose the subject's ID you want to refer. They range between 0 and 199.
+                        </div>
+                      </q-carousel-slide>
+                      <q-carousel-slide name="header" class="column no-wrap flex-center">
+                        <q-icon name="table_chart" size="56px" />
+                        <div class="q-mt-md text-center text-black">
+                          In the top bar, you can change the sociodemographic factors being presented, filter results based
+                          on the individuals' gender, age and/or psychological traits, and change your system preferences.
+                        </div>
+                      </q-carousel-slide>
+                      <q-carousel-slide name="heatmap" class="column no-wrap flex-center">
+                        <q-icon name="view_comfy" size="56px" />
+                        <div class="q-mt-md text-center text-black">
+                          When one or more users are selected, a heatmap is shown on the right side of the screen. Each square
+                          corresponds to a NEO-FFI/MHI-5 question, each color corresponds to a different answer. Hovering a square
+                          will show you the question, as well as the user answer. There is a legend to ease your interpretation of results.
+                        </div>
+                      </q-carousel-slide>
+                    </q-carousel>
                   </q-card-section>
 
                   <q-separator />
 
                   <q-card-actions align="right">
-                  <q-btn flat label="Decline" color="primary" v-close-popup />
-                  <q-btn flat label="Accept" color="primary" v-close-popup />
+                  <q-btn flat label="OK" color="primary" v-close-popup />
                   </q-card-actions>
               </q-card>
             </q-dialog>
@@ -229,6 +269,9 @@ export default {
       maleColor: this.$getColor("male"),
       femaleColor: this.$getColor("female"),
       showHeatmap: true,
+
+      slide: 'style',
+      controlType: 'flat',
 
       allCategories: null,
       defaultNodes: [
