@@ -20,6 +20,9 @@ export default {
             parallelPrevIndex: 'Individual',
             parallelGrouping: null,
             parallelThresholds: null,
+            yCoords: null,
+            parallelDimensions: null,
+            parallelWidth: null,
             color: this.$d3.scaleOrdinal(this.$d3.schemeCategory10)
         }
     },
@@ -324,6 +327,9 @@ export default {
                 this.parallelExists = true;
             this.parallelData = data;
             this.parallelPrevIndex = parallelIndex;
+            this.yCoords = y_coords;
+            this.parallelDimensions = dimensions;
+            this.parallelWidth = width;
         },
         createGrouping(data) {
             // grouping by age is generated here
@@ -423,6 +429,16 @@ export default {
                     .duration(500)
                     .style("opacity", 0.75)
                     .style("stroke-width", "3px");
+                this.$d3.select("#parallel").select("#chart").select("svg").selectAll("individualLabel")
+                    .data(this.parallelGrouping)
+                    .enter()
+                    .append("text")
+                    .attr("class", `individualLabel individualLabel${this.$getNumber(subj)}`)
+                    .attr("y", this.yCoords[`${this.parallelDimensions[this.parallelDimensions.length - 1]}${this.$getNumber(subj)}`] + 30)
+                    .attr("x", this.parallelWidth - 60)
+                    .style("font-size", "8pt")
+                    .style("fill", (d) => this.choosePainting(subj))
+                    .text(`#${this.$getNumber(subj)}`);
             }
             else {
                 let index = this.getAgeIndex(subj.Q2_Idade);
@@ -443,7 +459,7 @@ export default {
             }
         },
         dehighlightParallel(subj) {
-            if (this.parallelIndex === "Individual")
+            if (this.parallelIndex === "Individual") {
                 this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted")
                     .filter((d) => this.$getNumber(subj) === this.$getNumber(d))
                     .classed("highlighted", false)
@@ -452,6 +468,9 @@ export default {
                     .style("opacity", this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target.highlighted").nodes().length ? 0.1 : 0.5)
                     .style("stroke-width", "1px")
                     .style("stroke", (d, i) => this.choosePainting(d, i));
+                this.$d3.select("#parallel").select("#chart").select("svg").selectAll(`.individualLabel${this.$getNumber(subj)}`)
+                    .remove();
+            }
             else {
                 let index = this.getAgeIndex(subj.Q2_Idade);
                 this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".target")
