@@ -75,7 +75,7 @@
 
         <q-item-section side>
           <q-checkbox v-if="info_id" disable v-model="info_gender" />
-          <q-checkbox v-else v-model="info_gender" color="positive" @input="drawOriginals(info_gender)" />
+          <q-checkbox v-else v-model="info_gender" color="positive" @input="untickTrait(info_gender, 'gender')" />
         </q-item-section>
       </q-item>
 
@@ -100,7 +100,7 @@
 
         <q-item-section side>
           <q-checkbox v-if="info_id" disable v-model="info_age" />
-          <q-checkbox v-else v-model="info_age" color="positive" @input="drawOriginals(info_age)" />
+          <q-checkbox v-else v-model="info_age" color="positive" @input="untickTrait(info_age, 'age')" />
         </q-item-section>
       </q-item>
 
@@ -137,7 +137,7 @@
 
         <q-item-section side>
           <q-checkbox v-if="info_id" disable v-model="info_traits" />
-          <q-checkbox v-else v-model="info_traits" color="positive" @input="drawOriginals(info_traits)"/>
+          <q-checkbox v-else v-model="info_traits" color="positive" @input="untickTrait(info_traits, 'traits')"/>
         </q-item-section>
       </q-item>
       <!-- NEUROTICISM -->
@@ -524,6 +524,70 @@ export default {
                 this.$root.$emit('drawBoxplot', this.$els);
                 this.$root.$emit('drawHistogram', this.$els);
                 this.$root.$emit('updateFilter', this.$els);
+            }
+        },
+        untickTrait(trait, traitName) {
+          var myFilter = this.$els;
+          if (!trait)
+            switch (traitName) {
+              case 'gender':
+                this.$filters.gender = [];
+                this.gender_group = '';
+                if (this.info_age) {
+                  this.filterDataByAge(this.range.min, this.range.max, true);
+                  if (this.info_traits)
+                    this.filterAllTraits();
+                }
+                else if (this.info_traits && !this.info_age)
+                  this.filterAllTraits();
+                else
+                  this.drawOriginals(false);
+                return;
+              case 'age':
+                this.$filters.age = [];
+                this.range = {
+                  min: 18,
+                  max: 78
+                };
+                this.currentAge1 = 18;
+                this.currentAge2 = 78;
+                if (this.info_gender) {
+                  this.filterDataByGender(this.gender_group);
+                  console.log(this.$filters.toApply);
+                  if (this.info_traits)
+                    this.filterAllTraits();
+                }
+                else if (this.info_traits && !this.info_gender)
+                  this.filterAllTraits();
+                else
+                  this.drawOriginals(false);
+                return;
+              case 'traits':
+                this.range_n = this.range_e = this.range_o = this.range_a = this.range_c = {
+                  min: 0,
+                  max: 48
+                };
+                this.range_mhi = {
+                  min: 0,
+                  max: 30
+                };
+                this.currentNeuroticism1 = this.currentExtraversion1 = 
+                this.currentOpenness1 = this.currentAgreeableness1 =
+                this.currentConscientiousness1 = this.currentMHI1 = 0;
+                this.currentNeuroticism2 = this.currentExtraversion2 = 
+                this.currentOpenness2 = this.currentAgreeableness2 =
+                this.currentConscientiousness2 = 48;
+                this.currentMHI2 = 30;
+                if (this.info_gender) {
+                  this.filterDataByGender(this.gender_group);
+                  if (this.info_age)
+                    this.filterDataByAge(this.range.min, this.range.max, true);
+                }
+                else if (this.info_age && !this.info_gender)
+                  this.filterDataByAge(this.range.min, this.range.max, true);
+                else
+                  this.drawOriginals(false);
+                return;
             }
         },
         restoreSelection() {
