@@ -553,7 +553,6 @@ export default {
                 this.currentAge2 = 78;
                 if (this.info_gender) {
                   this.filterDataByGender(this.gender_group);
-                  console.log(this.$filters.toApply);
                   if (this.info_traits)
                     this.filterAllTraits();
                 }
