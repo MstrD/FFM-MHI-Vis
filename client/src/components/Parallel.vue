@@ -2,7 +2,7 @@
     <div class="col-12 col-md-5" id="parallel" style="height: 375px">
         <div class="q-mt-md q-pl-lg q-gutter-sm">
             <q-radio dense v-model="parallelIndex" val="Individual" label="Individual" />
-            <q-radio dense v-model="parallelIndex" val="Grouping" label="Grouping Average" />
+            <q-radio dense v-model="parallelIndex" val="Grouping" label="Age Range Average" />
         </div>
         <div id="chart">
         </div>
@@ -274,6 +274,7 @@ export default {
                 var myPath = svg.selectAll(".target").data(this.parallelIndex === 'Individual' ? data : this.parallelGrouping);
                 myPath.exit().remove();
                 if (this.parallelPrevIndex != parallelIndex) {
+                    this.$d3.select("#parallel").select("#chart").select("svg").selectAll(".individualLabel").remove();
                     // new targets on same axes
                     svg.selectAll(".myAxis").each(function(d) { return self.$d3.select(this).transition().duration(1000).call(self.$d3.axisLeft().scale(y[d]));});
                     // remove all the brushes that may exist
