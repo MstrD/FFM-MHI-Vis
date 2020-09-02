@@ -109,6 +109,7 @@
                       :control-type="controlType"
                       control-color="primary"
                       navigation
+                      infinite
                       padding
                       arrows
                       height="300px"
@@ -131,8 +132,8 @@
                       <q-carousel-slide name="header" class="column no-wrap flex-center">
                         <q-icon name="table_chart" size="56px" />
                         <div class="q-mt-md text-center text-black">
-                          In the top bar, you can change the sociodemographic factors being presented, filter results based
-                          on the individuals' gender, age and/or psychological traits, and change your system preferences.
+                          In the top bar, you can change the sociodemographic factors being presented and their order (using the <b>Sociodemographics</b> button), filter results based on the individuals' gender, age and/or psychological traits (using the <b>Filters</b> button), and change your system preferences (using the 
+                          <q-icon name="settings" size="16px" /> button).
                         </div>
                       </q-carousel-slide>
                       <q-carousel-slide name="heatmap" class="column no-wrap flex-center">
@@ -140,7 +141,7 @@
                         <div class="q-mt-md text-center text-black">
                           When one or more users are selected, a heatmap is shown on the right side of the screen. Each square
                           corresponds to a NEO-FFI/MHI-5 question, each color corresponds to a different answer. Hovering a square
-                          will show you the question, as well as the user answer. There is a legend to ease your interpretation of results.
+                          will show you the respective question, as well as the user answer. There is a legend to ease your interpretation of results.
                         </div>
                       </q-carousel-slide>
                     </q-carousel>
@@ -270,7 +271,7 @@ export default {
       femaleColor: this.$getColor("female"),
       showHeatmap: true,
 
-      slide: 'style',
+      slide: 'dashboard', // first panel of carousel
       controlType: 'flat',
 
       allCategories: null,
