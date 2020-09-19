@@ -299,6 +299,7 @@ export default {
       this.$root.$emit('updateOrder', nodes);
     },
     updateCurrent(current) {
+      this.defaultNodes = current;
       this.$root.$emit('updateCurrent', current);
     },
     drawHeatmapLegend() {
