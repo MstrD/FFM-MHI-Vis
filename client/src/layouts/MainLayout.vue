@@ -85,8 +85,8 @@
 
                   <q-card-actions align="right">
                   <q-btn flat label="Cancel" color="negative" v-close-popup />
-                  <q-btn flat label="Restore to Default" color="primary" v-close-popup @click="defaultSettings()"/>
-                  <q-btn flat label="Apply" color="primary" v-close-popup @click="saveSettings()"/>
+                  <q-btn flat label="Restore to Default" color="female" v-close-popup @click="defaultSettings()"/>
+                  <q-btn flat label="Apply" color="female" v-close-popup @click="saveSettings()"/>
                   </q-card-actions>
               </q-card>
             </q-dialog>
@@ -107,13 +107,13 @@
                       swipeable
                       animated
                       :control-type="controlType"
-                      control-color="primary"
+                      control-color="female"
                       navigation
                       infinite
                       padding
                       arrows
                       height="300px"
-                      class="text-primary rounded-borders"
+                      class="text-female rounded-borders"
                     >
                       <q-carousel-slide name="dashboard" class="column no-wrap flex-center">
                         <q-icon name="dashboard" size="56px" />
@@ -150,7 +150,7 @@
                   <q-separator />
 
                   <q-card-actions align="right">
-                  <q-btn flat label="OK" color="primary" v-close-popup />
+                  <q-btn flat label="OK" color="female" v-close-popup />
                   </q-card-actions>
               </q-card>
             </q-dialog>
@@ -188,7 +188,7 @@
           clear-icon="close"
           filled
           type="number"
-          color="primary"
+          color="female"
           v-model="model"
           hint="Filter by ID..."
           :rules="[val => val >= 0 && val <= 199 || 'Please insert an ID between 0 and 199']"
