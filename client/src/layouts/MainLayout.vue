@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated class="bg-female">
         <q-toolbar class="glossy">
           <q-btn
             flat
@@ -307,7 +307,7 @@ export default {
       var width = 300, height = 50;
       const colorScale = this.$d3.scaleLinear()
         .domain([0, 4])
-        .range([this.$getColor("info"), this.$getColor("primary")]);
+        .range([this.$lighten(this.$getColor("female"), 70), this.$getColor("female")]);
       var svg = this.$d3.select(".rightDrawer").select("svg.heatmap_legend")
 
       // draw legend

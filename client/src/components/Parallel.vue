@@ -1,8 +1,8 @@
 <template>
     <div class="col-12 col-md-5" id="parallel" style="height: 375px">
         <div class="q-mt-md q-pl-lg q-gutter-sm">
-            <q-radio dense v-model="parallelIndex" val="Individual" label="Individual" />
-            <q-radio dense v-model="parallelIndex" val="Grouping" label="Age Range Average" />
+            <q-radio dense v-model="parallelIndex" val="Individual" label="Individual" color="female"/>
+            <q-radio dense v-model="parallelIndex" val="Grouping" label="Age Range Average" color="female"/>
         </div>
         <div id="chart">
         </div>

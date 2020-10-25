@@ -15,7 +15,7 @@
           {{ cat }}
         </q-item-section>
         <q-item-section side>
-          <q-checkbox v-model="current.includes(cat)" @input="toggleOnSankey(cat)" color="primary" />
+          <q-checkbox v-model="current.includes(cat)" @input="toggleOnSankey(cat)" color="female" />
         </q-item-section>
       </q-item>
 

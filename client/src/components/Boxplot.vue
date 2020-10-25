@@ -144,7 +144,7 @@ export default {
                         .attr("height", i !== data.length - 1 ? (y(q1[i]) - y(q3[i])) : (y_mhi(q1[i]) - y_mhi(q3[i])))
                         .attr("width", this.bp_width)
                         .attr("stroke", "black")
-                        .style("fill", this.$getColor("primary"));
+                        .style("fill", this.$getColor("female"));
 
                     // show median, min and max horizontal lines
                     svg.selectAll("toto")
@@ -274,7 +274,7 @@ export default {
                 .attr("d", arc)
                 .attr("class", `myInd${this.$getNumber(subj)}`)
                 .attr("transform", (d, i) => `translate(${(this.bp_center * (i+1))}, ${i !== this.bp_data(subj).length - 1 ? this.bp_y(d) : this.bp_y_mhi(d)})`)
-                .style("fill", "orange")
+                .style("fill", this.$getColor("male"))
                 .style("stroke", this.$getColor("dark"))
                 .style("opacity", 0)
                 .transition()

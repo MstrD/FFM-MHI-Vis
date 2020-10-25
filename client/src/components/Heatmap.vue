@@ -84,7 +84,7 @@ export default {
             // Color scale to use
             const colorScale = this.$d3.scaleLinear()
                 .domain([0, 4])
-                .range([this.$getColor("info"), this.$getColor("primary")]);
+                .range([this.$lighten(this.$getColor("female"), 70), this.$getColor("female")]);
         
             const cards = svg.selectAll()
                 .data(answers);

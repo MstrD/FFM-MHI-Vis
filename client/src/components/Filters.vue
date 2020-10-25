@@ -5,7 +5,7 @@
 
       <q-item v-ripple>
         <q-item-section avatar top>
-          <q-avatar icon="person" color="primary" text-color="white" />
+          <q-avatar icon="person" color="female" text-color="white" />
         </q-item-section>
 
         <q-item-section>
@@ -15,7 +15,7 @@
 
         <q-item-section side>
           <q-checkbox v-model="info_id" v-if="info_gender || info_age || info_traits" disable />
-          <q-checkbox v-model="info_id" v-else @input="drawOriginals(info_id)" color="positive" />
+          <q-checkbox v-model="info_id" v-else @input="drawOriginals(info_id)" color="female" />
         </q-item-section>
       </q-item>
 
@@ -47,7 +47,7 @@
           clear-icon="close"
           filled
           type="number"
-          color="primary"
+          color="female"
           v-if="info_id"
           v-model="model_id"
           hint="Choose a subject between #0 and #199..."
@@ -65,7 +65,7 @@
 
       <q-item v-ripple>
         <q-item-section avatar top>
-          <q-avatar icon="wc" color="primary" text-color="white" />
+          <q-avatar icon="wc" color="female" text-color="white" />
         </q-item-section>
 
         <q-item-section>
@@ -75,7 +75,7 @@
 
         <q-item-section side>
           <q-checkbox v-if="info_id" disable v-model="info_gender" />
-          <q-checkbox v-else v-model="info_gender" color="positive" @input="untickTrait(info_gender, 'gender')" />
+          <q-checkbox v-else v-model="info_gender" color="female" @input="untickTrait(info_gender, 'gender')" />
         </q-item-section>
       </q-item>
 
@@ -84,13 +84,13 @@
         v-model="gender_group"
         :options="options"
         @input="filterDataByGender(gender_group)"
-        color="primary"
+        color="female"
         inline
     />
 
       <q-item v-ripple>
         <q-item-section avatar top>
-          <q-avatar icon="show_chart" color="primary" text-color="white" />
+          <q-avatar icon="show_chart" color="female" text-color="white" />
         </q-item-section>
 
         <q-item-section>
@@ -100,7 +100,7 @@
 
         <q-item-section side>
           <q-checkbox v-if="info_id" disable v-model="info_age" />
-          <q-checkbox v-else v-model="info_age" color="positive" @input="untickTrait(info_age, 'age')" />
+          <q-checkbox v-else v-model="info_age" color="female" @input="untickTrait(info_age, 'age')" />
         </q-item-section>
       </q-item>
 
@@ -109,6 +109,7 @@
         :hint="`Range between 18 and 78`"
         :value="range"
         v-if="info_age"
+        color="female"
         @input="val => (val === null && (range = { min: 18, max: 78 }))"
         @clear="() => {filterDataByAge(range.min, range.max, true)}"
         clearable
@@ -117,6 +118,7 @@
           <q-range
             :value="range"
             @change="val => { range = val; filterDataByAge(range.min, range.max, true) }"
+            color="female"
             label
             label-always
             :min="18"
@@ -127,7 +129,7 @@
 
       <q-item v-ripple>
         <q-item-section avatar top>
-          <q-avatar icon="tune" color="primary" text-color="white" />
+          <q-avatar icon="tune" color="female" text-color="white" />
         </q-item-section>
 
         <q-item-section>
@@ -137,7 +139,7 @@
 
         <q-item-section side>
           <q-checkbox v-if="info_id" disable v-model="info_traits" />
-          <q-checkbox v-else v-model="info_traits" color="positive" @input="untickTrait(info_traits, 'traits')"/>
+          <q-checkbox v-else v-model="info_traits" color="female" @input="untickTrait(info_traits, 'traits')"/>
         </q-item-section>
       </q-item>
       <!-- NEUROTICISM -->
@@ -146,6 +148,7 @@
         :hint="`Neuroticism value`"
         :value="range_n"
         v-if="info_traits"
+        color="female"
         @input="val => (val === null && (range_n = { min: 0, max: 48 }))"
         @clear="() => {filterDataByTraits(0, range_n.min, range_n.max)}"
         clearable
@@ -154,6 +157,7 @@
           <q-range
             :value="range_n"
             @change="val => { range_n = val; filterDataByTraits(0, range_n.min, range_n.max) }"
+            color="female"
             label
             label-always
             :min="range_ffm.min"
@@ -167,6 +171,7 @@
         :hint="`Extraversion value`"
         :value="range_e"
         v-if="info_traits"
+        color="female"
         @input="val => (val === null && (range_e = { min: 0, max: 48 }))"
         @clear="() => {filterDataByTraits(1, range_e.min, range_e.max)}"
         clearable
@@ -175,6 +180,7 @@
           <q-range
             :value="range_e"
             @change="val => { range_e = val; filterDataByTraits(1, range_e.min, range_e.max) }"
+            color="female"
             label
             label-always
             :min="range_ffm.min"
@@ -188,6 +194,7 @@
         :hint="`Openness value`"
         :value="range_o"
         v-if="info_traits"
+        color="female"
         @input="val => (val === null && (range_o = { min: 0, max: 48 }))"
         @clear="() => {filterDataByTraits(2, range_o.min, range_o.max)}"
         clearable
@@ -196,6 +203,7 @@
           <q-range
             :value="range_o"
             @change="val => { range_o = val; filterDataByTraits(2, range_o.min, range_o.max) }"
+            color="female"
             label
             label-always
             :min="range_ffm.min"
@@ -209,6 +217,7 @@
         :hint="`Agreeableness value`"
         :value="range_a"
         v-if="info_traits"
+        color="female"
         @input="val => (val === null && (range_a = { min: 0, max: 48 }))"
         @clear="() => {filterDataByTraits(3, range_a.min, range_a.max)}"
         clearable
@@ -217,6 +226,7 @@
           <q-range
             :value="range_a"
             @change="val => { range_a = val; filterDataByTraits(3, range_a.min, range_a.max) }"
+            color="female"
             label
             label-always
             :min="range_ffm.min"
@@ -230,6 +240,7 @@
         :hint="`Conscientiousness value`"
         :value="range_c"
         v-if="info_traits"
+        color="female"
         @input="val => (val === null && (range_c = { min: 0, max: 48 }))"
         @clear="() => {filterDataByTraits(4, range_c.min, range_c.max)}"
         clearable
@@ -238,6 +249,7 @@
           <q-range
             :value="range_c"
             @change="val => { range_c = val; filterDataByTraits(4, range_c.min, range_c.max) }"
+            color="female"
             label
             label-always
             :min="range_ffm.min"
@@ -251,6 +263,7 @@
         :hint="`MHI value`"
         :value="range_mhi"
         v-if="info_traits"
+        color="female"
         @input="val => (val === null && (range_mhi = { min: 0, max: 30 }))"
         @clear="() => {filterDataByTraits(5, range_mhi.min, range_mhi.max)}"
         clearable
@@ -259,6 +272,7 @@
           <q-range
             :value="range_mhi"
             @change="val => { range_mhi = val; filterDataByTraits(5, range_mhi.min, range_mhi.max) }"
+            color="female"
             label
             label-always
             :min="0"

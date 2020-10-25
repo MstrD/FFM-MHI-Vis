@@ -38,6 +38,7 @@ Vue.prototype.$dehighlightAllSubjects = dehighlightAllSubjects;
 
 Vue.prototype.$getColor = colors.getBrand;
 Vue.prototype.$setColor = colors.setBrand;
+Vue.prototype.$lighten = colors.lighten;
 
 Vue.prototype.$isHighlighted = { value: false };
 
