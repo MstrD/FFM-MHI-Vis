@@ -302,10 +302,10 @@ export default {
       this.defaultNodes = current;
       this.$root.$emit('updateCurrent', current);
     },
-    drawHeatmapLegend() {
+    async drawHeatmapLegend() {
       var labels = ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'];
       var width = 300, height = 50;
-      const colorScale = this.$d3.scaleLinear()
+      const colorScale = await this.$d3.scaleLinear()
         .domain([0, 4])
         .range([this.$lighten(this.$getColor("female"), 70), this.$getColor("female")]);
       var svg = this.$d3.select(".rightDrawer").select("svg.heatmap_legend")
