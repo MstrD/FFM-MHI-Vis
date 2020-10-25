@@ -48,6 +48,7 @@
                     <q-item-label header class="settings_header">Male Color</q-item-label>
                     <q-input
                       filled
+                      color="male"
                       v-model="maleColor"
                       :rules="['anyColor']"
                       class="color-input color-input-male"
@@ -63,6 +64,7 @@
                     <q-item-label header class="settings_header">Female Color</q-item-label>
                     <q-input
                       filled
+                      color="female"
                       v-model="femaleColor"
                       :rules="['anyColor']"
                       class="color-input color-input-female"
