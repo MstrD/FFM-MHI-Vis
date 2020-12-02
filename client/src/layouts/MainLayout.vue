@@ -203,7 +203,7 @@
         <div class="q-pl-md q-mb-xs" style="font-size: 9pt">
           <q-icon name="lens" color="female" /> Female
           <q-icon name="lens" color="male" class="q-pl-md q-pr-sm" /> Male
-          <span style="float: right" class="q-mr-lg text-grey-6"><i>{{ elements.length }} subjects found</i></span>
+          <span style="float: right" class="q-mr-lg text-grey-6"><b><i>{{ elements.length }} subjects found</i></b></span>
         </div>
         <UserProfile 
           v-for="link in elements"
